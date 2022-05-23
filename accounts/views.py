@@ -14,3 +14,8 @@ def search_result_book(request):
 def detail_info_book(request):
    return render(request,'pages/book_detail.html')
 
+def login(request):
+   return render(request,'pages/login.html')
+
+def register(request):
+   return render(request,'pages/register.html')
