@@ -1,0 +1,40 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="book-detail">
+    <div class="book-detail-info">
+        <div class="card-info">
+            <div class="card-info-img">
+                <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card-info-img-img">
+                <div class="extra-img" >
+                    <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class=" main-img-item">
+                    <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class=" main-img-item">
+                    <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class=" main-img-item">
+                </div>
+            </div>
+            <div class="card-detail-info">
+                <p class="card-detail-info-name">HỎA NGỤC</p>
+                <div class="card-detail-info-other">
+                    <p class="card-detail-info-author">Tác giả: </p>
+                    <p class="card-detail-info-year">Năm xuất bản: </p>
+                    <p class="card-detail-info-rate">Đáng giá: </p>
+                    <p class="card-detail-info-status">Trạng thái: </p>
+                </div>
+                <button type="button" class="btn btn-outline-primary" style="margin-top:20px;">Thêm vào giỏ hàng</button>
+            </div>
+        </div>
+        <div class="card-intro">
+            <p class="card-detail-info-other" style="margin: 0px;">Mô tả sách :</p>
+            <div class="mota-content">
+                <p class="mota-content-text">Là cuốn sách bán chạy nhất thế giới năm 2013. Năm 2014, “Inferno” đến Việt Nam và tạo ra một cơn sốt mang tên “Hỏa ngục”.
+                    Là đầu sách bán chạy thứ hai tại Hội sách TP HCM quý 1/2014, tiêu thụ gần 30.000 bản chỉ trong vòng hai tháng rưỡi, luôn có tên trong các bảng xếp hạng sách bán chạy trong năm, Hỏa ngục thực sự xứng danh là "Siêu phẩm được đặt cược nhiều" nhất từ trước đến nay của Dan Brown.</p>
+                <p style="margin-top:-10px;">...</p>
+                <p class="xemthem" style="margin-top:-10px;"><a href="#">Xem thêm</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

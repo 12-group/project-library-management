@@ -1,0 +1,83 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="home_content">
+    <div class="background_qoute">
+        <img class="bg_img" src="{% static '/images/background1.jpg' %}" alt="" class="card_img">
+    </div>
+</div>
+
+<div class="tittle-book">
+    <p class="tittle-book-name" style="font-family: 'Calibri'; color: #352d13;">Sách thịnh hành</p>
+    <div class="cards">
+        <a href="{% url 'detail' %}">
+            <div class="card catalog-item" >
+                <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+                
+                <div class="book-name">
+                    <a href="{% url 'detail' %}">Thiên thần và ác quỷ</a>
+                </div>
+            </div>
+        </a>
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tittle-book">
+    <p class="tittle-book-name" style="font-family: 'Calibri';color: #352d13;">Sách mới</p>
+    <div class="cards">
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+        <div class="card catalog-item">
+            <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card_img">
+            
+            <div class="book-name">
+                <p>Thiên thần và ác quỷ</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

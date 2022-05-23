@@ -1,0 +1,54 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<form>
+    <div class="row" style="display:flex; justify-content: space-around ;">
+        <div class="form-group col-md-2">
+            <label for="bookname">Tên sách : </label>
+            <input type="text" class="form-control" id="bookname">
+        </div>
+
+        <div class="form-group col-md-2">
+            <label for="authorname">Tên tác giả :</label>
+            <input type="text" class="form-control" id="authorname">
+        </div>
+
+        <div class="form-group col-md-2">
+            <label for="inputState">Thể loại : </label>
+            <select id="inputState" class="form-control">
+                <option selected>Khoa học</option>
+                <option selected>Tiếng anh</option>
+                <option selected>Tiểu thuyết</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-2">
+            <label>Thời gian xuất bản</label>
+            <div class="row">
+                <div class="row gx-3 col">
+                    <label class="col"> từ :</label>
+                    <select id='date-dropdown'  class="form-control col"></select>
+                </div>
+                <div class="row gx-3 col">
+                    <label class="col"> đến : </label>
+                    <select id='date-'  class="form-control col"></select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <a class="btn btn-primary" href="{% url 'search_result' %}" role="button" style="margin-top:20px;margin-left:50px;">Tìm kiếm</a>
+        </div>
+
+    </div>
+</form>
+
+    {% block result %}
+
+
+
+    {% endblock %}
+
+
+{% endblock content %}
