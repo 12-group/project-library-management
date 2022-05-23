@@ -1,0 +1,183 @@
+body{
+    background-color: antiquewhite;
+    size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+.navbar_{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.nav_bar{
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 100px;
+}
+.navbar{
+    list-style: none;
+    margin-top: 10px;
+}
+.nav-bar-menu{
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+li i {
+    font-size: 25px;
+}
+
+.footer{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 50px;
+    padding-left: 100px;
+}
+
+.background_qoute
+{
+    overflow: hidden;
+}
+.bg_img{
+    margin-bottom: 30px;
+    margin-left: 70px;
+    width: 90%;
+    height: 600px;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.tittle-book{
+    margin-top: 50px;
+}
+.tittle-book-name{
+    margin-left: 80px;
+    font-size: 30px;
+    font-weight: 700;
+}
+.cards{
+    display: flex;
+    justify-content: center;
+    margin-left: -70px;
+}
+.card{
+    display: flex;
+    flex-direction: column;
+    background-color: greenyellow;
+    margin-left: 70px;
+    border: solid;
+}
+.catalog-item
+{
+    width: 15%;
+}
+.card_img{
+    width: 100%;
+    object-fit: cover;
+    border: solid;
+}
+.book-name
+{
+    font-weight: 500;
+}
+
+
+
+.double_cards{
+    margin:auto;
+    margin-top: 30px;
+}
+.result-item{
+    width: 10%;
+    height: 300px;
+}
+.result-cards{
+    margin-top: 20px;
+}
+
+
+
+
+.book-detail{
+    background-color: rgb(232, 222, 254);
+    width: 100%;
+    height: max-content;
+    margin: auto;   
+    padding: 20px;
+}
+.book-detail-info{
+    width: 70%;
+    margin: auto;
+}
+.card-info{
+    display: flex;
+    height: max-content;
+    padding: 10px ;
+}
+.card-info-img{
+    width: 40%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+.card-info-img-img{
+    width: 80%;
+    margin: 0px auto;
+    object-fit: cover;
+}
+
+.extra-img{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+    margin-left: -15px;
+}
+.main-img-item
+{
+    width: 15%;
+    margin-left: 15px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.card-detail-info{
+    flex: 1;
+    padding: 50px;
+}
+.card-detail-info-name{
+    font-size: 40px;
+    font-family: Calibri;
+    font-weight: 800;
+}
+.card-detail-info-other{
+    font-size: 20px;
+    font-family: Calibri;
+    font-weight: 800;
+}
+.mota-content{
+    margin: 0px;
+    background-color: rgb(209, 167, 254);
+    border-radius: 10px;
+    height: 120px;
+    object-fit: cover;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.mota-content-text{
+    height: 50px;
+    object-fit: cover;
+    overflow: hidden;
+
+}
+
