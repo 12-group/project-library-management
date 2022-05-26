@@ -5,9 +5,9 @@ from django import forms
 
 from .models import *
 
-class CustomerForm(ModelForm):
+class ReaderForm(ModelForm):
 	class Meta:
-		model = Customer
+		model = Reader
 		fields = '__all__'
 		exclude = ['user']
 

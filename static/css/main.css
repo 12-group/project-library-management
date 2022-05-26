@@ -181,3 +181,15 @@ li i {
 
 }
 
+.login_btn{
+    width: 100%;
+    height: 50%;
+    background: #33ccff !important;
+    color: black;
+}
+
+.reg_btn{
+    width: 100%;
+    height: 50%;
+    color: black;
+}
