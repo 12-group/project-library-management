@@ -16,9 +16,9 @@
       <li class="nav_bar_menu-nav-item">
         <i class="bi bi-person " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></i>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><a class="dropdown-item" href="#">Xem thông tin</a></li>
+          <li><a class="dropdown-item" href="{% url 'account' %}">Xem thông tin</a></li>
           <li><a class="dropdown-item" href="#">Thông tin mượn</a></li>
-          <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+          <li><span ><a  class="hello-msg" href="{% url 'logout' %}">Logout</a></span></li>
         </ul>
       </li>
       <li class="nav_bar_menu-nav-item">
