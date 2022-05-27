@@ -1,22 +1,30 @@
 from unicodedata import name
 from django.shortcuts import render, redirect 
 from django.http import HttpResponse
-from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from .decorators import unauthenticated_user, allowed_users, admin_only
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 from .forms import *
+from .decorators import *
 
+@unauthenticated_user
 def register(request):
+
    form = CreateUserForm()
    if request.method == 'POST':
       form = CreateUserForm(request.POST)
       if form.is_valid():
          user = form.save()
-         username = form.cleaned_data.get('username')            
-         messages.success(request, 'Account was created for ' + username)
+         username = form.cleaned_data.get('username')
+
+
+         messages.success(request, 'Đã tạo tài khoản cho ' + username)
+
          return redirect('login')
+      
 
    context = {'form':form}
    return render(request, 'pages/register.html', context)
@@ -43,11 +51,11 @@ def logoutUser(request):
 	return redirect('login')
    
 def accountSettings(request):
-	customer = request.user.customer
-	form = CustomerForm(instance=customer)
+	account = request.user.accounts
+	form = CustomerForm(instance=account)
 
 	if request.method == 'POST':
-		form = CustomerForm(request.POST, request.FILES,instance=customer)
+		form = CustomerForm(request.POST, request.FILES,instance=account)
 		if form.is_valid():
 			form.save()
 	context = {'form':form}

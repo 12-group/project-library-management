@@ -1,5 +1,5 @@
 {% load static %}
-
+  
 <div class="navbar_">
   <div class="logo">
     <img src="{% static 'images/logo.png' %}" style="width:50px;";>
@@ -10,21 +10,28 @@
       <li class="menu-item">
         <a style="text-align:center;text-align: center;" class="nav-link" href="{% url 'search' %}">Tìm kiếm sách</a>
       </li>
-    </ul>  
+    </ul>
 
+  {% if request.user.is_authenticated %}
     <ul class="navbar nav-bar-menu">
       <li class="nav_bar_menu-nav-item">
         <i class="bi bi-person " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></i>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <li><a class="dropdown-item" href="{% url 'account' %}">Xem thông tin</a></li>
           <li><a class="dropdown-item" href="#">Thông tin mượn</a></li>
-          <li><span ><a  class="hello-msg" href="{% url 'logout' %}">Logout</a></span></li>
+          <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
         </ul>
       </li>
       <li class="nav_bar_menu-nav-item">
         <i class="bi bi-bag"></i>
       </li>    
     </ul>
+  {% else %}
+    <ul class="navbar">
+      <li><a style="padding: 10px" href="{% url 'register' %}" class="btn reg_btn">Đăng ký</a></li>
+      <li><a style="padding: 10px" href="{% url 'login' %}" class="btn login_btn">Đăng nhập</a></li>
+    </ul>
+  {% endif %}
 
   </div>
 </div>
