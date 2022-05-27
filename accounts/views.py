@@ -10,7 +10,6 @@ from .models import *
 from .forms import *
 from .decorators import *
 
-@unauthenticated_user
 def register(request):
 
    form = CreateUserForm()
@@ -51,15 +50,15 @@ def logoutUser(request):
 	return redirect('login')
    
 def accountSettings(request):
-	account = request.user.accounts
-	form = CustomerForm(instance=account)
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form =  CustomerForm(request.POST, request.FILES,instance=customer)
+        if form.is_valid():
+            form.save()
 
-	if request.method == 'POST':
-		form = CustomerForm(request.POST, request.FILES,instance=account)
-		if form.is_valid():
-			form.save()
-	context = {'form':form}
-	return render(request, 'pages/account_setting.html', context)
+    context={'form':form}
+    return render(request, 'pages/account_setting.html',context)
 
 def home(request):
    return render(request,'pages/home.html')
