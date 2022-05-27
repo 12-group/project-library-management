@@ -20,12 +20,10 @@ def register(request):
          user = form.save()
          username = form.cleaned_data.get('username')
 
-
          messages.success(request, 'Đã tạo tài khoản cho ' + username)
 
          return redirect('login')
       
-
    context = {'form':form}
    return render(request, 'pages/register.html', context)
 
@@ -51,13 +49,14 @@ def logoutUser(request):
 	return redirect('home')
    
 def accountSettings(request):
-	account = request.user.accounts
-	form = CustomerForm(instance=account)
+	customer = request.user.customer
+	form = CustomerForm(instance=customer)
 
 	if request.method == 'POST':
-		form = CustomerForm(request.POST, request.FILES,instance=account)
+		form = CustomerForm(request.POST, request.FILES,instance=customer)
 		if form.is_valid():
 			form.save()
+
 	context = {'form':form}
 	return render(request, 'pages/account_setting.html', context)
 
@@ -72,4 +71,3 @@ def search_result_book(request):
 
 def detail_info_book(request):
    return render(request,'pages/book_detail.html')
-
