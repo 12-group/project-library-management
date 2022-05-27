@@ -1,11 +1,17 @@
-# project-library-management-system
-[Ghi chú 2: Mỗi project ngoài mã nguồn còn có file README.md đặt ở thư mục gốc. Có thể dùng trình editor Visual Studio Code (phải cài đặt plugin làm việc với Markdown) hoặc trình editor online https://stackedit.io/app cho file README.md.
-File README.md thường có nội dung mở với cấu trúc tùy ý, trong môn học này yêu cầu các mục chính trong file README.md như sau:
-- Giới thiệu project
-- Tham khảo chéo các project liên quan nếu có (backend thì giới thiệu link tham khảo frontend và ngược lại)
-- Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
-- Hướng dẫn cấu hình project chạy local PC.
-- Hướng dẫn deploy project lên Heroku, Netlify, etc. (có thể bổ sung cho đến present cuối kỳ)
-- Link Google Drive hoặc Youtube video demo (có thể bổ sung cho đến present cuối kỳ)
-- Current status: tóm tắt những gì đã hoàn thành (có thể bổ sung cho đến present cuối kỳ)
-- Future works: tóm tắt những gì cần làm thêm (có thể bổ sung cho đến present cuối kỳ) ]
+# Giới thiệu project ứng dụng quản lý thư viện
+Mục tiêu của project là xây dựng thành công một web app quản lý thư viện giúp giảm bớt tính thủ công trong các hoạt động của các nhân viên thư viện cũng như của khách hàng, khiến các thao tác tìm kiếm, ghi chép dữ liệu của sách cũng như tên khách hàng mượn sách,.. trở nên dễ dàng, nhanh chóng và chính xác hơn.
+
+Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng như nhân viên thư viện. Đồng thời, nhân viên thư viện cũng có thể thêm, cập nhật, xóa,... các dữ liệu về sách cũng như là về khách hàng. Đồng thời độc giả cũng có thể mượn, trả sách, xem toàn bộ cơ sở dữ liệu công khai của thư viện.
+# Các project liên quan
+- Hệ thống quản lý thư viện Mona eLMS
+- Công cụ quản lý thư viện DTSoft
+- Ứng dụng quản lý thư viện Misa
+# Môi trường thực thi
+- Hệ điều hành Windows 10
+- Devtools: Visual Studio Code
+- Python version: 3.9.7
+- Django version: 4.0.1
+# Current status
+- Register page và Login page cho độc giả
+# Future works
+- Register page và Login page cho nhân viên
