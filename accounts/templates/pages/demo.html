@@ -16,10 +16,9 @@
 		}
 		.box-login{
 			width: 28%;
-			height: 80%;
 			margin: auto;
-			margin-top: 5%;
-			padding-bottom: 50px;
+			margin-top: 2%;
+			padding: 50px 20px;
 			background-color: #C3B4E2;
 			position: relative;
 			display: flex;
@@ -28,13 +27,14 @@
 			border-radius: 5px;
 		}
 		.form_login{
-			margin-top: 50px;
+			margin-top: 30px;
 			padding: 0px 50px;
 		}
 		.form-outline{
 			margin-top: 20px;
+            display:flex; flex-direction:column;
 		}
-		.button-loginnn{
+		.button-login{
 			margin-top: 0px;
 		}
 		.support-login{
@@ -52,7 +52,7 @@
 <div class="box-login">
 	<div class="tittle_name">
 		<div class="d-flex justify-content-center">
-			<h3 style="color:#4C3876 ;margin-top:50px;font-weight: 800;font-size: 35px;" >Đăng nhập</h3>
+			<h3 style="color:#4C3876 ;margin-top:0px;font-weight: 800;font-size: 35px;" >Đăng ký</h3>
 		</div>
 	</div>
 	<div class="form_login">
@@ -60,30 +60,47 @@
 			{% csrf_token %}
 			<div class="form-outline">
 				<label class="form-label" for="form2Example17">Tên đăng nhập</label>
-				<input type="text" name="username" class="form-control" />
+				{{form.username}}
 			</div>
 
 			<div class="form-outline">
-				<label class="form-label" for="form2Example27">Mật khẩu</label>
-				<input type="password" name="password" class="form-control" />
+				<label class="form-label" for="form2Example27">Email</label>
+				{{form.email}}
+			</div>
+            <div class="form-outline">
+				<label class="form-label" for="form2Example17">Mật khẩu</label>
+				{{form.password1}}
+			</div>
+
+			<div class="form-outline">
+				<label class="form-label" for="form2Example27">Nhập lại mật khẩu</label>
+				{{form.password2}}
 			</div>
 			<div class="support-login">
-				<p class="small text-muted"> <a href="#" style="color: #393f81;">Quên mật khẩu?</a> </p>
-				<p class="small text-muted"> <a href="{%url 'register' %}" style="color: #393f81;">Chưa có tài khoản? Đăng ký</a></p>
+				<p class="small text-muted"> <a href="{%url 'login' %}" style="color: #393f81;">Đã có tài khoản? Đăng nhập</a></p>
 			</div>	
 
-			<div class="button-loginnn">
-				<input class="btn btn-block" type="submit" style="background-color: #4C3876; color:white;" value="Đăng nhập">
+			<div class="button-login">
+				<input class="btn btn-block" type="submit" style="background-color: #4C3876; color: white;" value="Tạo tài khoản">
 			</div>
-			{% for message in messages %}
-			<p id="messages">{{message}}</p>
-			{% endfor %}			
+			
 		</form>
 
 	</div>
-
+    {{form.errors}}
 </div>
+<script>
+						
+        var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Tên đăng nhập..';
+		form_fields[2].placeholder='Email..';
+		form_fields[3].placeholder='Nhập mật khẩu...';
+		form_fields[4].placeholder='Nhập lại mật khẩu...';
 
+    for (var field in form_fields){	
+        form_fields[field].className += ' form-control'
+    }
+</script>
 
 </body>
 

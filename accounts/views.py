@@ -12,19 +12,17 @@ from .decorators import *
 
 def register(request):
 
-   form = CreateUserForm()
-   if request.method == 'POST':
-      form = CreateUserForm(request.POST)
-      if form.is_valid():
-         user = form.save()
-         username = form.cleaned_data.get('username')
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')            
+            messages.success(request, 'Account was created for ' + username)
+            return redirect('login')
 
-         messages.success(request, 'Đã tạo tài khoản cho ' + username)
-
-         return redirect('login')
-      
-   context = {'form':form}
-   return render(request, 'pages/register.html', context)
+    context = {'form':form}
+    return render(request, 'pages/demo.html', context)
 
 def loginPage(request):
 

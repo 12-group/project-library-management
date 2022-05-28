@@ -65,6 +65,7 @@ li i {
     font-weight: 700;
 }
 .cards{
+    background-color: #33ccff;
     display: flex;
     justify-content: center;
     margin-left: -70px;
@@ -78,9 +79,11 @@ li i {
 }
 .catalog-item
 {
+    background-color: yellow;
     width: 15%;
 }
 .card_img{
+    background-color: blueviolet;
     width: 100%;
     object-fit: cover;
     border: solid;
