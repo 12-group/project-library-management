@@ -1,0 +1,87 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+{% block style %}
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	thead{
+		background-color:black;
+		color:white;
+	}
+	th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+		background-color: white;
+	}
+	
+	tbody{
+		background-color: white;
+	}
+	.tittle_button{
+		display: flex;
+		flex-direction:row;
+		justify-content:space-between;
+	}
+	.list_reader{
+		width: 90%;
+		margin: auto;
+		margin-top:50px;
+	}
+{% endblock style %}
+{% block content %}
+<div class="list_reader">
+	<div class="tittle_button" >
+
+		<div class="list_name_tittle">
+			<p>Danh sách độc giả</p>
+		</div>
+		<div class="add_button">
+			<button type="button" class="btn btn-outline-primary color:red;">Thêm độc giả</button>
+		</div>
+
+	</div>
+	<div class="table_list_reader">
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+					<th>Mã độc giả</th>
+					<th>Họ tên</th>
+					<th>Email</th>
+					<th>Loại độc giả</th>
+					<th>Ngày sinh</th>
+					<th>Địa chỉ</th>
+					<th>Ngày lập thẻ</th>
+					<th>Người lập thẻ</th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr>
+					<th>Mã độc giả</th>
+					<th>Họ tên</th>
+					<th>Email</th>
+					<th>Loại độc giả</th>
+					<th>Ngày sinh</th>
+					<th>Địa chỉ</th>
+					<th>Ngày lập thẻ</th>
+					<th>Người lập thẻ</th>
+				</tr>
+				<tr>
+					<th>Mã độc giả</th>
+					<th>Họ tên</th>
+					<th>Email</th>
+					<th>Loại độc giả</th>
+					<th>Ngày sinh</th>
+					<th>Địa chỉ</th>
+					<th>Ngày lập thẻ</th>
+					<th>Người lập thẻ</th>
+				</tr>	
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock content %}
