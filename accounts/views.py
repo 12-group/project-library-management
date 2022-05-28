@@ -58,7 +58,7 @@ def accountSettings(request):
 	return render(request, 'pages/account_setting.html', context)
 
 def home(request):
-   return render(request,'pages/home.html')
+   return render(request,'pages/request_offline.html')
 
 def search_book(request):
    return render(request,'pages/search.html')
@@ -68,3 +68,15 @@ def search_result_book(request):
 
 def detail_info_book(request):
    return render(request,'pages/book_detail.html')
+
+#--THỦ THƯ
+def librarian_home(request):
+	return render(request,'pages/reader_list.html')
+def borrowers(request):
+	return render(request,'pages/borrower_list.html')
+def request_onl(request):
+	return render(request,'pages/request_online.html')
+def request_off(request):
+	return render(request,'pages/request_offline.html')
+
+

@@ -1,0 +1,39 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+
+{% block tittle_name %}
+<p>Danh sách độc giả mượn sách</p>
+
+{% endblock tittle_name %}
+
+{% block button %}
+	<div class="add_button">
+    
+        <a class="btn btn-danger" href="{% url 'request_onl' %}">Yêu cầu mượn sách</a>
+		<a class="btn btn-primary" href="{% url 'request_off' %}">Lập phiếu mượn</a>
+	</div>
+{% endblock button %}
+{% block table_head %}
+<tr>
+    <th>Mã độc giả</th>
+    <th>Số lượng</th>
+    <th>Ngày mượn</th>
+    <th>Số ngày mượn</th>
+    <th></th>
+    <th></th>
+</tr>
+
+{% endblock table_head %}
+{% block table_body %}
+<tr>
+    <th>Mã độc giả</th>
+    <th>Số lượng</th>
+    <th>Ngày mượn</th>
+    <th>Số ngày mượn</th>
+    <th><a href="#">Xem chi tiết</a></th>
+    <th><button type="button" class="btn btn-warning">Trả sách</button></th>
+</tr>	
+{% endblock table_body %}
+
+

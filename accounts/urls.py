@@ -13,4 +13,11 @@ urlpatterns = [
    path('logout/', views.logoutUser, name="logout"),
    path('reset_pass', views.home,name='reset_password'),
    path('account/', views.accountSettings, name="account"),
+
+   #
+   path('librarian/', views.librarian_home, name="librarian"),
+   path('borrowers/', views.borrowers, name="borrowers"),
+   path('request_onl/', views.request_onl, name="request_onl"),
+   path('request_off/', views.request_off, name="request_off"),
+
 ]

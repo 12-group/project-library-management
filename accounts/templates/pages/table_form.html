@@ -1,0 +1,99 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+{% block style %}
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	thead{
+		background-color:black;
+		color:white;
+	}
+	th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+		background-color: white;
+	}
+	
+	tbody{
+		background-color: white;
+	}
+	.tittle_button{
+		display: flex;
+		flex-direction:row;
+		justify-content:space-between;
+	}
+	.list_item{
+		width: 90%;
+		margin: auto;
+		margin-top:50px;
+	}
+    .line_info{
+        width:70%;
+        margin:auto;
+        display:flex;
+        flex-direction:row;
+		justify-content:space-between;
+
+    }
+    .infor_tittle{
+        display:flex;
+        flex-direction:row;
+
+    }
+    .infor_tittle_name{
+        color: #351F63;
+        font-weight:700;
+        font-size:20px;
+    }
+    .text_item{
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+    {% block style_extra %}
+    {% endblock %}
+
+{% endblock style %}
+{% block content %}
+<div class="list_item">
+    <div class="line_info" >
+        {% block line_info %}
+
+        {% endblock %}
+
+    </div>
+	<div class="tittle_button" >
+
+		<div class="list_name_tittle">
+            {% block tittle_name %}
+
+            {% endblock %}
+		</div>
+        {% block button %}
+
+        {% endblock %}
+
+	</div>
+	<div class="table_list_item">
+		<table class="table">
+			<thead class="thead-dark">
+				
+                {% block table_head %}
+                {% endblock %}
+
+			</thead>
+			<tbody>
+                {% block table_body %}
+                {% endblock %}
+			</tbody>
+		</table>
+	</div>
+    {% block confirm_button %}
+    {% endblock %}
+
+</div>
+
+{% endblock content %}
