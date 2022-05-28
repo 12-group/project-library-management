@@ -29,11 +29,22 @@
             <div class="row">
                 <div class="row gx-3 col">
                     <label class="col"> từ :</label>
-                    <select id='date-dropdown'  class="form-control col"></select>
+                    <select id="date-dropdown"  class="form-control col"></select>
                 </div>
                 <div class="row gx-3 col">
                     <label class="col"> đến : </label>
-                    <select id='date-'  class="form-control col"></select>
+                    <select name = "year" class="form-control col">
+                        <option>Year</option>
+                        <option>Year1</option>
+                        <option>Year2</option>
+                        <?php
+                            for ($x = 1970; $x <= 2022; $x++) {
+                                echo "<option value = "year">$x </option>";
+                                echo "a";
+                            }
+                        ?>
+                    </select>
+                    
                 </div>
             </div>
         </div>

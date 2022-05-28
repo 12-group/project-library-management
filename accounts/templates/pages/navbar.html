@@ -28,8 +28,8 @@
     </ul>
   {% else %}
     <ul class="navbar">
-      <li><a style="padding: 10px" href="{% url 'register' %}" class="btn reg_btn">Đăng ký</a></li>
-      <li><a style="padding: 10px" href="{% url 'login' %}" class="btn login_btn">Đăng nhập</a></li>
+      <li><a class="btn btn-outline-primary" href="{% url 'register' %}" class="btn reg_btn">Đăng ký</a></li>
+      <li><a class="btn btn-primary" style="margin-left:10px;" href="{% url 'login' %}" class="btn login_btn">Đăng nhập</a></li>
     </ul>
   {% endif %}
 
