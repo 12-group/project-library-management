@@ -19,5 +19,5 @@ urlpatterns = [
    path('borrowers/', views.borrowers, name="borrowers"),
    path('request_onl/', views.request_onl, name="request_onl"),
    path('request_off/', views.request_off, name="request_off"),
-
-]
+   path('return_books/', views.return_book, name="return_books"),
+]  

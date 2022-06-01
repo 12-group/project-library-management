@@ -9,7 +9,12 @@
     .submit{    
         margin:20px 45% ;
     }
-
+    .ID_book{
+        width:200px;
+    }
+    table, td {
+    border: 1px solid #dddddd;
+    }
 {% endblock style_extra %}
 
 {% block line_info %}
@@ -34,7 +39,7 @@
 
 {% block table_head %}
 <tr >
-    <th>Mã sách</th>
+    <th style="width:200px;">Mã sách</th>
     <th>Tên sách</th>
     <th>Trạng thái</th>
 
@@ -43,14 +48,51 @@
 {% endblock table_head %}
 {% block table_body %}
 <tr>
-    <th>Mã sách</th>
-    <th>Tên sách</th>
-    <th>Trạng thái</th>
+    <th><input id="myInput0"></th>
+    <th>id0</th>
+    <th></th>
 </tr>	
+<button id="myBtn" type="button" onclick="addrow()">Try it</button>
+
+<script>
+count = 1;
+
+function addrow() {
+
+    if (document.getElementsByClassName)
+    {
+        var table = document.getElementsByClassName("table")[0];
+    }
+
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+
+
+    cell1.innerHTML = '<input id="myInput'+count+'">';
+    cell2.innerHTML = '<th> id'+count+'</th>';
+    cell3.innerHTML = '<th></th>';
+
+    var input = document.getElementById("myInput"+count);
+    count +=1;
+    // Execute a function when the user presses a key on the keyboard
+    input.addEventListener("keypress", function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("myBtn").click();
+    }
+    });
+}
+
+</script>
 {% endblock table_body %}
 {% block confirm_button %}
 <div class="submit">
-    <button type="button" class="btn btn-primary">Xác nhận</button>
+    <a class="btn btn-primary" href="{% url 'borrowers' %}">Lưu</a> 
 </div>
 {% endblock %}
 

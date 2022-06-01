@@ -58,7 +58,7 @@ def accountSettings(request):
 	return render(request, 'pages/account_setting.html', context)
 
 def home(request):
-   return render(request,'pages/request_offline.html')
+   return render(request,'pages/home.html')
 
 def search_book(request):
    return render(request,'pages/search.html')
@@ -78,5 +78,8 @@ def request_onl(request):
 	return render(request,'pages/request_online.html')
 def request_off(request):
 	return render(request,'pages/request_offline.html')
+def return_book(request):
+	return render(request,'pages/return_book.html')
+
 
 
