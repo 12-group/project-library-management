@@ -94,6 +94,13 @@ def list_book(request):
 def thanh_ly(request):
 	return render(request,'pages/thanh_ly.html')
 def add_book(request):
-	return render(request,'pages/add_book.html')
+	form = BookForm()
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()          
+            messages.success(request, 'Book was added successfully.')
+            return redirect('add_book')
 
-
+    context = {'form':form}
+    return render(request, 'pages/add_book.html', context)

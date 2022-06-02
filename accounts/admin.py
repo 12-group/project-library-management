@@ -7,3 +7,4 @@ import accounts
 from .models import *
 
 admin.site.register(Customer)
+admin.site.register(Book)

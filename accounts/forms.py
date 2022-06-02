@@ -16,3 +16,8 @@ class CreateUserForm(UserCreationForm):
 		model = User
 		fields = ['username', 'email', 'password1', 'password2']
 
+class BookForm(ModelForm):
+	class Meta:
+		model = Book
+		fields = '__all__'
+		exclude = ['bID']
