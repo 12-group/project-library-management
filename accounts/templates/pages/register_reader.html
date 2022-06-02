@@ -57,6 +57,22 @@
         <div style="margin-top:30px;">
             <a href="#myModal" class=" btn btn-block" style="background-color: #4C3876; color: white;" data-toggle="modal">Thêm</a>
         </div>
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="icon-box">
+                            <i class="material-icons">&#xE876;</i>
+                        </div>				
+                        <h4 class="modal-title w-100">Thêm thành công!</h4>	
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'librarian' %}" >Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>     
+
       </form>
 </div>
 {% endblock content %}

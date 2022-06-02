@@ -4,7 +4,8 @@
 
 {% block button %}
 	<div class="add_button">
-		<button type="button" class="btn btn-outline-primary color:red;" >Thêm sách mới</button>
+        <a href="{% url 'add_book' %}" class="btn btn-outline-primary"  >Thêm sách mới</a>
+        <a href="{% url 'thanh_ly' %}" class=" btn btn-primary" >Thanh Lý</a>
 	</div>
 {% endblock %}
 
@@ -46,9 +47,6 @@
 {% endblock %}
 
 {% block confirm_button %}
-<div class="text-center">
-	<a href="#myModal" class=" btn btn-primary">Thanh Lý</a>
-</div>
 {% endblock %}
 
 
