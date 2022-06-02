@@ -16,9 +16,8 @@ def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')            
-            messages.success(request, 'Account was created for ' + username)
+            form.save()            
+            messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
     context = {'form':form}
@@ -36,7 +35,7 @@ def loginPage(request):
 			login(request, user)
 			return redirect('home')
 		else:
-			messages.info(request, 'Username OR password is incorrect')
+			messages.info(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
 
 	context = {}
 	return render(request, 'pages/login.html', context)
@@ -68,9 +67,9 @@ def search_result_book(request):
 
 def detail_info_book(request):
    return render(request,'pages/book_detail.html')
+   
 def cart(request):
    return render(request,'pages/cart.html')
-
 
 #--THỦ THƯ
 def librarian_home(request):
@@ -95,12 +94,12 @@ def thanh_ly(request):
 	return render(request,'pages/thanh_ly.html')
 def add_book(request):
 	form = BookForm()
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            form.save()          
-            messages.success(request, 'Book was added successfully.')
-            return redirect('add_book')
-
-    context = {'form':form}
-    return render(request, 'pages/add_book.html', context)
+	if request.method == 'POST':
+	   form = BookForm(request.POST)
+	   if form.is_valid():
+	   	form.save()
+	   	messages.success(request, "Sách được thêm thành công với ID là " + form.id)
+	   	return redirect('add_book')
+		
+	context = {'form':form}
+	return render(request, 'pages/add_book.html', context)

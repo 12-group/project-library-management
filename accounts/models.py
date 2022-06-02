@@ -1,7 +1,6 @@
 from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
-from shortuuid.django_fields import ShortUUIDField
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True, on_delete=models.CASCADE)
@@ -15,7 +14,6 @@ class Customer(models.Model):
 		return self.name
 
 class Book(models.Model):
-	bID = ShortUUIDField(primary_key=True, length=11, max_length=11)	#Book ID
 	name = models.CharField(max_length=200, null=True)
 	ctg = models.CharField(max_length=200, null=True)					# Category
 	auth = models.CharField(max_length=200, null=True)					# Author

@@ -15,9 +15,9 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="card card-body">
-			<a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Back to Profile</a>
+			<a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Trở về</a>
 			<hr>
-			<h3 style="text-align: center">Account Settings</h3>
+			<h3 style="text-align: center">Thông tin tài khoản</h3>
 			<hr>
 			<img class="profile-pic" src="{{request.user.customer.profile_pic.url}}" >
 		
@@ -30,7 +30,7 @@
 				{% csrf_token %}
 				{{form.as_p}}
 		
-			<input class="btn btn-primary" type="submit" name="Update Information">
+			<input class="btn btn-primary" type="submit" name="Cập nhật">
 			</form>
 		</div>
 	</div>

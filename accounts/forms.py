@@ -20,4 +20,3 @@ class BookForm(ModelForm):
 	class Meta:
 		model = Book
 		fields = '__all__'
-		exclude = ['bID']
