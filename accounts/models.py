@@ -15,12 +15,13 @@ class Customer(models.Model):
 
 class Book(models.Model):
 	name = models.CharField(max_length=200, null=True)
-	ctg = models.CharField(max_length=200, null=True)					# Category
-	auth = models.CharField(max_length=200, null=True)					# Author
+	ctg = models.CharField(max_length=200, null=True)								# Category
+	auth = models.CharField(max_length=200, null=True)								# Author
 	price = models.PositiveIntegerField(null=True,blank=True)
 	amount = models.PositiveIntegerField(null=True,blank=True)
 	publisher = models.CharField(max_length=200, null=True)
 	pubYear = models.DateTimeField(null=True)
+	cover_pic = models.ImageField(default="logo.png", null=True,blank=True)
 
 	def __str__(self):
 		return self.name
