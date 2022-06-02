@@ -91,9 +91,24 @@ function addrow() {
 </script>
 {% endblock table_body %}
 {% block confirm_button %}
-<div class="submit">
-    <a class="btn btn-primary" href="{% url 'borrowers' %}">Lưu</a> 
+<div class="text-center">
+	<a href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
 </div>
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE876;</i>
+				</div>				
+				<h4 class="modal-title w-100">Lưu thành công!</h4>	
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'borrowers' %}" >Ok</a>
+			</div>
+		</div>
+	</div>
+</div>     
 {% endblock %}
 
 

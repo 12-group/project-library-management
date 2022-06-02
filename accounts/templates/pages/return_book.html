@@ -1,15 +1,14 @@
 {% extends 'pages/table_form.html' %}
 {% load static %}
 
+{% block style_extra %}
+
+{% endblock style_extra %}
+
 {% block line_info %}
     <div class="infor_tittle">
         <p class="infor_tittle_name">Mã độc giả:</p>
         <input class="form-control form-control-sm" type="text" placeholder="DG10001" readonly style="margin-left: 10px;width:150px;">
-    
-    </div>
-    <div class="infor_tittle">
-        <p class="infor_tittle_name">Ngày trả:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="22/11/2021" readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock line_info %}
 
@@ -26,9 +25,10 @@
     <th>Ngày mượn</th>
     <th>Ngày trả</th>
     <th>Số ngày mượn</th>
-    <th>Tiền phạt</th>
     <th>Trả</th>
     <th>Mất</th>
+    <th>Tiền phạt</th>
+
 </tr>
 
 {% endblock table_head %}
@@ -39,25 +39,44 @@
     <th>Ngày mượn</th>
     <th>Ngày trả</th>
     <th>Số ngày mượn</th>
-    <th>Tiền phạt</th>
-    <th><label><input type="checkbox" class="radio" value="1" name="fooby[1][]" /></label></th>
-    <th><label><input type="checkbox" class="radio" value="1" name="fooby[1][]" /></label></th>
+    <th><label><input type="radio" id="choice1" value="return" name="return" /></label></th>
+    <th><label><input type="radio" id="choice2" value="lost" name="return" /></label></th>
+    <th>200</th>
+
 </tr>	
+
+<tr>
+    <th colspan="7" >Tổng tiền phạt: </th>
+    <th>200</th>
+</tr>
+
+
 {% endblock table_body %}
-<script>
-    $("input:checkbox").on('click', function() {
-    // in the handler, 'this' refers to the box clicked on
-    var $box = $(this);
-    if ($box.is(":checked")) {
-        // the name of the box is retrieved using the .attr() method
-        // as it is assumed and expected to be immutable
-        var group = "input:checkbox[name='" + $box.attr("name") + "']";
-        // the checked state of the group/box on the other hand will change
-        // and the current value is retrieved using .prop() method
-        $(group).prop("checked", false);
-        $box.prop("checked", true);
-    } else {
-        $box.prop("checked", false);
-    }
-    });
-</script>
+
+
+{% block confirm_button %}
+<div class="text-center">
+	<!-- Button HTML (to Trigger Modal) -->
+	<a href="#myModal_lapphieuphat" class=" btn btn-primary trigger-btn" data-toggle="modal">Lưu</a>
+</div>
+<div id="myModal_lapphieuphat" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE876;</i>
+				</div>				
+				<h4 class="modal-title w-100">Cập nhật thành công!</h4>	
+			</div>
+			<div class="modal-body">
+				<p class="text-center">Số sách mượn còn lại :</p>
+                <p class="text-center">Tiền phạt :</p>
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-danger btn-block" href="{% url 'phieu_phat' %}" >Lập phiếu phạt</a>
+			</div>
+		</div>
+	</div>
+</div>     
+
+{% endblock confirm_button%}

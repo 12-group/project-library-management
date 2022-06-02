@@ -9,7 +9,6 @@
 
 {% block button %}
 	<div class="add_button">
-    
         <a class="btn btn-danger" href="{% url 'request_onl' %}">Yêu cầu mượn sách</a>
 		<a class="btn btn-primary" href="{% url 'request_off' %}">Lập phiếu mượn mới</a>
 	</div>
@@ -34,7 +33,8 @@
     <th>Ngày mượn</th>
     <th>Số ngày mượn</th>
     <th><a href="{% url 'request_onl' %}">Xem chi tiết</a></th>
-    <th><button type="button" class="btn btn-warning">Trả sách</button></th>
+    
+    <th><a class="btn btn-warning" href="{% url 'return_books' %}">Trả sách</a></th>
 </tr>	
 {% endblock table_body %}
 

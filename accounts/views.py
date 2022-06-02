@@ -74,12 +74,23 @@ def librarian_home(request):
 	return render(request,'pages/reader_list.html')
 def borrowers(request):
 	return render(request,'pages/borrower_list.html')
+def register_reader(request):
+	return render(request,'pages/register_reader.html')
 def request_onl(request):
 	return render(request,'pages/request_online.html')
 def request_off(request):
 	return render(request,'pages/request_offline.html')
 def return_book(request):
 	return render(request,'pages/return_book.html')
+def phieu_phat(request):
+	return render(request,'pages/phieuphat.html')
 
+#---THỦ KHO
+def list_book(request):
+	return render(request,'pages/list_book.html')
+def thanh_ly(request):
+	return render(request,'pages/thanh_ly.html')
+def add_book(request):
+	return render(request,'pages/add_book.html')
 
 

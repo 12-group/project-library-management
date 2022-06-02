@@ -1,0 +1,82 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+{% block style %}
+    .form{
+        margin: auto;
+        margin-top:30px;
+        padding: 20px 50px;
+        width: 50%;
+        background: #e6e6fa ;
+        border-radius:5px;
+    }
+{% endblock style %}
+
+
+{% block content %}
+
+<div class="form" >
+    <form class="row g-3">
+        <div class="col-md-6">
+          <label for="inputEmail4" class="form-label ">Mã sách</label>
+          <input type="maSach" class="form-control form-control-sm" id="maSach">
+        </div>
+        <div class="col-md-6">
+          <label for="inputPassword4" class="form-label" >Tên sách</label>
+          <input type="password" class="form-control form-control-sm" id="inputPassword4">
+        </div>
+        <div class="col-md-12">
+            <label for="formFile" class="form-label ">Ảnh bìa sách</label>
+            <input class="form-control form-control-sm" type="file" id="formFile">
+          </div>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label ">Tác giả</label>
+            <input type="email" class="form-control form-control-sm" id="inputEmail4">
+        </div>
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label ">Thể loại</label>
+            <input type="password" class="form-control form-control-sm" id="inputPassword4">
+        </div>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label ">Năm xuất bản</label>
+            <input type="email" class="form-control form-control-sm" id="inputEmail4">
+        </div>
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label ">Nhà xuất bản</label>
+            <input type="password" class="form-control form-control-sm" id="inputPassword4">
+        </div>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label ">Trị giá</label>
+            <input type="email" class="form-control form-control-sm" id="inputEmail4">
+        </div>
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label ">Ngày nhập</label>
+            <input type="password" class="form-control form-control-sm" id="inputPassword4">
+        </div>
+        <div class="col-12">
+            <label for="inputAddress" class="form-label ">Người tiếp nhận</label>
+            <input type="text" class="form-control form-control-sm" id="inputAddress" >
+        </div>
+        <div style="margin-top:30px;">
+            <a href="#myModal" class=" btn btn-dark btn-block" data-toggle="modal">Thêm</a>
+        </div>
+
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="icon-box">
+                            <i class="material-icons">&#xE876;</i>
+                        </div>				
+                        <h4 class="modal-title w-100">Cập nhật thành công!</h4>	
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'list_book' %}" >Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>     
+        
+    </form>
+</div>
+{% endblock content %}

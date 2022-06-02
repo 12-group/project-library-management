@@ -1,0 +1,46 @@
+{% extends 'pages/main.html' %}
+{% load static %}
+
+
+{% block style %}
+	.container{
+        width: 40%;
+        padding: 50px;
+        background-color : #e6e6fa ;
+        margin-top:50px;
+        border-radius: 5px;
+    }
+    .tittle_name{
+        margin-left:35%;
+    }
+    .container_contain{
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+    .gr_button{
+        margin-top: 20px;
+        display: flex;
+        justify-content:space-between;
+    }
+{% endblock style%}
+
+
+
+{% block content %}
+<div class="container">
+    <div class="tittle_name list_name_tittle">
+        <p>Phiếu phạt</p>
+    </div>
+    <div class="container_contain">
+        <p class="hoten">Họ và tên:     Nguyễn Văn A</p>
+        <p class="tienphat">Tiền phạt:  20.000đ</p>
+        <p class="lydo">Lý do:  Mất sách ngày ...</p>
+        <p class="nguoilap">Người lập phiếu:    Trần Minh B</p>
+    </div>
+    <div class="gr_button">
+        <a class="btn btn-danger" href="{% url 'borrowers' %}">Hủy bỏ</a>
+		<a class="btn btn-primary" href="{% url 'borrowers' %}">Xác nhận</a>
+    </div>
+</div>
+
+{% endblock content %}
