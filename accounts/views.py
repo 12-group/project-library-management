@@ -68,6 +68,9 @@ def search_result_book(request):
 
 def detail_info_book(request):
    return render(request,'pages/book_detail.html')
+def cart(request):
+   return render(request,'pages/cart.html')
+
 
 #--THỦ THƯ
 def librarian_home(request):
