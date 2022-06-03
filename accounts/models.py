@@ -4,10 +4,18 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+class Category_reader(models.Model):
+	name = models.CharField(max_length=200, null=True)
+
+	def __str__(self):
+		return self.name
+
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
-	phone = models.CharField(max_length=200, null=True)
+	ctg = models.ManyToManyField(Category_reader)
+	birth = models.DateTimeField(null=True)
+	address = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200, null=True)
 	profile_pic = models.ImageField(default="profile_pic.png", null=True,blank=True)
 	date_created = models.DateTimeField(auto_now_add=True, null=True)

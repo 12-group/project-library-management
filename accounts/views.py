@@ -58,7 +58,9 @@ def accountSettings(request):
 
 def home(request):
 	books = Book.objects.all()
-	return render(request,'pages/home.html',{'books':books})
+	top_book = books[len(books)-4:]
+	top_book.reverse()
+	return render(request,'pages/home.html',{'books':books,'top_book':top_book})
 
 def search_book(request):
    return render(request,'pages/search.html')
@@ -75,7 +77,8 @@ def cart(request):
 
 #--THỦ THƯ
 def librarian_home(request):
-	return render(request,'pages/reader_list.html')
+	readers = Customer.objects.all()
+	return render(request,'pages/reader_list.html',{'readers':readers})
 def borrowers(request):
 	return render(request,'pages/borrower_list.html')
 def register_reader(request):
