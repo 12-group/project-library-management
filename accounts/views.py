@@ -89,7 +89,8 @@ def phieu_phat(request):
 
 #---THỦ KHO
 def list_book(request):
-	return render(request,'pages/list_book.html')
+	books = Book.objects.all()
+	return render(request,'pages/list_book.html',{'books':books})
 def thanh_ly(request):
 	return render(request,'pages/thanh_ly.html')
 def add_book(request):

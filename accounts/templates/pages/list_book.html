@@ -32,18 +32,20 @@
 {% endblock %}
 
 {% block table_body %}
+    {% for i in books %}
     <tr>
         <th><label><input type="checkbox" id="choice" value="return" name="return" /></label></th>
-        <th>Mã sách</th>
-        <th>Tên sách</th>
-        <th>Thể loại</th>
-        <th>Tác giả</th>
-        <th>Năm xuất bản</th>
-        <th>Nhà xuất bản</th>
-        <th>Ngày nhập</th>
-        <th>Trị giá</th>
+        <th>1</th>
+        <th>{{i.name}}</th>
+        <th>{{i.ctg}}</th>
+        <th>{{i.auth}}</th>
+        <th>{{i.pubYear}}</th>
+        <th>{{i.publisher}}</th>
+        <th>{{i.inputDate}}</th>
+        <th>{{i.price}}</th>
         <th>Người tiếp nhận</th>
     </tr>
+    {% endfor %}
 {% endblock %}
 
 {% block confirm_button %}
