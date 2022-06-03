@@ -57,7 +57,8 @@ def accountSettings(request):
 	return render(request, 'pages/account_setting.html', context)
 
 def home(request):
-   return render(request,'pages/home.html')
+	books = Book.objects.all()
+	return render(request,'pages/home.html',{'books':books})
 
 def search_book(request):
    return render(request,'pages/search.html')
@@ -65,8 +66,9 @@ def search_book(request):
 def search_result_book(request):
    return render(request,'pages/search_result.html')
 
-def detail_info_book(request):
-   return render(request,'pages/book_detail.html')
+def detail_info_book(request,pk):
+	book = Book.objects.get(id=pk)	
+	return render(request,'pages/book_detail.html',{'book':book})
    
 def cart(request):
    return render(request,'pages/cart.html')
@@ -90,7 +92,8 @@ def phieu_phat(request):
 #---THỦ KHO
 def list_book(request):
 	books = Book.objects.all()
-	return render(request,'pages/list_book.html',{'books':books})
+	count_books = books.count()
+	return render(request,'pages/list_book.html',{'books':books,'count_books':count_books})
 def thanh_ly(request):
 	return render(request,'pages/thanh_ly.html')
 def add_book(request):

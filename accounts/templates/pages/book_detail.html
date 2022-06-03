@@ -7,13 +7,14 @@
     <div class="book-detail-info">
         <div class="card-info">
             <div class="card-info-img">
-                <img src="{% static '/images/thien_than_va_ac_quy.jpg' %}" alt="" class="card-info-img-img">
+                {% static "" as baseUrl %}
+                <img src="{{baseUrl}}images/{{book.cover_pic}}" alt="" class="card_img">
             </div>
             <div class="card-detail-info">
-                <p class="card-detail-info-name">HỎA NGỤC</p>
+                <p class="card-detail-info-name">{{book.name}}</p>
                 <div class="card-detail-info-other">
-                    <p class="card-detail-info-author">Tác giả: </p>
-                    <p class="card-detail-info-year">Năm xuất bản: </p>
+                    <p class="card-detail-info-author">Tác giả: {{book.auth}}</p>
+                    <p class="card-detail-info-year">Năm xuất bản: {{book.publisher}} </p>
                     <p class="card-detail-info-rate">Đáng giá: </p>
                     <p class="card-detail-info-status">Trạng thái: </p>
                 </div>
