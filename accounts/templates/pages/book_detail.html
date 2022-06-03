@@ -1,34 +1,62 @@
 {% extends 'pages/main.html' %}
 {% load static %}
 
+{% block style %}
+.container{
+    padding: 50px;
+    background-color:#ffffff;
+    border-radius: 5px;
+}
+.row{
+     
+}
+.book-name{
+    font-size: 40px;
+    font-family: Calibri;
+    font-weight: 800;
+}
+.book-info{
+    font-size: 20px;
+    font-family: Calibri;
+    font-weight: 800;
+}
+.card-img{
+    height: 100%;
+    width:auto;
+    
+}
+.card-img img{
+    width:100%; height:100%;object-fit: cover;
+}
+{% endblock style%}
+
 {% block content %}
 
-<div class="book-detail">
-    <div class="book-detail-info">
-        <div class="card-info">
-            <div class="card-info-img">
+<div class="container">
+    <div class="row" style="height: 450px;padding: 10px;">
+        <div class="col-sm-4" style="height: 100%;object-fit: cover;">
+            <div class="card-img">
                 {% static "" as baseUrl %}
-                <img src="{{baseUrl}}images/{{book.cover_pic}}" alt="" class="card_img">
-            </div>
-            <div class="card-detail-info">
-                <p class="card-detail-info-name">{{book.name}}</p>
-                <div class="card-detail-info-other">
-                    <p class="card-detail-info-author">Tác giả: {{book.auth}}</p>
-                    <p class="card-detail-info-year">Năm xuất bản: {{book.publisher}} </p>
-                    <p class="card-detail-info-rate">Đáng giá: </p>
-                    <p class="card-detail-info-status">Trạng thái: </p>
-                </div>
-                <button type="button" class="btn btn-outline-primary" style="margin-top:20px;">Thêm vào giỏ hàng</button>
+                <img src="{{baseUrl}}images/{{book.cover_pic}}" alt="">
             </div>
         </div>
-        <div class="card-intro">
-            <p class="card-detail-info-other" style="margin: 0px;">Mô tả sách :</p>
-            <div class="mota-content">
-                <p class="mota-content-text">Là cuốn sách bán chạy nhất thế giới năm 2013. Năm 2014, “Inferno” đến Việt Nam và tạo ra một cơn sốt mang tên “Hỏa ngục”.
-                    Là đầu sách bán chạy thứ hai tại Hội sách TP HCM quý 1/2014, tiêu thụ gần 30.000 bản chỉ trong vòng hai tháng rưỡi, luôn có tên trong các bảng xếp hạng sách bán chạy trong năm, Hỏa ngục thực sự xứng danh là "Siêu phẩm được đặt cược nhiều" nhất từ trước đến nay của Dan Brown.</p>
-                <p style="margin-top:-10px;">...</p>
-                <p class="xemthem" style="margin-top:-10px;"><a href="#">Xem thêm</a></p>
-            </div>
+        <div class="col-sm-8" style="padding: 30px 50px;">
+            <p class="book-name">{{book.name}}</p>
+            <div class="book-info">
+                <p>Tác giả: {{book.auth}}</p>
+                <p>Năm xuất bản: {{book.publisher}} </p>
+                <p>Đáng giá: </p>
+                <p>Trạng thái: </p>
+            </div>                
+            <button type="button" class="btn btn-outline-primary" style="margin-top:20px;">Thêm vào giỏ hàng</button>
+        </div>
+    </div>
+    <div class="row" style="padding:20px 30px;">
+        <p class="book-info" style="margin: 0px;">Mô tả sách :</p>
+        <div class="overflow-auto" style="height: 200px;background-color: pink; padding: 10px;">
+            <p> Là cuốn sách bán chạy nhất thế giới năm 2013. Năm 2014, “Inferno” đến Việt Nam và tạo ra một cơn sốt mang tên “Hỏa ngục”.Là đầu sách bán chạy thứ hai tại Hội sách TP HCM quý 1/2014, tiêu thụ gần 30.000 bản chỉ trong vòng hai tháng rưỡi, luôn có tên trong các bảng xếp hạng sách bán chạy trong năm, Hỏa ngục thực sự xứng danh là "Siêu phẩm được đặt cược nhiều" nhất từ trước đến nay của Dan Brown.</p>
+            <p> Là cuốn sách bán chạy nhất thế giới năm 2013. Năm 2014, “Inferno” đến Việt Nam và tạo ra một cơn sốt mang tên “Hỏa ngục”.Là đầu sách bán chạy thứ hai tại Hội sách TP HCM quý 1/2014, tiêu thụ gần 30.000 bản chỉ trong vòng hai tháng rưỡi, luôn có tên trong các bảng xếp hạng sách bán chạy trong năm, Hỏa ngục thực sự xứng danh là "Siêu phẩm được đặt cược nhiều" nhất từ trước đến nay của Dan Brown.</p>
+            <p> Là cuốn sách bán chạy nhất thế giới năm 2013. Năm 2014, “Inferno” đến Việt Nam và tạo ra một cơn sốt mang tên “Hỏa ngục”.Là đầu sách bán chạy thứ hai tại Hội sách TP HCM quý 1/2014, tiêu thụ gần 30.000 bản chỉ trong vòng hai tháng rưỡi, luôn có tên trong các bảng xếp hạng sách bán chạy trong năm, Hỏa ngục thực sự xứng danh là "Siêu phẩm được đặt cược nhiều" nhất từ trước đến nay của Dan Brown.</p>
         </div>
     </div>
 </div>

@@ -25,25 +25,17 @@
 </tr>
 {% endblock table_head %}
 {% block table_body %}
+{% for i in readers %}
 <tr>
-	<th>Mã độc giả</th>
-	<th>Họ tên</th>
-	<th>Email</th>
-	<th>Loại độc giả</th>
-	<th>Ngày sinh</th>
-	<th>Địa chỉ</th>
-	<th>Ngày lập thẻ</th>
-	<th>Người lập thẻ</th>
+	<th></th>
+	<th>{{i.name}}</th>
+	<th>{{i.email}}</th>
+	<th>{{i.ctg}}</th>
+	<th>{{i.birth}}</th>
+	<th>{{i.address}}</th>
+	<th>{{i.date_created}}</th>
+	<th></th>
 </tr>
-<tr>
-	<th>Mã độc giả</th>
-	<th>Họ tên</th>
-	<th>Email</th>
-	<th>Loại độc giả</th>
-	<th>Ngày sinh</th>
-	<th>Địa chỉ</th>
-	<th>Ngày lập thẻ</th>
-	<th>Người lập thẻ</th>
-</tr>
+{% endfor %}
 {% endblock table_body %}
 
