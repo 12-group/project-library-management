@@ -1,0 +1,56 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+{% block style_extra %}
+	.table{
+        margin: auto;
+		width: 70%;
+	}
+    .submit{    
+        margin:20px 45% ;
+    }
+{% endblock style_extra %}
+
+{% block line_info %}
+    <div class="infor_tittle">
+        <p class="infor_tittle_name">Tìm mã độc giả:</p>
+        <input class="form-control form-control-sm" type="text" placeholder="DG10001" style="margin-left: 10px;width:150px;">
+    
+    </div>
+{% endblock line_info %}
+
+
+{% block tittle_name %}
+    <p>Danh sách sách mượn</p>
+{% endblock tittle_name %}
+
+{% block table_head %}
+<tr >
+    <th>STT</th>
+    <th>Mã độc giả</th>
+    <th>Tiền nợ</th>
+    <th>Tiền thu</th>
+    <th>Còn lại</th>
+    <th>Người thu tiền</th>
+</tr>
+
+{% endblock table_head %}
+{% block table_body %}
+<tr>
+    <th>STT</th>
+    <th>Mã độc giả</th>
+    <th>Tiền nợ</th>
+    <th>Tiền thu</th>
+    <th>Còn lại</th>
+    <th>Người thu tiền</th>
+</tr>	
+{% endblock table_body %}
+{% block confirm_button %}
+<div class="submit">
+        <a class="btn btn-primary" href="{% url 'home' %}">Cập nhật</a> 
+
+</div>
+{% endblock %}
+
+
+

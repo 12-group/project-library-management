@@ -107,3 +107,7 @@ def add_book(request):
 		
 	context = {'form':form}
 	return render(request, 'pages/add_book.html', context)
+
+#--THỦ QUỸ
+def money_list(request):
+	return render(request,'pages/money_list.html')
