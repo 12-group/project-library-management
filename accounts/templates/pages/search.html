@@ -1,6 +1,10 @@
 {% extends 'pages/main.html' %}
 {% load static %}
 
+{% block style %}
+
+{% endblock style %}
+
 {% block content %}
 
 <form>
@@ -24,27 +28,16 @@
             </select>
         </div>
 
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-3">
             <label>Thời gian xuất bản</label>
             <div class="row">
                 <div class="row gx-3 col">
                     <label class="col"> từ :</label>
-                    <select id="date-dropdown"  class="form-control col"></select>
+                    <input type="number" min="1900" max="2022" step="1" value="2022" class="form-control col"/>
                 </div>
                 <div class="row gx-3 col">
-                    <label class="col"> đến : </label>
-                    <select name = "year" class="form-control col">
-                        <option>Year</option>
-                        <option>Year1</option>
-                        <option>Year2</option>
-                        <?php
-                            for ($x = 1970; $x <= 2022; $x++) {
-                                echo "<option value = "year">$x </option>";
-                                echo "a";
-                            }
-                        ?>
-                    </select>
-                    
+                    <label class="col"> đến :</label>
+                    <input type="number" min="1900" max="2022" step="1" value="2022" class="form-control col" />                   
                 </div>
             </div>
         </div>

@@ -63,10 +63,14 @@ def home(request):
 	return render(request,'pages/home.html',{'books':books,'top_book':top_book})
 
 def search_book(request):
-   return render(request,'pages/search.html')
+	books = Book.objects.all()
+
+	return render(request,'pages/search.html',{'books':books})
 
 def search_result_book(request):
-   return render(request,'pages/search_result.html')
+	books = Book.objects.all()
+	num_books = len(books)
+	return render(request,'pages/search_result.html',{'books':books,'num_books':num_books})
 
 def detail_info_book(request,pk):
 	book = Book.objects.get(id=pk)	

@@ -22,3 +22,4 @@ while (currentYear1 >= earliestYear1) {
   currentYear1 -= 1;    
 }
 
+
