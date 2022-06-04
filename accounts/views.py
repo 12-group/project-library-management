@@ -10,6 +10,7 @@ from .models import *
 from .forms import *
 from .decorators import *
 
+@unauthenticated_user
 def register(request):
 
     form = CreateUserForm()
@@ -23,6 +24,7 @@ def register(request):
     context = {'form':form}
     return render(request, 'pages/register.html', context)
 
+@unauthenticated_user
 def loginPage(request):
 
 	if request.method == 'POST':
@@ -43,7 +45,7 @@ def loginPage(request):
 def logoutUser(request):
 	logout(request)
 	return redirect('home')
-   
+
 def accountSettings(request):
 	customer = request.user.customer
 	form = CustomerForm(instance=customer)
@@ -56,6 +58,10 @@ def accountSettings(request):
 	context = {'form':form}
 	return render(request, 'pages/account_setting.html', context)
 
+
+
+@login_required(login_url='login')
+@admin_only
 def home(request):
 	books = Book.objects.all()
 	top_book = books[len(books)-4:]
@@ -63,10 +69,7 @@ def home(request):
 	return render(request,'pages/home.html',{'books':books,'top_book':top_book})
 
 def search_book(request):
-	books = Book.objects.all()
-
-	return render(request,'pages/search.html',{'books':books})
-
+	return render(request,'pages/search.html')
 def search_result_book(request):
 	books = Book.objects.all()
 	num_books = len(books)

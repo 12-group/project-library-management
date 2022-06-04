@@ -1,66 +1,75 @@
 <style>
-.navbar_{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-}
-.nav_bar{
-    width: 30%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-right: 100px;
-}
-.navbar{
-    list-style: none;
-    margin-top: 10px;
-}
-.nav-bar-menu{
-    width: 20%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .navbar-nav {
+        width: 150px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .navbars {
+        margin-right: 0px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    
+    .nav-item {
+        align-items: center;
+        margin: auto;
+    }
+    
+    .bi {
+        font-size: 25px;
+        color: black;
+    }
 </style>
 
 {% load static %}
-  
-<div class="navbar_">
-  <div class="logo">
-    <img src="{% static 'images/logo.png' %}" style="width:50px;";>
-    <a href="{% url 'home' %}" style = "color:black;text-decoration: none;font-weight:700;font-size:25px; margin-left:10px;">Thư viện trung tâm</a>
-  </div>
-  <div class="nav_bar">
-    <ul class="navbar">
-      <li class="menu-item">
-        <a style="text-align:center;text-align: center;" class="nav-link" href="{% url 'search' %}">Tìm kiếm sách</a>
-      </li>
-    </ul>
 
-  {% if request.user.is_authenticated %}
-    <ul class="navbar nav-bar-menu">
-      <li class="nav_bar_menu-nav-item">
-        <i class="bi bi-person " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></i>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><a class="dropdown-item" href="{% url 'account' %}">Xem thông tin</a></li>
-          <li><a class="dropdown-item" href="#">Thông tin mượn</a></li>
-          <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
+<nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt=""> Thư viện trung tâm
+        </a>
+    </nav>
+    {% if request.user.is_authenticated %}
+    <div class="navbars">
+        {% if request.user.groups.all.0.name == "reader" %}
+        <ul class="navbar-nav" style="margin-right:50px;">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'search' %}">Tìm kiếm sách<span class="sr-only">(current)</span></a>
+            </li>
         </ul>
-      </li>
-      <li class="nav_bar_menu-nav-item">
-        <i class="bi bi-bag"></i>
-      </li>    
-    </ul>
-  {% else %}
+        {% endif %}
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown dropleft">
+                <i class="nav-link bi bi-person " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'account' %}">Xem thông tin</a> {% if request.user.groups.all.0.name == "reader" %}
+                    <a class="dropdown-item" href="#">Thông tin mượn</a> {% endif %} {% if request.user.groups.all.0.name == "librarian" %}
+                    <a class="dropdown-item" href="{% url 'librarian' %}">Danh sách độc giả</a>
+                    <a class="dropdown-item" href="{% url 'borrowers' %}">Danh sách mượn</a> {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a>
+                </div>
+            </li>
+            {% if request.user.groups.all.0.name == "reader" %}
+            <li class="nav-item active">
+                <a class="nav-link" href="#"><i class="bi bi-bag"></i><span class="sr-only">(current)</span></a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% else %}
     <ul class="navbar">
-      <li><a class="btn btn-outline-primary" href="{% url 'register' %}" class="btn reg_btn">Đăng ký</a></li>
-      <li><a class="btn btn-primary" style="margin-left:10px;" href="{% url 'login' %}" class="btn login_btn">Đăng nhập</a></li>
+        <li><a class="btn btn-outline-primary" href="{% url 'register' %}" class="btn reg_btn">Đăng ký</a></li>
+        <li><a class="btn btn-primary" style="margin-left:10px;" href="{% url 'login' %}" class="btn login_btn">Đăng nhập</a></li>
     </ul>
-  {% endif %}
-
-  </div>
-</div>
-
-
+    {% endif %}
+</nav>

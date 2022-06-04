@@ -13,6 +13,7 @@ def unauthenticated_user(view_func):
 def allowed_users(allowed_roles=[]):
 	def decorator(view_func):
 		def wrapper_func(request, *args, **kwargs):
+
 			group = None
 			if request.user.groups.exists():
 				group = request.user.groups.all()[0].name
@@ -29,8 +30,19 @@ def admin_only(view_func):
 		group = None
 		if request.user.groups.exists():
 			group = request.user.groups.all()[0].name
-		if group == 'accounts':
-			return redirect('user')
+
+		if group == 'reader':
+			return view_func(request, *args, **kwargs)
+
+		if group == 'librarian':
+			return redirect('librarian') 
+
+		if group == 'stockkeeper':
+			return redirect('list_book')
+
+		if group == 'casher':
+			return redirect('money_list')
+
 		if group == 'admin':
 			return view_func(request, *args, **kwargs)
 
