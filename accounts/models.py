@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 
 class Customer(models.Model):
-	user = models.OneToOneField(User, null=True,blank=True, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
 	birth = models.DateField(null=True, blank=True)
 	address = models.CharField(max_length=200, null=True, blank=True)
@@ -21,7 +21,7 @@ class Reader(Customer):
 	]
 
 	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
-	email = models.CharField(max_length=200, null=True, blank=True)
+	email = models.EmailField(max_length=200, null=True, blank=True)
 
 class Staff(Customer):
 	CETIFICATE = [
