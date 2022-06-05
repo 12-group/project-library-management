@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
+import random
+
+def pk_gen():
+	num = random.randint(100000, 999999)
+	return 'DG{}'.format(num)
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
@@ -22,6 +27,7 @@ class Reader(Customer):
 
 	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
 	email = models.EmailField(max_length=200, null=True, blank=True)
+	rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
 
 class Staff(Customer):
 	CETIFICATE = [
