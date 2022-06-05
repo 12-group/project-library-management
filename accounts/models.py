@@ -2,17 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-class Category_reader(models.Model):
-	name = models.CharField(max_length=200, null=True)
-
-	def __str__(self):
-		return self.name
-
 class Customer(models.Model):
+	READER_TYPE = [
+		('Nam', 'Nam'),
+		('Nữ', 'Nữ')
+	]
+
 	user = models.OneToOneField(User, null=True,blank=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
-	ctg = models.ManyToManyField(Category_reader)
-	birth = models.DateTimeField(null=True)
+	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
+	birth = models.DateField(null=True)
 	address = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200, null=True)
 	profile_pic = models.ImageField(default="profile_pic.png", null=True,blank=True)
@@ -30,7 +29,7 @@ class YearRangeField(models.IntegerField):
         defaults.update(kwargs)
         return super(YearRangeField, self).formfield(**defaults)
 
-class Category_book(models.Model):
+class BookCategory(models.Model):
 	name = models.CharField(max_length=200, null=True)
 
 	def __str__(self):
@@ -39,7 +38,7 @@ class Category_book(models.Model):
 class Book(models.Model):
 	name = models.CharField(max_length=200, null=True)
 	cover_pic = models.ImageField(default="logo.png", null=True,blank=True)
-	ctg = models.ManyToManyField(Category_book)							# Category
+	ctg = models.ManyToManyField(BookCategory)							# Category
 	auth = models.CharField(max_length=200, null=True)					# Author
 	price = models.PositiveIntegerField(null=True,blank=True)
 	amount = models.PositiveIntegerField(null=True,blank=True)
