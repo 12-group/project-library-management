@@ -63,8 +63,8 @@ def accountSettings(request):
 
 
 
-# @login_required(login_url='login')
-# @admin_only
+@login_required(login_url='login')
+@admin_only
 def home(request):
     books = Book.objects.all()
     top_book = books[len(books)-4:]
