@@ -109,11 +109,11 @@ def thanh_ly(request):
 def add_book(request):
 	form = BookForm()
 	if request.method == 'POST':
-	   form = BookForm(request.POST)
-	   if form.is_valid():
-	   	form.save()
-	   	messages.success(request, "Sách được thêm thành công với ID là " + form.id)
-	   	return redirect('add_book')
+		form = BookForm(request.POST)
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Sách được thêm thành công với ID là " + form.id)
+			return redirect('add_book')
 		
 	context = {'form':form}
 	return render(request, 'pages/add_book.html', context)
