@@ -87,7 +87,7 @@ def cart(request):
 
 #--THỦ THƯ
 def librarian_home(request):
-    readers = Customer.objects.all()
+    readers = Reader.objects.all()
     return render(request,'pages/reader_list.html',{'readers':readers})
 def borrowers(request):
     return render(request,'pages/borrower_list.html')

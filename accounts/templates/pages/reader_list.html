@@ -27,10 +27,10 @@
 {% block table_body %}
 {% for i in readers %}
 <tr>
-	<th></th>
+	<th>{{i.pk}}</th>
 	<th>{{i.name}}</th>
 	<th>{{i.email}}</th>
-	<th>{{i.ctg}}</th>
+	<th>{{i.get_reader_type_display}}</th>
 	<th>{{i.birth}}</th>
 	<th>{{i.address}}</th>
 	<th>{{i.date_created}}</th>
