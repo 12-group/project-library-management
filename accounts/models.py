@@ -1,5 +1,3 @@
-from email.policy import default
-from attr import field, fields
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
