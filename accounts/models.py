@@ -4,31 +4,50 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 
 class Customer(models.Model):
-	READER_TYPE = [
-		('Nam', 'Nam'),
-		('Nữ', 'Nữ')
-	]
-
 	user = models.OneToOneField(User, null=True,blank=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
-	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
 	birth = models.DateField(null=True, blank=True)
 	address = models.CharField(max_length=200, null=True, blank=True)
-	email = models.CharField(max_length=200, null=True, blank=True)
 	profile_pic = models.ImageField(default="profile_pic.png", null=True,blank=True)
 	date_created = models.DateTimeField(auto_now_add=True, null=True)
 
 	def __str__(self):
 		return self.name
 
-class YearRangeField(models.IntegerField):
-    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
-        self.min_value, self.max_value = min_value, max_value
-        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
-    def formfield(self, **kwargs):
-        defaults = {'min_value': self.min_value, 'max_value':self.max_value}
-        defaults.update(kwargs)
-        return super(YearRangeField, self).formfield(**defaults)
+class Reader(Customer):
+	READER_TYPE = [
+		('Male', 'Nam'),
+		('Female', 'Nữ')
+	]
+
+	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
+	email = models.CharField(max_length=200, null=True, blank=True)
+
+class Staff(Customer):
+	CETIFICATE = [
+		('Baccalaureate', 'Tú tài'),
+		('Intermediate', 'Trung cấp'),
+		('College1', 'Cao đẳng'),
+		('College2', 'Đại học'),
+		('Master', 'Thạc sĩ'),
+		('Doctor', 'Tiến sĩ')
+	]
+	POSITION = [
+		('President','Giám đốc'),
+		('Vice President','Phó giám đốc'),
+		('Manager','Trưởng phòng'),
+		('Deputy','Phó phòng'),
+		('Staff','Nhân viên'),
+	]
+	SERVICE = [
+		('Librarian', 'Thủ thư'),
+		('Cashier', 'Thủ quỹ'),
+		('Stockkeeper', 'Thủ kho'),
+		('Board of manager', 'Ban giám đốc'),
+	]
+	certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
+	position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
+	service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
 
 class BookCategory(models.Model):
 	name = models.CharField(max_length=200, null=True)

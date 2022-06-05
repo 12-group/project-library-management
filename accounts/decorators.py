@@ -26,7 +26,7 @@ def allowed_users(allowed_roles=[]):
 	return decorator
 
 def admin_only(view_func):
-	def wrapper_function(request, *args, **kwargs):
+	def wrapper_func(request, *args, **kwargs):
 		group = None
 		if request.user.groups.exists():
 			group = request.user.groups.all()[0].name
@@ -40,10 +40,10 @@ def admin_only(view_func):
 		if group == 'stockkeeper':
 			return redirect('list_book')
 
-		if group == 'casher':
+		if group == 'cashier':
 			return redirect('money_list')
 
 		if group == 'admin':
 			return view_func(request, *args, **kwargs)
 
-	return wrapper_function
+	return wrapper_func

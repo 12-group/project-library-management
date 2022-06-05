@@ -10,21 +10,21 @@ from .models import *
 from .forms import *
 from .decorators import *
 
-@unauthenticated_user
+# @unauthenticated_user
 def register(request):
 
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()            
+            form.save()
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
     context = {'form':form}
     return render(request, 'pages/register.html', context)
 
-@unauthenticated_user
+# @unauthenticated_user
 def loginPage(request):
 
 	if request.method == 'POST':
@@ -60,8 +60,8 @@ def accountSettings(request):
 
 
 
-@login_required(login_url='login')
-@admin_only
+# @login_required(login_url='login')
+# @admin_only
 def home(request):
 	books = Book.objects.all()
 	top_book = books[len(books)-4:]
