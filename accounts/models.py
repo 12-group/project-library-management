@@ -22,11 +22,11 @@ def staff_pk_gen():
 	pk = 0
 	for staff in staffs:
 		pk += 1
-		if staff.pk != 'DG{}'.format(str(pk).zfill(6)):
+		if staff.pk != 'NV{}'.format(str(pk).zfill(6)):
 			print(staff.pk)
-			return 'DG{}'.format(str(pk).zfill(6))
+			return 'NV{}'.format(str(pk).zfill(6))
 	pk += 1
-	return 'DG{}'.format(str(pk).zfill(6))
+	return 'NV{}'.format(str(pk).zfill(6))
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
