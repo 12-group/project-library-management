@@ -67,9 +67,11 @@ def accountSettings(request):
 # @admin_only
 def home(request):
     books = Book.objects.all()
-    top_book = books[len(books)-4:]
-    top_book.reverse()
-    return render(request,'pages/home.html',{'books':books,'top_book':top_book})
+    if len(books) >= 4:
+        top_book = books[len(books)-4:]
+        top_book.reverse()
+        return render(request,'pages/home.html',{'books':books,'top_book':top_book})
+    return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
     return render(request,'pages/search.html')
