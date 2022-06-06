@@ -114,8 +114,8 @@ def request_off(request):
     return render(request,'pages/request_offline.html')
 def return_book(request):
     return render(request,'pages/return_book.html')
-def phieu_phat(request):
-    return render(request,'pages/phieuphat.html')
+def pernalty_ticket(request):
+    return render(request,'pages/pernalty_ticket.html')
 
 #---THỦ KHO
 def list_book(request):
