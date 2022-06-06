@@ -14,7 +14,7 @@ class ReaderForm(ModelForm):
 	class Meta:
 		model = Reader
 		fields = '__all__'
-		exclude = ['rId']
+		exclude = ['rId','user']
 
 class CreateUserForm(UserCreationForm):
 	class Meta:
