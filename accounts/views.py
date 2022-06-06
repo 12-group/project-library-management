@@ -50,11 +50,11 @@ def logoutUser(request):
     return redirect('home')
 
 def accountSettings(request):
-    customer = request.user.customer
-    form = CustomerForm(instance=customer)
+    reader = request.user.customer
+    form = ReaderForm(instance=reader)
 
     if request.method == 'POST':
-        form = CustomerForm(request.POST, request.FILES,instance=customer)
+        form = ReaderForm(request.POST, request.FILES,instance=reader)
         if form.is_valid():
             form.save()
 
