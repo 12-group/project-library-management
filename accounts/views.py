@@ -50,11 +50,24 @@ def logoutUser(request):
     return redirect('home')
 
 def accountSettings(request):
-    reader = request.user.customer.reader
-    form = ReaderForm(instance=reader)
+    group = None
+    form = None
+    print(request.user.groups)
+    if request.user.groups.exists():
+        group = request.user.groups.all()[0].name
+    if group == 'reader':
+        reader = request.user.customer.reader
+        form = ReaderForm(instance=reader)
+    elif group == 'staff':
+        staff = request.user.customer.staff
+        form = StaffForm(instance=staff)
 
     if request.method == 'POST':
-        form = ReaderForm(request.POST, request.FILES,instance=reader)
+        if group == 'reader':
+            form = ReaderForm(request.POST, request.FILES,instance=reader)
+        elif group == 'staff':
+            form = StaffForm(request.POST, request.FILES,instance=staff)
+
         if form.is_valid():
             form.save()
 

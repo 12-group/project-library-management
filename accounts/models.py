@@ -14,19 +14,18 @@ def pk_gen():
 			return 'DG{}'.format(str(pk).zfill(6))
 	pk += 1
 	return 'DG{}'.format(str(pk).zfill(6))
-	# num = random.randint(100000, 999999)
-	# return 'DG{}'.format(num)
+
 
 def staff_pk_gen():
 	staffs = Staff.objects.all()
 	pk = 0
 	for staff in staffs:
 		pk += 1
-		if staff.pk != 'DG{}'.format(str(pk).zfill(6)):
+		if staff.pk != 'S{}'.format(str(pk).zfill(6)):
 			print(staff.pk)
-			return 'DG{}'.format(str(pk).zfill(6))
+			return 'S{}'.format(str(pk).zfill(6))
 	pk += 1
-	return 'DG{}'.format(str(pk).zfill(6))
+	return 'S{}'.format(str(pk).zfill(6))
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
