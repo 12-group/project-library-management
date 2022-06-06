@@ -27,7 +27,7 @@
 {% block table_body %}
 {% for i in readers %}
 <tr>
-	<th>DG0{{i.pk}}</th>
+	<th>{{i.pk}}</th>
 	<th>{{i.name}}</th>
 	<th>{{i.email}}</th>
 	<th>{{i.get_reader_type_display}}</th>

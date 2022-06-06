@@ -5,9 +5,28 @@ import datetime
 import random
 
 def pk_gen():
-	num = random.randint(100000, 999999)
-	return 'DG{}'.format(num)
+	readers = Reader.objects.all()
+	pk = 0
+	for reader in readers:
+		pk += 1
+		if reader.pk != 'DG{}'.format(str(pk).zfill(6)):
+			print(reader.pk)
+			return 'DG{}'.format(str(pk).zfill(6))
+	pk += 1
+	return 'DG{}'.format(str(pk).zfill(6))
+	# num = random.randint(100000, 999999)
+	# return 'DG{}'.format(num)
 
+def staff_pk_gen():
+	staffs = Staff.objects.all()
+	pk = 0
+	for staff in staffs:
+		pk += 1
+		if staff.pk != 'DG{}'.format(str(pk).zfill(6)):
+			print(staff.pk)
+			return 'DG{}'.format(str(pk).zfill(6))
+	pk += 1
+	return 'DG{}'.format(str(pk).zfill(6))
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
@@ -24,7 +43,6 @@ class Reader(Customer):
 		('Male', 'Nam'),
 		('Female', 'Nữ')
 	]
-
 	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
 	email = models.EmailField(max_length=200, null=True, blank=True)
 	rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
@@ -54,6 +72,7 @@ class Staff(Customer):
 	certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
 	position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
 	service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
+	sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255)
 
 class BookCategory(models.Model):
 	name = models.CharField(max_length=200, null=True)
@@ -66,7 +85,7 @@ class Book(models.Model):
 	name = models.CharField(max_length=200, null=True)
 	cover_pic = models.ImageField(default="logo.png", null=True,blank=True)
 	ctg = models.ManyToManyField(BookCategory, blank=True)							# Category
-	author = models.CharField(max_length=200, null=True)					# Author
+	author = models.CharField(max_length=200, null=True, blank=True)					# Author
 	price = models.PositiveIntegerField(null=True,blank=True)
 	quantity = models.PositiveIntegerField(null=True,blank=True)
 	publisher = models.CharField(max_length=200, null=True, blank=True)

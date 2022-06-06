@@ -50,7 +50,7 @@ def logoutUser(request):
     return redirect('home')
 
 def accountSettings(request):
-    reader = request.user.customer
+    reader = request.user.customer.find_all
     form = ReaderForm(instance=reader)
 
     if request.method == 'POST':
@@ -63,8 +63,8 @@ def accountSettings(request):
 
 
 
-@login_required(login_url='login')
-@admin_only
+# @login_required(login_url='login')
+# @admin_only
 def home(request):
     books = Book.objects.all()
     top_book = books[len(books)-4:]
