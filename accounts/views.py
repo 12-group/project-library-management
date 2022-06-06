@@ -50,7 +50,7 @@ def logoutUser(request):
     return redirect('home')
 
 def accountSettings(request):
-    reader = request.user.customer.find_all
+    reader = request.user.customer
     form = ReaderForm(instance=reader)
 
     if request.method == 'POST':
