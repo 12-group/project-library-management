@@ -73,6 +73,8 @@ class Staff(Customer):
 	position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
 	service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
 	sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255)
+	# force_password_change = models.BooleanField(default=True)
+
 
 class BookCategory(models.Model):
 	name = models.CharField(max_length=200, null=True)

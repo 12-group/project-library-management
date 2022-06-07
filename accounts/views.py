@@ -29,7 +29,7 @@ def register(request):
             return redirect('login')
 
     context = {'form':form}
-    return render(request, 'pages/register.html', context)
+    return render(request, 'pages/user_account/register.html', context)
 
 # @unauthenticated_user
 def loginPage(request):
@@ -47,7 +47,7 @@ def loginPage(request):
             messages.info(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
 
     context = {}
-    return render(request, 'pages/login.html', context)
+    return render(request, 'pages/user_account/login.html', context)
 
 def logoutUser(request):
     logout(request)
@@ -76,7 +76,7 @@ def accountSettings(request):
             form.save()
 
     context = {'form':form}
-    return render(request, 'pages/account_setting.html', context)
+    return render(request, 'pages/user_account/account_setting.html', context)
 
 
 
