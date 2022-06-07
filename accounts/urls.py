@@ -24,6 +24,8 @@ urlpatterns = [
    path('return_books/', views.return_book, name="return_books"),
    path('pernalty_ticket/', views.pernalty_ticket, name="pernalty_ticket"),
 
+   path('manager/manager_dashboard/', views.manager_dashboard, name="manager_dashboard"),
+
    path('list_book/', views.list_book, name="list_book"),
    path('thanh_ly/', views.thanh_ly, name="thanh_ly"),
    path('add_book/', views.add_book, name="add_book"),

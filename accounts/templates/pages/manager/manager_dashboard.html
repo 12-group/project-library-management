@@ -3,37 +3,39 @@
 
 
 {% block title_name %}
-	<p>Danh sách độc giả</p>
+	<p>Danh sách nhân viên</p>
 
 {% endblock title_name %}
 
 {% block button %}
 	<div class="add_button">
-		<a href="{% url 'register_reader' %}" type="button" class="btn btn-outline-primary" >Thêm độc giả</a>
+		<a href="" type="button" class="btn btn-outline-primary" >Thêm nhân viên</a>
 	</div>
 {% endblock button %}
 {% block table_head %}
 <tr>
-<th>Mã độc giả</th>
+<th>Mã nhân viên</th>
 <th>Họ tên</th>
-<th>Email</th>
-<th>Loại độc giả</th>
 <th>Ngày sinh</th>
 <th>Địa chỉ</th>
-<th>Ngày lập thẻ</th>
-<th>Người lập thẻ</th>
+<th>Ngày lập</th>
+<th>Bằng cấp</th>
+<th>Vị trí</th>
+<th>Bộ phận</th>
+<th>Người lập</th>
 </tr>
 {% endblock table_head %}
 {% block table_body %}
-{% for i in readers %}
+{% for i in staffs %}
 <tr>
 	<th>{{i.pk}}</th>
 	<th>{{i.name}}</th>
-	<th>{{i.email}}</th>
-	<th>{{i.get_reader_type_display}}</th>
 	<th>{{i.birth}}</th>
 	<th>{{i.address}}</th>
 	<th>{{i.date_created}}</th>
+	<th>{{i.get_certificate_display}}</th>
+	<th>{{i.get_position_display}}</th>
+	<th>{{i.get_service_display}}</th>
 	<th></th>
 </tr>
 {% endfor %}

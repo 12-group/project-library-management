@@ -139,3 +139,13 @@ def add_book(request):
 #--THỦ QUỸ
 def money_list(request):
     return render(request,'pages/money_list.html')
+
+#--QUẢN LÝ
+def manager_dashboard(request):
+    staffs = Staff.objects.all()
+
+    context = {
+        'staffs':staffs
+    }
+
+    return render(request, 'pages/manager/manager_dashboard.html',context)
