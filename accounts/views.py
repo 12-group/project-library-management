@@ -87,43 +87,43 @@ def home(request):
     return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
-    return render(request,'pages/search.html')
+    return render(request,'pages/reader/search.html')
 def search_result_book(request):
     books = Book.objects.all()
     num_books = len(books)
-    return render(request,'pages/search_result.html',{'books':books,'num_books':num_books})
+    return render(request,'pages/reader/search_result.html',{'books':books,'num_books':num_books})
 
 def detail_info_book(request,pk):
     book = Book.objects.get(id=pk)	
-    return render(request,'pages/book_detail.html',{'book':book})
+    return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
-   return render(request,'pages/cart.html')
+   return render(request,'pages/reader/cart.html')
 
 #--THỦ THƯ
 def librarian_home(request):
     readers = Reader.objects.all()
-    return render(request,'pages/reader_list.html',{'readers':readers})
+    return render(request,'pages/librarian/reader_list.html',{'readers':readers})
 def borrowers(request):
-    return render(request,'pages/borrower_list.html')
+    return render(request,'pages/librarian/borrower_list.html')
 def register_reader(request):
-    return render(request,'pages/register_reader.html')
+    return render(request,'pages/librarian/register_reader.html')
 def request_onl(request):
-    return render(request,'pages/request_online.html')
+    return render(request,'pages/librarian/request_online.html')
 def request_off(request):
-    return render(request,'pages/request_offline.html')
+    return render(request,'pages/librarian/request_offline.html')
 def return_book(request):
-    return render(request,'pages/return_book.html')
+    return render(request,'pages/librarian/return_book.html')
 def pernalty_ticket(request):
-    return render(request,'pages/pernalty_ticket.html')
+    return render(request,'pages/librarian/pernalty_ticket.html')
 
 #---THỦ KHO
 def list_book(request):
     books = Book.objects.all()
     count_books = books.count()
-    return render(request,'pages/list_book.html',{'books':books,'count_books':count_books})
+    return render(request,'pages/stockkeeper/list_book.html',{'books':books,'count_books':count_books})
 def thanh_ly(request):
-    return render(request,'pages/thanh_ly.html')
+    return render(request,'pages/stockkeeper/thanh_ly.html')
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':
@@ -134,11 +134,11 @@ def add_book(request):
             return redirect('add_book')
         
     context = {'form':form}
-    return render(request, 'pages/add_book.html', context)
+    return render(request, 'pages/stockkeeper/add_book.html', context)
 
 #--THỦ QUỸ
 def money_list(request):
-    return render(request,'pages/money_list.html')
+    return render(request,'pages/cashier/money_list.html')
 
 #--QUẢN LÝ
 def manager_dashboard(request):
