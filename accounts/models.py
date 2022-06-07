@@ -2,30 +2,30 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
-import random
+from .initial_func import pk_gen, staff_pk_gen
 
-def pk_gen():
-	readers = Reader.objects.all()
-	pk = 0
-	for reader in readers:
-		pk += 1
-		if reader.pk != 'DG{}'.format(str(pk).zfill(6)):
-			print(reader.pk)
-			return 'DG{}'.format(str(pk).zfill(6))
-	pk += 1
-	return 'DG{}'.format(str(pk).zfill(6))
+# def pk_gen():
+# 	readers = Reader.objects.all()
+# 	pk = 0
+# 	for reader in readers:
+# 		pk += 1
+# 		if reader.pk != 'DG{}'.format(str(pk).zfill(6)):
+# 			print(reader.pk)
+# 			return 'DG{}'.format(str(pk).zfill(6))
+# 	pk += 1
+# 	return 'DG{}'.format(str(pk).zfill(6))
 
 
-def staff_pk_gen():
-	staffs = Staff.objects.all()
-	pk = 0
-	for staff in staffs:
-		pk += 1
-		if staff.pk != 'NV{}'.format(str(pk).zfill(6)):
-			print(staff.pk)
-			return 'NV{}'.format(str(pk).zfill(6))
-	pk += 1
-	return 'NV{}'.format(str(pk).zfill(6))
+# def staff_pk_gen():
+# 	staffs = Staff.objects.all()
+# 	pk = 0
+# 	for staff in staffs:
+# 		pk += 1
+# 		if staff.pk != 'NV{}'.format(str(pk).zfill(6)):
+# 			print(staff.pk)
+# 			return 'NV{}'.format(str(pk).zfill(6))
+# 	pk += 1
+# 	return 'NV{}'.format(str(pk).zfill(6))
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)

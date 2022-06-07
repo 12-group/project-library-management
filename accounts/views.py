@@ -175,4 +175,4 @@ def add_staff(request):
             return redirect('manager_dashboard')
 
     context = {'form':staff_form}
-    return render(request, 'pages/register_staff.html', context)
+    return render(request, 'pages/manager/register_staff.html', context)
