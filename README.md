@@ -6,6 +6,8 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Hệ thống quản lý thư viện Mona eLMS
 - Công cụ quản lý thư viện DTSoft
 - Ứng dụng quản lý thư viện Misa
+# Model
+![alt text](https://github.com/12-group/project-library-management-system/blob/main/erd.jpg?raw=true)
 # Môi trường thực thi
 - Hệ điều hành Windows 10
 - Devtools: Visual Studio Code
