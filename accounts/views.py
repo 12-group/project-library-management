@@ -50,22 +50,22 @@ def logoutUser(request):
     return redirect('home')
 
 def accountSettings(request):
-    group = None
+    groups = None
     form = None
     print(request.user.groups)
     if request.user.groups.exists():
-        group = request.user.groups.all()[0].name
-    if group == 'reader':
+        groups = request.user.groups.all()
+    if 'reader' in [group.name for group in groups]:
         reader = request.user.customer.reader
         form = ReaderForm(instance=reader)
-    elif group == 'staff':
+    elif 'staff' in [group.name for group in groups]:
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
 
     if request.method == 'POST':
-        if group == 'reader':
+        if 'reader' in [group.name for group in groups]:
             form = ReaderForm(request.POST, request.FILES,instance=reader)
-        elif group == 'staff':
+        elif 'staff' in [group.name for group in groups]:
             form = StaffForm(request.POST, request.FILES,instance=staff)
 
         if form.is_valid():
@@ -151,23 +151,28 @@ def manager_dashboard(request):
     return render(request, 'pages/manager/manager_dashboard.html',context)
 
 def add_staff(request):
-    form = CreateUserForm()
+    staff_form = StaffForm()
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
+        staff_form = StaffForm(request.POST)
+        if staff_form.is_valid():
 
-            user = form.save()
+            # user_form = CreateUserForm(initial={
+            #     'username': , 
+            #     'email':'',
+            #     'password1':'123456', 
+            #     'password2':'123456'
+            # })
 
-            group = Group.objects.get(name='staff')
-            user.groups.add(group)
+            # group = Group.objects.get(name='staff')
+            # user.groups.add(group)
 
-            Staff.objects.create(
-                user=user,
-                name=user.username,
-                )
+            # Staff.objects.create(
+            #     user=user,
+            #     name=user.username,
+            #     )
 
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('manager_dashboard')
 
-    context = {'form':form}
-    return render(request, 'pages/register.html', context)
+    context = {'form':staff_form}
+    return render(request, 'pages/register_staff.html', context)

@@ -25,6 +25,8 @@ urlpatterns = [
    path('pernalty_ticket/', views.pernalty_ticket, name="pernalty_ticket"),
 
    path('manager/manager_dashboard/', views.manager_dashboard, name="manager_dashboard"),
+   path('manager/add_staff/', views.manager_dashboard, name="add_staff"),
+
 
    path('list_book/', views.list_book, name="list_book"),
    path('thanh_ly/', views.thanh_ly, name="thanh_ly"),
