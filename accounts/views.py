@@ -149,3 +149,25 @@ def manager_dashboard(request):
     }
 
     return render(request, 'pages/manager/manager_dashboard.html',context)
+
+def add_staff(request):
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+
+            user = form.save()
+
+            group = Group.objects.get(name='staff')
+            user.groups.add(group)
+
+            Staff.objects.create(
+                user=user,
+                name=user.username,
+                )
+
+            messages.success(request, 'Tạo tài khoản thành công.')
+            return redirect('manager_dashboard')
+
+    context = {'form':form}
+    return render(request, 'pages/register.html', context)
