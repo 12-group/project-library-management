@@ -30,49 +30,41 @@
 			<h3>Đăng ký độc giả</h3>
 		</div>
 	</div>
-
-    <form class="row g-3">
-        <div class="col-12">
-            <input type="text" class="form-control " id="inputAddress" placeholder="Họ và tên">
-        </div>
-        <div class="col-12">
-            <select id="inputState" class="form-select">
-            <option selected>Loại độc giả</option>
-            <option>Sinh viên</option>
-            <option>Không là sinh viên</option>
-            </select>
-        </div>
-        <div class="col-12">
-            <input type="text" class="form-control " id="inputAddress" placeholder="Địa chỉ">
-        </div>
-        <div class="col-12">
-          <input type="text" class="form-control " id="inputAddress" placeholder="Email">
-        </div>
-        <div class="col-12">
-          <input type="text" class="form-control " id="inputAddress2" placeholder="Ngày lập thẻ">
-        </div>
-        <div class="col-12">
-          <input type="text" class="form-control " id="inputCity" placeholder="Người lập">
-        </div>
+    <form method=POST action="/somewhere" class="row g-3">
+        {{ reader.as_p }}
         <div style="margin-top:30px;">
             <a href="#myModal" class=" btn btn-block" style="background-color: #4C3876; color: white;" data-toggle="modal">Thêm</a>
         </div>
-        <div id="myModal" class="modal fade">
-            <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="icon-box">
-                            <i class="material-icons">&#xE876;</i>
-                        </div>				
-                        <h4 class="modal-title w-100">Thêm thành công!</h4>	
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'librarian' %}" >Ok</a>
-                    </div>
+    </form>
+
+        
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="material-icons">&#xE876;</i>
+                    </div>				
+                    <h4 class="modal-title w-100">Thêm thành công!</h4>	
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success btn-block" type="submit" style="background: #82ce34;" href="{% url 'librarian' %}" >Ok</a>
                 </div>
             </div>
-        </div>     
+        </div>
+    </div>     
 
       </form>
 </div>
+<script>
+						
+    var form_fields = document.getElementsByTagName('input')
+
+    for (var field in form_fields){	
+        form_fields[field].className += ' form-control'
+
+    }
+</script>
+
+
 {% endblock content %}

@@ -6,12 +6,7 @@
         margin:auto;
 		width: 50%;
 	}
-    .submit{    
-        margin:20px 45% ;
-    }
-    .ID_book{
-        width:200px;
-    }
+
     table, td {
     border: 1px solid #dddddd;
     }
@@ -49,10 +44,14 @@
 {% block table_body %}
 <tr>
     <th><input id="myInput0"></th>
-    <th>id0</th>
+    <th></th>
     <th></th>
 </tr>	
-<button id="myBtn" type="button" onclick="addrow()">Try it</button>
+{% endblock table_body %}
+
+
+{% block confirm_button %}
+<button class="btn btn-success" id="myBtn" type="button" onclick="addrow()" >Thêm dòng</button>
 
 <script>
 count = 1;
@@ -71,7 +70,7 @@ function addrow() {
 
 
     cell1.innerHTML = '<input id="myInput'+count+'">';
-    cell2.innerHTML = '<th> id'+count+'</th>';
+    cell2.innerHTML = '<th> </th>';
     cell3.innerHTML = '<th></th>';
 
     var input = document.getElementById("myInput"+count);
@@ -89,8 +88,6 @@ function addrow() {
 }
 
 </script>
-{% endblock table_body %}
-{% block confirm_button %}
 <div class="text-center">
 	<a href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
 </div>
