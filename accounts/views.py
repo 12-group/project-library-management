@@ -1,3 +1,6 @@
+from pyexpat import model
+from statistics import mode
+from django.forms import Form
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -7,6 +10,7 @@ from django.contrib.auth.models import Group
 from .models import *
 from .forms import *
 from .decorators import *
+from accounts import forms
 
 # @unauthenticated_user
 def register(request):
@@ -106,8 +110,17 @@ def librarian_home(request):
     return render(request,'pages/librarian/reader_list.html',{'readers':readers})
 def borrowers(request):
     return render(request,'pages/librarian/borrower_list.html')
+
+def get_username(request):
+    username = None
+    if request.user.is_authenticated:
+        username = request.user.username
+    return username
+
 def register_reader(request):
-    return render(request,'pages/librarian/register_reader.html')
+    username = get_username(request)
+    reader = forms.ReaderForm()
+    return render(request,'pages/librarian/register_reader.html',{"username":username,'reader':reader})
 def request_onl(request):
     return render(request,'pages/librarian/request_online.html')
 def request_off(request):
