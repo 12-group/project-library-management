@@ -127,8 +127,8 @@ def request_off(request):
     return render(request,'pages/librarian/request_offline.html')
 def return_book(request):
     return render(request,'pages/librarian/return_book.html')
-def pernalty_ticket(request):
-    return render(request,'pages/librarian/pernalty_ticket.html')
+def penalty_ticket(request):
+    return render(request,'pages/librarian/penalty_ticket.html')
 
 #---THỦ KHO
 def list_book(request):
