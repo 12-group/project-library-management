@@ -81,6 +81,10 @@ def accountSettings(request):
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
 
+def change_password(request):
+    context = {}
+    return render(request, 'pages/user_account/change_password.html', context)
+
 
 
 # @login_required(login_url='login')
