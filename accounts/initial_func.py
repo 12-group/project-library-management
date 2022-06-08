@@ -22,3 +22,14 @@ def staff_pk_gen():
 			return 'NV{}'.format(str(pk).zfill(6))
 	pk += 1
 	return 'NV{}'.format(str(pk).zfill(6))
+
+def username_gen():
+	users = models.User.objects.all()
+	count = 1
+	for user in users:
+		count += 1
+		if user.username != 'staff{}'.format(count):
+			return 'staff{}'.format(count)
+	
+	count += 1
+	return 'staff{}'.format(count)

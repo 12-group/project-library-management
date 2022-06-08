@@ -10,13 +10,15 @@ from django.contrib.auth.models import Group
 from .models import *
 from .forms import *
 from .decorators import *
-from accounts import forms
+
+from .initial_func import username_gen
 
 # @unauthenticated_user
 def register(request):
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             user = form.save()
             group = Group.objects.get(name='reader')
@@ -24,6 +26,7 @@ def register(request):
             Reader.objects.create(
                 user=user,
                 name=user.username,
+                email=user.email
                 )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
@@ -36,7 +39,7 @@ def loginPage(request):
 
     if request.method == 'POST':
         username = request.POST.get('username')
-        password =request.POST.get('password')
+        password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
 
@@ -119,7 +122,7 @@ def get_username(request):
 
 def register_reader(request):
     username = get_username(request)
-    reader = forms.ReaderForm()
+    reader = ReaderForm()
     return render(request,'pages/librarian/register_reader.html',{"username":username,'reader':reader})
 def request_onl(request):
     return render(request,'pages/librarian/request_online.html')
@@ -165,27 +168,33 @@ def manager_dashboard(request):
 
 def add_staff(request):
     staff_form = StaffForm()
+    user_form = CreateUserForm()
+
     if request.method == 'POST':
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
+            
+            print(username_gen())
+            user = User.objects.create_user(
+                username_gen(),
+                '',
+                'password'
+            )
+            
 
-            # user_form = CreateUserForm(initial={
-            #     'username': , 
-            #     'email':'',
-            #     'password1':'123456', 
-            #     'password2':'123456'
-            # })
+            
+            staff = staff_form.save()
+            staff.user = user
+            staff.save()
 
-            # group = Group.objects.get(name='staff')
-            # user.groups.add(group)
-
-            # Staff.objects.create(
-            #     user=user,
-            #     name=user.username,
-            #     )
+            group = Group.objects.get(name='staff')
+            user.groups.add(group)
 
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('manager_dashboard')
 
-    context = {'form':staff_form}
+    context = {
+        'form':staff_form,
+        'user_form':user_form
+        }
     return render(request, 'pages/manager/register_staff.html', context)
