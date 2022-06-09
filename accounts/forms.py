@@ -13,7 +13,7 @@ class CustomerForm(ModelForm):
 class ReaderForm(ModelForm):
 	class Meta:
 		model = Reader
-		fields = ['user','name','reader_type','address','email','date_created',]		
+		fields = ['user','name','reader_type','address','email']		
 
 class StaffForm(ModelForm):
 	class Meta:
