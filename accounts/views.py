@@ -1,8 +1,5 @@
-from pyexpat import model
-from statistics import mode
-from django.forms import Form
 from django.shortcuts import render, redirect 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -98,10 +95,24 @@ def accountSettings(request):
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
 
-def change_password(request):
-    context = {}
-    return render(request, 'pages/user_account/change_password.html', context)
+def password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('password_change_done')
+        else:
+            messages.error(request, 'Please correct the error below.')
 
+    context = {'form':form}
+    return render(request, 'pages/user_account/password_change.html', context)
+
+def password_change_done(request):
+    context = {}
+    return render(request, 'pages/user_account/password_change_done.html', context)
 
 
 # @login_required(login_url='login')
