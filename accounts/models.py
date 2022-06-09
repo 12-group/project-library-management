@@ -4,48 +4,16 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen
 
-# def pk_gen():
-# 	readers = Reader.objects.all()
-# 	pk = 0
-# 	for reader in readers:
-# 		pk += 1
-# 		if reader.pk != 'DG{}'.format(str(pk).zfill(6)):
-# 			print(reader.pk)
-# 			return 'DG{}'.format(str(pk).zfill(6))
-# 	pk += 1
-# 	return 'DG{}'.format(str(pk).zfill(6))
-
-
-# def staff_pk_gen():
-# 	staffs = Staff.objects.all()
-# 	pk = 0
-# 	for staff in staffs:
-# 		pk += 1
-# 		if staff.pk != 'NV{}'.format(str(pk).zfill(6)):
-# 			print(staff.pk)
-# 			return 'NV{}'.format(str(pk).zfill(6))
-# 	pk += 1
-# 	return 'NV{}'.format(str(pk).zfill(6))
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
 	birth = models.DateField(null=True, blank=True)
 	address = models.CharField(max_length=200, null=True, blank=True)
 	profile_pic = models.ImageField(default="profile_pic.png", null=True,blank=True)
-	date_created = models.DateTimeField(null=True,  blank=True)
+	date_created = models.DateTimeField(null=True, auto_now_add=True)
 
 	def __str__(self):
 		return self.name
-
-class Reader(Customer):
-	READER_TYPE = [
-		('Male', 'Nam'),
-		('Female', 'Nữ')
-	]
-	
-	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
-	email = models.EmailField(max_length=200, null=True, blank=True)
-	rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
 
 class Staff(Customer):
 	CETIFICATE = [
@@ -73,7 +41,19 @@ class Staff(Customer):
 	position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
 	service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
 	sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255)
-	# force_password_change = models.BooleanField(default=True)
+	force_password_change = models.BooleanField(default=True)
+
+class Reader(Customer):
+	READER_TYPE = [
+		('Male', 'Nam'),
+		('Female', 'Nữ')
+	]
+
+	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
+	email = models.EmailField(max_length=200, null=True, blank=True)
+	rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
+	card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+	total_debt = models.PositiveIntegerField(null=True, default=0)
 
 
 class BookCategory(models.Model):
@@ -88,11 +68,47 @@ class Book(models.Model):
 	cover_pic = models.ImageField(default="logo.png", null=True,blank=True)
 	ctg = models.ManyToManyField(BookCategory, blank=True)							# Category
 	author = models.CharField(max_length=200, null=True, blank=True)					# Author
-	price = models.PositiveIntegerField(null=True,blank=True)
-	quantity = models.PositiveIntegerField(null=True,blank=True)
+	price = models.PositiveIntegerField(null=True,default=0)
 	publisher = models.CharField(max_length=200, null=True, blank=True)
 	pubYear = models.PositiveIntegerField(default=datetime.date.today().year, validators=[MaxValueValidator(datetime.date.today().year+1), MinValueValidator(1500)])
 	addDate = models.DateTimeField(null=True, auto_now_add=True)
-
+	total = models.PositiveIntegerField(null=True,default=1)
+	number_of_book_remain = models.PositiveIntegerField(
+		null=True,
+		default=1,
+		validators=[MaxValueValidator(total), MinValueValidator(1)])
 	def __str__(self):
 		return self.name
+
+class BorrowBook(models.Model):
+	reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+	book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+	date_borrow = models.DateTimeField(null=True, auto_now_add=True)
+	def __init__(self, *args, **kwargs) -> None:
+		self.book.quantity -= 1
+		super().__init__(*args, **kwargs)
+
+class ReturnBook(models.Model):
+	reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+	book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+	date_return = models.DateTimeField(null=True, auto_now_add=True)
+	fine = models.PositiveIntegerField(null=True, default=0)
+
+class FineReceipts(models.Model):
+	reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+	staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+	proceeds = models.PositiveIntegerField(null=True, default=0)
+	date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
+
+class BookLiquidation(models.Model):
+	staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+	book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+	quantity = models.PositiveIntegerField(null=True, default=0)
+	reason = models.CharField(max_length=200, null=True, blank=True)
+	date_liquidation = models.DateTimeField(null=True, auto_now_add=True)
+
+class GetBook(models.Model):
+	staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+	book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+	quantity = models.PositiveIntegerField(null=True, default=0)
+	get_date = models.DateTimeField(null=True, auto_now_add=True)

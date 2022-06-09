@@ -14,6 +14,6 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Python version: 3.9.7
 - Django version: 4.0.1
 # Current status
-- Register page và Login page cho độc giả
+- Test lại model mới
 # Future works
-- Register page và Login page cho nhân viên
+- Chức năng mượn sách cho thủ thư
