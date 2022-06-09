@@ -19,6 +19,7 @@ class StaffForm(ModelForm):
 	class Meta:
 		model = Staff
 		fields = '__all__'
+		
 		exclude = ['sId','user']
 
 class CreateUserForm():
