@@ -18,7 +18,6 @@ def register(request):
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             user = form.save()
             group = Group.objects.get(name='reader')
@@ -128,10 +127,21 @@ def get_username(request):
         username = request.user.username
     return username
 
+def get_user_from_email(email):
+    return User.objects.get(id=2)
 def register_reader(request):
-    username = get_username(request)
-    reader = ReaderForm()
-    return render(request,'pages/librarian/register_reader.html',{"username":username,'reader':reader})
+    form = ReaderForm()
+    if request.method == 'POST':
+        form = ReaderForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            print('email:',user.email,'')
+            print(get_username(request))
+            if user.email is not None:
+                user_acc = User.objects.get(email = user.email)
+            messages.success(request, 'Thêm độc giả thành công thành công.')
+            return redirect('librarian')
+    return render(request,'pages/librarian/register_reader.html',{'form':form})
 def request_onl(request):
     return render(request,'pages/librarian/request_online.html')
 def request_off(request):
