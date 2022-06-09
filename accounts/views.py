@@ -16,17 +16,19 @@ from .initial_func import username_gen
 # @unauthenticated_user
 def register(request):
     form = CreateUserForm()
+
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
+        
         if form.is_valid():
             user = form.save()
-            group = Group.objects.get(name='reader')
-            user.groups.add(group)
-            Reader.objects.create(
-                user=user,
-                name=user.username,
-                email=user.email
-                )
+            # group = Group.objects.get(name='reader')
+            # user.groups.add(group)
+            # Reader.objects.create(
+            #     user=user,
+            #     name=user.username,
+            #     email=user.email
+            #     )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -139,7 +141,7 @@ def register_reader(request):
             print(get_username(request))
             if user.email is not None:
                 user_acc = User.objects.get(email = user.email)
-            messages.success(request, 'Thêm độc giả thành công thành công.')
+            messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 def request_onl(request):
