@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen
-import warnings
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True,blank=True,on_delete=models.CASCADE)

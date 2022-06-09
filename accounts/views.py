@@ -13,13 +13,18 @@ from .decorators import *
 
 from .initial_func import username_gen
 
+def is_in_group(check_group, groups):
+    if check_group in [group.name for group in groups]:
+        return True
+    return False
+
 # @unauthenticated_user
 def register(request):
     form = CreateUserForm()
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        
+
         if form.is_valid():
             user = form.save()
             # group = Group.objects.get(name='reader')
@@ -67,17 +72,24 @@ def accountSettings(request):
     
     if request.user.groups.exists():
         groups = request.user.groups.all()
-    if 'reader' in [group.name for group in groups]:
+
+    # if 'reader' in [group.name for group in groups]:
+    if is_in_group('reader', groups):
         reader = request.user.customer.reader
         form = ReaderForm(instance=reader)
-    elif 'staff' in [group.name for group in groups]:
+
+    # elif 'staff' in [group.name for group in groups]:
+    elif is_in_group('staff', groups):
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
 
     if request.method == 'POST':
-        if 'reader' in [group.name for group in groups]:
+        # if 'reader' in [group.name for group in groups]:
+        if is_in_group('reader', groups):
             form = ReaderForm(request.POST, request.FILES,instance=reader)
-        elif 'staff' in [group.name for group in groups]:
+
+        # elif 'staff' in [group.name for group in groups]:
+        if is_in_group('staff', groups):
             form = StaffForm(request.POST, request.FILES,instance=staff)
 
         if form.is_valid():

@@ -19,8 +19,8 @@ class StaffForm(ModelForm):
 	class Meta:
 		model = Staff
 		fields = '__all__'
-		
-		exclude = ['sId','user']
+
+		exclude = ['sId','user','force_password_change']
 
 class CreateUserForm():
 	class Meta:
