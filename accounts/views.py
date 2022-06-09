@@ -24,13 +24,13 @@ def register(request):
 
         if form.is_valid():
             user = form.save()
-            # group = Group.objects.get(name='reader')
-            # user.groups.add(group)
-            # Reader.objects.create(
-            #     user=user,
-            #     name=user.username,
-            #     email=user.email
-            #     )
+            group = Group.objects.get(name='reader')
+            user.groups.add(group)
+            Reader.objects.create(
+                user=user,
+                name=user.username,
+                email=user.email
+                )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -127,6 +127,7 @@ def home(request):
 
 def search_book(request):
     return render(request,'pages/reader/search.html')
+
 def search_result_book(request):
     books = Book.objects.all()
     num_books = len(books)
@@ -137,14 +138,18 @@ def detail_info_book(request,pk):
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
-   return render(request,'pages/reader/cart.html')
+    context = {}
+    return render(request,'pages/reader/cart.html',context)
 
 #--THỦ THƯ
 def librarian_home(request):
     readers = Reader.objects.all()
-    return render(request,'pages/librarian/reader_list.html',{'readers':readers})
+    context = {'readers':readers}
+    return render(request,'pages/librarian/reader_list.html',context)
+
 def borrowers(request):
-    return render(request,'pages/librarian/borrower_list.html')
+    context = {}
+    return render(request,'pages/librarian/borrower_list.html',context)
 
 def get_username(request):
     username = None
@@ -154,6 +159,7 @@ def get_username(request):
 
 def get_user_from_email(email):
     return User.objects.get(id=2)
+
 def register_reader(request):
     form = ReaderForm()
     if request.method == 'POST':
@@ -167,12 +173,16 @@ def register_reader(request):
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
+
 def request_onl(request):
     return render(request,'pages/librarian/request_online.html')
+
 def request_off(request):
     return render(request,'pages/librarian/request_offline.html')
+
 def return_book(request):
     return render(request,'pages/librarian/return_book.html')
+
 def penalty_ticket(request):
     return render(request,'pages/librarian/penalty_ticket.html')
 

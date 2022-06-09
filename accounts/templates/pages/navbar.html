@@ -42,13 +42,13 @@
     </nav>
     {% if request.user.is_authenticated %}
     <div class="navbars">
-        {% if request.user.groups.all.0.name == "reader" %}
+        {% comment %} {% if request.user.groups.all.0.name == "reader" %} {% endcomment %}
         <ul class="navbar-nav" style="margin-right:50px;">
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'search' %}">Tìm kiếm sách<span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
         <ul class="navbar-nav">
             <li class="nav-item dropdown dropleft">
                 <i class="nav-link bi bi-person " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -62,11 +62,11 @@
                     <a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a>
                 </div>
             </li>
-            {% if request.user.groups.all.0.name == "reader" %}
+            {% comment %} {% if request.user.groups.all.0.name == "reader" %} {% endcomment %}
             <li class="nav-item active">
-                <a class="nav-link" href="#"><i class="bi bi-bag"></i><span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'cart' %}"><i class="bi bi-bag"></i><span class="sr-only">(current)</span></a>
             </li>
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
         </ul>
     </div>
     {% else %}
