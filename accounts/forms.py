@@ -13,8 +13,7 @@ class CustomerForm(ModelForm):
 class ReaderForm(ModelForm):
 	class Meta:
 		model = Reader
-		fields = ['name','reader_type','address','email','date_created',]
-		
+		fields = ['user','name','reader_type','address','email','date_created',]		
 
 class StaffForm(ModelForm):
 	class Meta:
@@ -22,7 +21,7 @@ class StaffForm(ModelForm):
 		fields = '__all__'
 		exclude = ['sId','user']
 
-class CreateUserForm(UserCreationForm):
+class CreateUserForm():
 	class Meta:
 		model = User
 		fields = ['username', 'email', 'password1', 'password2']

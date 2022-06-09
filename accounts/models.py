@@ -42,7 +42,7 @@ class Reader(Customer):
 		('Male', 'Nam'),
 		('Female', 'Nữ')
 	]
-
+	
 	reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
 	email = models.EmailField(max_length=200, null=True, blank=True)
 	rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
