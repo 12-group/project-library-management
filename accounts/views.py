@@ -42,7 +42,7 @@ def loginPage(request):
 
         user = authenticate(request, username=username, password=password)
 
-        if username =='':
+        if username == '':
             messages.info(request, 'Tên đăng nhập không được để trống')
         elif password == '' : 
             messages.info(request, 'Mật khẩu không được bỏ trống')
@@ -192,7 +192,7 @@ def add_staff(request):
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
             
-            print(username_gen())
+            # print(username_gen())
             user = User.objects.create_user(
                 username_gen(),
                 '',
