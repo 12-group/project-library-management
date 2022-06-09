@@ -63,7 +63,7 @@ def logoutUser(request):
 def accountSettings(request):
     groups = None
     form = None
-    print(request.user.groups)
+    
     if request.user.groups.exists():
         groups = request.user.groups.all()
     if 'reader' in [group.name for group in groups]:
