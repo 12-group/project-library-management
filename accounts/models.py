@@ -11,9 +11,10 @@ class Customer(models.Model):
     address = models.CharField(max_length=200, null=True, blank=True)
     profile_pic = models.ImageField(default="profile_pic.png", null=True, blank=True)
     date_created = models.DateTimeField(null=True, auto_now_add=True)
-
+        
     def __str__(self):
         return self.name
+
 
 class Staff(Customer):
     CETIFICATE = [

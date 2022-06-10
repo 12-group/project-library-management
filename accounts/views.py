@@ -130,12 +130,12 @@ def home(request):
     return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
-    return render(request,'pages/reader/search.html')
 
-def search_result_book(request):
+        
+
     books = Book.objects.all()
     num_books = len(books)
-    return render(request,'pages/reader/search_result.html',{'books':books,'num_books':num_books})
+    return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
 
 def detail_info_book(request,pk):
     book = Book.objects.get(id=pk)	
@@ -172,7 +172,6 @@ def register_reader(request):
     if request.method == 'POST':
         form = ReaderForm(request.POST)
         if form.is_valid():
-            print(get_username(request))
             email = form.cleaned_data['email']
             user = get_object(email)
             if user is None:
