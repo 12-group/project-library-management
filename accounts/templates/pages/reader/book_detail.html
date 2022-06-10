@@ -43,10 +43,10 @@
         <div class="col-sm-8" style="padding: 30px 50px;">
             <p class="book-name">{{book.name}}</p>
             <div class="book-info">
-                <p>Tác giả: {{book.auth}}</p>
+                <p>Tác giả: {{book.author}}</p>
                 <p>Năm xuất bản: {{book.publisher}} </p>
                 <p>Đáng giá: </p>
-                <p>Trạng thái: </p>
+                <p>Trạng thái: {% if book.number_of_book_remain > 0 %} <span style= " background:green; padding:2px 10px; border-radius:5px; ">Có sẵn</span> {% else %} <span style= " background:red; padding:2px 10px; border-radius:5px; ">Đã được mượn</span>{% endif %}  </p>
             </div>                
             <button type="button" class="btn btn-outline-primary" style="margin-top:20px;">Thêm vào giỏ hàng</button>
         </div>

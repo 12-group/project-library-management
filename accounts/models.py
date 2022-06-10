@@ -11,9 +11,10 @@ class Customer(models.Model):
     address = models.CharField(max_length=200, null=True, blank=True)
     profile_pic = models.ImageField(default="profile_pic.png", null=True, blank=True)
     date_created = models.DateTimeField(null=True, auto_now_add=True)
-
+        
     def __str__(self):
         return self.name
+
 
 class Staff(Customer):
     CETIFICATE = [
@@ -35,7 +36,7 @@ class Staff(Customer):
         ('Librarian', 'Thủ thư'), 
         ('Cashier', 'Thủ quỹ'), 
         ('Stockkeeper', 'Thủ kho'), 
-        ('Board of manager', 'Ban giám đốc'), 
+        ('Manager deparment', 'Ban giám đốc'), 
     ]
     certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
     position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
@@ -51,9 +52,10 @@ class Reader(Customer):
 
     reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
-    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
+    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)	
     card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     total_debt = models.PositiveIntegerField(null=True, default=0)
+    creator = models.CharField(max_length=200, null=True)
 
 
 class BookCategory(models.Model):
