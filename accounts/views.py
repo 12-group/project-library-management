@@ -28,11 +28,11 @@ def register(request):
             if group == None:
                 raise ValueError('Chưa có group reader')
             user.groups.add(group)
-            Reader.objects.create(
-                user=user,
-                name=user.username,
-                email=user.email
-                )
+            #Reader.objects.create(
+            #    user=user,
+            #    name=user.username,
+            #    email=user.email
+            #    )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -132,12 +132,12 @@ def home(request):
     return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
-    return render(request,'pages/reader/search.html')
 
-def search_result_book(request):
+        
+
     books = Book.objects.all()
     num_books = len(books)
-    return render(request,'pages/reader/search_result.html',{'books':books,'num_books':num_books})
+    return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
 
 def detail_info_book(request,pk):
     book = Book.objects.get(id=pk)	
@@ -163,19 +163,30 @@ def get_username(request):
         username = request.user.username
     return username
 
-def get_user_from_email(email):
-    return User.objects.get(id=2)
+def get_object(email):
+    try:
+        return User.objects.get(email=email)
+    except User.DoesNotExist:
+        return None
 
 def register_reader(request):
     form = ReaderForm()
     if request.method == 'POST':
         form = ReaderForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            print('email:',user.email,'')
-            print(get_username(request))
-            if user.email is not None:
-                user_acc = User.objects.get(email = user.email)
+            email = form.cleaned_data['email']
+            user = get_object(email)
+            if user is None:
+                messages.info(request,'Email không phù hợp với user nào')
+            else: 
+                rd = Reader()
+                rd.name = form.cleaned_data['name']
+                rd.reader_type = form.cleaned_data['reader_type']
+                rd.address = form.cleaned_data['address']
+                rd.email = email
+                rd.user = user
+                rd.creator = get_username(request)
+                rd.save()
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
