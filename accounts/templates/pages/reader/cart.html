@@ -1,8 +1,74 @@
-{% extends 'pages/main/main.html' %}
-{% load static %}
-{% block content %}
+{% extends 'pages/main/main.html' %} {% load static %} {% block content %}
 
 
+<section class="h-100" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-normal mb-0 text-black">Giỏ hàng</h3>
+                </div>
+                {% for i in books %}
+                <div class="card rounded-3 mb-4">
+                    <div class="card-body p-4">
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                {% static "" as baseUrl %}
+                                <img src="{{baseUrl}}images/{{i.cover_pic}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+                            </div>
+                            <div class="col ">
+                                <a class="lead fw-normal mb-2" href="{% url 'detail' i.id %}" style="color:black ;">{{i.name}}</a>
+                                <p><span class="text-muted">Trạng thái: </span>{{i.number_of_book_remain}}</p>
+                            </div>
 
 
-{% endblock %}
+                            <div class="col text-end">
+                                <label><input type="checkbox" onclick="count_checked()"/></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-normal mb-0 text-black">Số lượng:
+                        <span id="count"></span>/5
+                        </span>
+                    </h6>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal">Đăng ký mượn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="myModal_dangkymuon" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE876;</i>
+                </div>
+                <h4 class="modal-title w-100">Đăng ký thành công!</h4>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'cart' %}">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+    function count_checked() {
+        var numberOfChecked = $('input:checkbox:checked').length;
+        document.getElementById("count").innerHTML = numberOfChecked
+    }
+</script>
+
+
+{% endblock content %}
