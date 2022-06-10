@@ -11,11 +11,12 @@ urlpatterns = [
 
    path('login/', views.loginPage,name='login'),
    path('register/', views.register,name='register'),
-   path('logout/', views.logoutUser, name="logout"),
-   path('reset_pass/', views.home,name='reset_password'),
+   path('logout/', views.logoutUser, name='logout'),
+   path('password_change/', views.password_change,name='password_change'),
+   path('password_change_done/', views.password_change_done,name='password_change_done'),
    path('account/', views.accountSettings, name='account'),
 
-   #
+   
    path('librarian/', views.librarian_home, name="librarian"),
    path('borrowers/', views.borrowers, name="borrowers"),
    path('register_reader/', views.register_reader, name="register_reader"),

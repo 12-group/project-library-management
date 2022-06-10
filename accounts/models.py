@@ -74,13 +74,35 @@ class Book(models.Model):
 	addDate = models.DateTimeField(null=True, auto_now_add=True)
 	total = models.PositiveIntegerField(null=True,default=1)
 	number_of_book_remain = models.PositiveIntegerField(null=True,default=1)
+	description = models.CharField(max_length=200, null=True, blank=True)
+
 	def __str__(self):
 		return self.name
+	def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None) -> None:
+		if self.total < self.number_of_book_remain:
+			raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
+
+		return super().save(force_insert, force_update, using, update_fields)
+
 
 class BorrowBook(models.Model):
 	reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
 	book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
 	date_borrow = models.DateTimeField(null=True, auto_now_add=True)
+	
+	def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None) -> None:
+		if self.book != None:
+			if self.book.number_of_book_remain == 0:
+				raise ValueError('Sách ' + self.book.name + ' không còn')
+			else:
+				self.book.number_of_book_remain -= 1
+				self.book.save()
+		return super().save(force_insert, force_update, using, update_fields)
+	
+	def __str__(self):
+		return self.reader.name + " " + self.book.name
 
 class ReturnBook(models.Model):
 	reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)

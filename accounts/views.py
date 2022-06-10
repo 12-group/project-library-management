@@ -1,8 +1,5 @@
-from pyexpat import model
-from statistics import mode
-from django.forms import Form
 from django.shortcuts import render, redirect 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -13,11 +10,18 @@ from .decorators import *
 
 from .initial_func import username_gen
 
+def is_in_group(check_group, groups):
+    if check_group in [group.name for group in groups]:
+        return True
+    return False
+
 # @unauthenticated_user
 def register(request):
     form = CreateUserForm()
+
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
+
         if form.is_valid():
             user = form.save()
             group = Group.objects.get(name='reader')
@@ -42,7 +46,7 @@ def loginPage(request):
 
         user = authenticate(request, username=username, password=password)
 
-        if username =='':
+        if username == '':
             messages.info(request, 'Tên đăng nhập không được để trống')
         elif password == '' : 
             messages.info(request, 'Mật khẩu không được bỏ trống')
@@ -65,17 +69,24 @@ def accountSettings(request):
     
     if request.user.groups.exists():
         groups = request.user.groups.all()
-    if 'reader' in [group.name for group in groups]:
+
+    # if 'reader' in [group.name for group in groups]:
+    if is_in_group('reader', groups):
         reader = request.user.customer.reader
         form = ReaderForm(instance=reader)
-    elif 'staff' in [group.name for group in groups]:
+
+    # elif 'staff' in [group.name for group in groups]:
+    elif is_in_group('staff', groups):
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
 
     if request.method == 'POST':
-        if 'reader' in [group.name for group in groups]:
+        # if 'reader' in [group.name for group in groups]:
+        if is_in_group('reader', groups):
             form = ReaderForm(request.POST, request.FILES,instance=reader)
-        elif 'staff' in [group.name for group in groups]:
+
+        # elif 'staff' in [group.name for group in groups]:
+        if is_in_group('staff', groups):
             form = StaffForm(request.POST, request.FILES,instance=staff)
 
         if form.is_valid():
@@ -84,10 +95,24 @@ def accountSettings(request):
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
 
-def change_password(request):
-    context = {}
-    return render(request, 'pages/user_account/change_password.html', context)
+def password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('password_change_done')
+        else:
+            messages.error(request, 'Please correct the error below.')
 
+    context = {'form':form}
+    return render(request, 'pages/user_account/password_change.html', context)
+
+def password_change_done(request):
+    context = {}
+    return render(request, 'pages/user_account/password_change_done.html', context)
 
 
 # @login_required(login_url='login')
@@ -102,6 +127,7 @@ def home(request):
 
 def search_book(request):
     return render(request,'pages/reader/search.html')
+
 def search_result_book(request):
     books = Book.objects.all()
     num_books = len(books)
@@ -112,15 +138,23 @@ def detail_info_book(request,pk):
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
+<<<<<<< HEAD
     books = Book.objects.all()
     return render(request,'pages/reader/cart.html',{'books':books})
+=======
+    context = {}
+    return render(request,'pages/reader/cart.html',context)
+>>>>>>> 5729f7e61e5e684e45b2fd0b1998fae01ea5aa91
 
 #--THỦ THƯ
 def librarian_home(request):
     readers = Reader.objects.all()
-    return render(request,'pages/librarian/reader_list.html',{'readers':readers})
+    context = {'readers':readers}
+    return render(request,'pages/librarian/reader_list.html',context)
+
 def borrowers(request):
-    return render(request,'pages/librarian/borrower_list.html')
+    context = {}
+    return render(request,'pages/librarian/borrower_list.html',context)
 
 def get_username(request):
     username = None
@@ -130,6 +164,7 @@ def get_username(request):
 
 def get_user_from_email(email):
     return User.objects.get(id=2)
+
 def register_reader(request):
     form = ReaderForm()
     if request.method == 'POST':
@@ -140,15 +175,19 @@ def register_reader(request):
             print(get_username(request))
             if user.email is not None:
                 user_acc = User.objects.get(email = user.email)
-            messages.success(request, 'Thêm độc giả thành công thành công.')
+            messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
+
 def request_onl(request):
     return render(request,'pages/librarian/request_online.html')
+
 def request_off(request):
     return render(request,'pages/librarian/request_offline.html')
+
 def return_book(request):
     return render(request,'pages/librarian/return_book.html')
+
 def penalty_ticket(request):
     return render(request,'pages/librarian/penalty_ticket.html')
 
@@ -193,7 +232,7 @@ def add_staff(request):
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
             
-            print(username_gen())
+            # print(username_gen())
             user = User.objects.create_user(
                 username_gen(),
                 '',
