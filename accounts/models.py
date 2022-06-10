@@ -51,9 +51,10 @@ class Reader(Customer):
 
     reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
-    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)
+    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)	
     card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     total_debt = models.PositiveIntegerField(null=True, default=0)
+    creator = models.CharField(max_length=200, null=True)
 
 
 class BookCategory(models.Model):

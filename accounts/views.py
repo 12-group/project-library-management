@@ -161,8 +161,11 @@ def get_username(request):
         username = request.user.username
     return username
 
-def get_user_from_email(email):
-    return User.objects.get(id=2)
+def get_object(email):
+    try:
+        return User.objects.get(email=email)
+    except User.DoesNotExist:
+        return None
 
 def register_reader(request):
     form = ReaderForm()
@@ -171,15 +174,17 @@ def register_reader(request):
         if form.is_valid():
             print(get_username(request))
             email = form.cleaned_data['email']
-            user = User.objects.get(email=email)
-            if user is not None: 
-                print("not none")
+            user = get_object(email)
+            if user is None:
+                messages.info(request,'Email không phù hợp với user nào')
+            else: 
                 rd = Reader()
                 rd.name = form.cleaned_data['name']
                 rd.reader_type = form.cleaned_data['reader_type']
                 rd.address = form.cleaned_data['address']
                 rd.email = email
                 rd.user = user
+                rd.creator = get_username(request)
                 rd.save()
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
