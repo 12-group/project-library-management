@@ -35,7 +35,7 @@ class Staff(Customer):
         ('Librarian', 'Thủ thư'), 
         ('Cashier', 'Thủ quỹ'), 
         ('Stockkeeper', 'Thủ kho'), 
-        ('Board of manager', 'Ban giám đốc'), 
+        ('Manager deparment', 'Ban giám đốc'), 
     ]
     certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
     position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)

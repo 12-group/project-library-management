@@ -25,6 +25,8 @@ def register(request):
         if form.is_valid():
             user = form.save()
             group = Group.objects.get(name='reader')
+            if group == None:
+                raise ValueError('Chưa có group reader')
             user.groups.add(group)
             Reader.objects.create(
                 user=user,
