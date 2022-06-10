@@ -26,11 +26,11 @@ def register(request):
             user = form.save()
             group = Group.objects.get(name='reader')
             user.groups.add(group)
-            Reader.objects.create(
-                user=user,
-                name=user.username,
-                email=user.email
-                )
+            #Reader.objects.create(
+            #    user=user,
+            #    name=user.username,
+            #    email=user.email
+            #    )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -165,11 +165,18 @@ def register_reader(request):
     if request.method == 'POST':
         form = ReaderForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            print('email:',user.email,'')
             print(get_username(request))
-            if user.email is not None:
-                user_acc = User.objects.get(email = user.email)
+            email = form.cleaned_data['email']
+            user = User.objects.get(email=email)
+            if user is not None: 
+                print("not none")
+                rd = Reader()
+                rd.name = form.cleaned_data['name']
+                rd.reader_type = form.cleaned_data['reader_type']
+                rd.address = form.cleaned_data['address']
+                rd.email = email
+                rd.user = user
+                rd.save()
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
