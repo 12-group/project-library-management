@@ -138,13 +138,8 @@ def detail_info_book(request,pk):
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
-<<<<<<< HEAD
     books = Book.objects.all()
     return render(request,'pages/reader/cart.html',{'books':books})
-=======
-    context = {}
-    return render(request,'pages/reader/cart.html',context)
->>>>>>> 5729f7e61e5e684e45b2fd0b1998fae01ea5aa91
 
 #--THỦ THƯ
 def librarian_home(request):
