@@ -1,3 +1,4 @@
+from csv import reader
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
@@ -179,16 +180,27 @@ def register_reader(request):
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 
 def request_onl(request):
-    return render(request,'pages/librarian/request_online.html')
+    readers = Reader.objects.all()
+    books = Book.objects.all()
+    context = {'readers': readers,
+                'books': books}
+    return render(request,'pages/librarian/request_online.html',context)
 
 def request_off(request):
+    readers = Reader.objects.all()
+    books = Book.objects.all()
+    context = {'readers': readers,
+                'books': books}
     return render(request,'pages/librarian/request_offline.html')
 
 def return_book(request):
-    return render(request,'pages/librarian/return_book.html')
+    return_books = ReturnBook.objects.all()
+    context = {'return_books': return_books}
+    return render(request,'pages/librarian/return_book.html', context)
 
-def penalty_ticket(request):
-    return render(request,'pages/librarian/penalty_ticket.html')
+def penalty_ticket(request,pk):
+    ticket = FineReceipts.objects.get(id=pk)
+    return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
 
 #---THỦ KHO
 def list_book(request):
