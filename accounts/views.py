@@ -59,10 +59,12 @@ def loginPage(request):
     context = {}
     return render(request, 'pages/user_account/login.html', context)
 
+# @login_required(login_url='login')
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
+# @login_required(login_url='login')
 def accountSettings(request):
     groups = None
     form = None
@@ -95,6 +97,8 @@ def accountSettings(request):
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
 
+
+# @login_required(login_url='login')
 def password_change(request):
     form = PasswordChangeForm(request.user)
     if request.method == 'POST':
