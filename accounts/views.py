@@ -64,7 +64,7 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def accountSettings(request):
     groups = None
     form = None
