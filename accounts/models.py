@@ -115,6 +115,7 @@ class FineReceipts(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     proceeds = models.PositiveIntegerField(null=True, default=0)
     date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
+    reason = models.CharField(max_length=200, null=True, blank=True)
 
 class BookLiquidation(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
