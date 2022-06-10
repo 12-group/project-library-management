@@ -212,7 +212,7 @@ def return_book(request):
     return render(request,'pages/librarian/return_book.html', context)
 
 def penalty_ticket(request,pk):
-    ticket = FineReceipts.objects.get(id=pk)
+    ticket = PenaltyTicket.objects.get(id=pk)
     return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
 
 #---THỦ KHO
