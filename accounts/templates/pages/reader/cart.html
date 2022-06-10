@@ -1,52 +1,74 @@
-{% load static %}
+{% extends 'pages/main/main.html' %} {% load static %} {% block content %}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Library</title>
-	<link rel="stylesheet" href="{% static '/css/main.css' %}">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
-	
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-	<style>
-    .ui-datepicker-calendar {
-        display: none;
-        }
-	</style>
-  
-</head>
 
-<body>
-  <h2>Bootstrap - year picker only example</h2>
-     <input class="date-own form-control" style="width: 100px;" type="text">
-     <input type="number" min="1900" max="2022" step="1" value="2022" />
-     <label for="startYear"> Start Year: </label>
-  <input name="startYear" id="startYear" class="date-picker-year" />
-</body>
+<section class="h-100" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-normal mb-0 text-black">Giỏ hàng</h3>
+                </div>
+                {% for i in books %}
+                <div class="card rounded-3 mb-4">
+                    <div class="card-body p-4">
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                {% static "" as baseUrl %}
+                                <img src="{{baseUrl}}images/{{i.cover_pic}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+                            </div>
+                            <div class="col ">
+                                <a class="lead fw-normal mb-2" href="{% url 'detail' i.id %}" style="color:black ;">{{i.name}}</a>
+                                <p><span class="text-muted">Trạng thái: </span>{{i.number_of_book_remain}}</p>
+                            </div>
+
+
+                            <div class="col text-end">
+                                <label><input type="checkbox" onclick="count_checked()"/></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-normal mb-0 text-black">Số lượng:
+                        <span id="count"></span>/5
+                        </span>
+                    </h6>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal">Đăng ký mượn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="myModal_dangkymuon" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE876;</i>
+                </div>
+                <h4 class="modal-title w-100">Đăng ký thành công!</h4>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'cart' %}">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
-    
-   $(function() {
-    $('#datepicker1').datepicker( {
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
-        dateFormat: 'MM yy',
-        onClose: function(dateText, inst) { 
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-            $(this).datepicker('setDate', new Date(year, month, 1));
-        }
-        });
-    });​
+    function count_checked() {
+        var numberOfChecked = $('input:checkbox:checked').length;
+        document.getElementById("count").innerHTML = numberOfChecked
+    }
 </script>
-</html>
+
+
+{% endblock content %}
