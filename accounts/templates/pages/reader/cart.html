@@ -1,7 +1,7 @@
 {% extends 'pages/main/main.html' %} {% load static %} {% block content %}
 
 
-<section class="h-100" style="background-color: #eee;">
+<section class="h-100" >
     <div class="container h-100 py-5">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-10">
@@ -15,21 +15,26 @@
                         <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-md-2 col-lg-2 col-xl-2">
                                 {% static "" as baseUrl %}
-                                <img src="{{baseUrl}}images/{{i.cover_pic}}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                <img src="{{baseUrl}}images/{{i.book.cover_pic}}" class="img-fluid rounded-3">
                             </div>
                             <div class="col ">
-                                <a class="lead fw-normal mb-2" href="{% url 'detail' i.id %}" style="color:black ;">{{i.name}}</a>
-                                <p><span class="text-muted">Số lượng còn lại: </span>{{i.number_of_book_remain}}</p>
+                                <a class="lead fw-normal mb-2" href="{% url 'detail' i.id %}" style="color:black ;">{{i.book.name}}</a>
+                                <p><span class="text-muted">Số lượng còn lại: </span>{{i.book.number_of_book_remain}}</p>
                             </div>
 
 
                             <div class="col text-end">
-                                <label><input type="checkbox" onclick="count_checked()"/></label>
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Xóa khỏi giỏ hàng" class="btn btn-outline-danger" href ="{% url 'cart' %}">
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                {% if count_book > 0 %}
+
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-normal mb-0 text-black">Số lượng:
                         <span id="count"></span>/5
@@ -38,9 +43,17 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <a href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal">Đăng ký mượn</a>
+                    <form action="" method="post">
+                    {% csrf_token %}    
+                        <input type="submit"  href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal"  value="Đăng ký mượn">
                     </div>
                 </div>
+                {% else %}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-normal mb-0 text-black">Giỏ hàng trống</h6>
+                </div>
+
+                {% endif %}
             </div>
         </div>
     </div>

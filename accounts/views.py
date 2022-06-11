@@ -117,6 +117,11 @@ def password_change_done(request):
     context = {}
     return render(request, 'pages/user_account/password_change_done.html', context)
 
+def get_username(request):
+    username = None
+    if request.user.is_authenticated:
+        username = request.user.username
+    return username
 
 # @login_required(login_url='login')
 # @admin_only
@@ -135,16 +140,34 @@ def search_book(request):
     books = Book.objects.all()
     num_books = len(books)
     return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
-
+def get_Cart_from_Reader_and_book(reader,book):
+    try:
+        return Cart.objects.get(reader = reader, book = book)
+    except Cart.DoesNotExist:
+        return None
 def detail_info_book(request,pk):
-    book = Book.objects.get(id=pk)	
-    books = []
+    book = Book.objects.get(id=pk)
+    user = User.objects.get(username =get_username(request) )
+    reader = Reader.objects.get(user=user)
 
-    return render(request,'pages/reader/book_detail.html',{'book':book,'books':books})
+    if request.method == 'POST':
+        if get_Cart_from_Reader_and_book(reader,book) is None:
+            cart = Cart()
+            cart.reader = reader
+            cart.book = book 
+            cart.save()
+        else:
+            raise ValueError('Đã có trong giỏ hàng')
+    return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
-    books = Book.objects.all()
-    return render(request,'pages/reader/cart.html',{'books':books})
+    user = User.objects.get(username =get_username(request) )
+    reader = Reader.objects.get(user=user)
+    books = Cart.objects.filter(reader = reader)
+    count_book = len(books)
+    if request.method == 'POST':
+        Cart.objects.filter(reader = reader).delete()
+    return render(request,'pages/reader/cart.html',{'books':books,'count_books':count_book})
 
 #--THỦ THƯ
 def librarian_home(request):
@@ -155,6 +178,13 @@ def librarian_home(request):
 def borrowers(request):
     context = {}
     return render(request,'pages/librarian/borrower_list.html',context)
+
+
+def get_object(email):
+    try:
+        return User.objects.get(email=email)
+    except User.DoesNotExist:
+        return None
 
 @login_required(login_url='login')
 def register_reader(request):
