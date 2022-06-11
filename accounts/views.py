@@ -146,7 +146,7 @@ def get_Cart_from_Reader_and_book(reader,book):
     except Cart.DoesNotExist:
         return None
 def detail_info_book(request,pk):
-    book = Book.objects.get(id=pk)
+    book = Book.objects.get(bId=pk)
     user = User.objects.get(username =get_username(request) )
     reader = Reader.objects.get(user=user)
 
@@ -163,11 +163,15 @@ def detail_info_book(request,pk):
 def cart(request):
     user = User.objects.get(username =get_username(request) )
     reader = Reader.objects.get(user=user)
-    books = Cart.objects.filter(reader = reader)
-    count_book = len(books)
+    cart = Cart.objects.filter(reader = reader)
+    count_book = len(cart)
     if request.method == 'POST':
         Cart.objects.filter(reader = reader).delete()
-    return render(request,'pages/reader/cart.html',{'books':books,'count_books':count_book})
+    context = {
+        'books':cart,
+        'count_books':count_book
+        }
+    return render(request,'pages/reader/cart.html',context)
 
 #--THỦ THƯ
 def librarian_home(request):

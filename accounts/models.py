@@ -91,7 +91,7 @@ class Book(models.Model):
         return super().save(force_insert, force_update, using, update_fields)
 
 class Cart(models.Model):
-    reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+    reader = models.OneToOneField(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
