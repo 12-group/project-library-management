@@ -122,12 +122,20 @@ class FineReceipts(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     proceeds = models.PositiveIntegerField(null=True, default=0)
     date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
-    
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+        return super().save(force_insert, force_update, using, update_fields)
+
+
 class PenaltyTicket(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     reason = models.CharField(max_length=200, null=True, blank=True)
     fine = models.PositiveIntegerField(null=True, default=0)
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+        return super().save(force_insert, force_update, using, update_fields)
+
 class BookLiquidation(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)

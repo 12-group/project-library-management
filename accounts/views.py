@@ -10,7 +10,6 @@ from .forms import *
 from .decorators import *
 
 from .initial_func import username_gen
-DEFAULT_PASSWORD = 'password'
 
 def is_in_group(check_group, groups):
     if check_group in [group.name for group in groups]:
