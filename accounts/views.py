@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.db import IntegrityError
 
 from .models import *
 from .forms import *
@@ -203,11 +204,16 @@ def register_reader(request):
 
         if form.is_valid():
 
+            
             reader = form.save()
             reader.user = user
             reader.card_maker = request.user.customer.staff
-            print(reader)
-            reader.save()
+            try:
+                reader.save()
+            except IntegrityError:
+                messages.error(request, 'Đã có độc giả/nhân viên khác sử dụng tài khoản ' + user.username)
+                reader.delete()
+                return redirect('register_reader')
 
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
