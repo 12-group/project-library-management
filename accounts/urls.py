@@ -22,7 +22,7 @@ urlpatterns = [
    path('request_onl/', views.request_onl, name="request_onl"),
    path('request_off/', views.request_off, name="request_off"),
    path('return_books/', views.return_book, name="return_books"),
-   path('penalty_ticket/', views.penalty_ticket, name="penalty_ticket"),
+   path('penalty_ticket/<str:pk>/', views.penalty_ticket, name="penalty_ticket"),
 
    path('manager/manager_dashboard/', views.manager_dashboard, name="manager_dashboard"),
    path('manager/add_staff/', views.add_staff, name="add_staff"),

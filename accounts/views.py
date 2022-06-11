@@ -1,3 +1,4 @@
+from csv import reader
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
@@ -25,12 +26,14 @@ def register(request):
         if form.is_valid():
             user = form.save()
             group = Group.objects.get(name='reader')
+            if group == None:
+                raise ValueError('Chưa có group reader')
             user.groups.add(group)
-            #Reader.objects.create(
-            #    user=user,
-            #    name=user.username,
-            #    email=user.email
-            #    )
+            # Reader.objects.create(
+            #     user=user,
+            #     name=user.username,
+            #     email=user.email
+            #     )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -64,7 +67,7 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def accountSettings(request):
     groups = None
     form = None
@@ -173,41 +176,65 @@ def register_reader(request):
         form = ReaderForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            user = get_object(email)
+
+            user = get_object(email) # tim theo username
+
             if user is None:
                 messages.info(request,'Email không phù hợp với user nào')
             else: 
-                rd = Reader()
-                rd.name = form.cleaned_data['name']
-                rd.reader_type = form.cleaned_data['reader_type']
-                rd.address = form.cleaned_data['address']
-                rd.email = email
-                rd.user = user
-                rd.creator = get_username(request)
-                rd.save()
+                # rd = Reader()
+                # rd.name = form.cleaned_data['name']
+                # rd.reader_type = form.cleaned_data['reader_type']
+                # rd.address = form.cleaned_data['address']
+                # rd.email = email
+                # rd.user = user
+                # rd.creator = get_username(request)
+                # rd.save()
+
+                # Sua thanh nhu vay di
+                # Reader.objects.create(
+                # user=user,
+                # name=user.username,
+                # email=user.email,
+                # )
+                pass
+
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 
 def request_onl(request):
-    return render(request,'pages/librarian/request_online.html')
+    readers = Reader.objects.all()
+    books = Book.objects.all()
+    context = {'readers': readers,
+                'books': books}
+    return render(request,'pages/librarian/request_online.html',context)
 
 def request_off(request):
+    readers = Reader.objects.all()
+    books = Book.objects.all()
+    context = {'readers': readers,
+                'books': books}
     return render(request,'pages/librarian/request_offline.html')
 
 def return_book(request):
-    return render(request,'pages/librarian/return_book.html')
+    return_books = ReturnBook.objects.all()
+    context = {'return_books': return_books}
+    return render(request,'pages/librarian/return_book.html', context)
 
-def penalty_ticket(request):
-    return render(request,'pages/librarian/penalty_ticket.html')
+def penalty_ticket(request,pk):
+    ticket = PenaltyTicket.objects.get(id=pk)
+    return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
 
 #---THỦ KHO
 def list_book(request):
     books = Book.objects.all()
     count_books = books.count()
     return render(request,'pages/stockkeeper/list_book.html',{'books':books,'count_books':count_books})
+    
 def thanh_ly(request):
     return render(request,'pages/stockkeeper/thanh_ly.html')
+
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':

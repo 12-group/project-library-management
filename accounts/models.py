@@ -36,12 +36,12 @@ class Staff(Customer):
         ('Librarian', 'Thủ thư'), 
         ('Cashier', 'Thủ quỹ'), 
         ('Stockkeeper', 'Thủ kho'), 
-        ('Board of manager', 'Ban giám đốc'), 
+        ('Manager deparment', 'Ban giám đốc'), 
     ]
     certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
     position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
     service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
-    sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255)
+    sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255,editable=False)
     force_password_change = models.BooleanField(default=True)
 
 class Reader(Customer):
@@ -52,11 +52,13 @@ class Reader(Customer):
 
     reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
-    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)	
+    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255,editable=False)	
     card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     total_debt = models.PositiveIntegerField(null=True, default=0)
-    creator = models.CharField(max_length=200, null=True)
 
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+        return super().save(force_insert, force_update, using, update_fields)
 
 class BookCategory(models.Model):
     name = models.CharField(max_length=200, null=True)
@@ -117,7 +119,12 @@ class FineReceipts(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     proceeds = models.PositiveIntegerField(null=True, default=0)
     date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
-
+    
+class PenaltyTicket(models.Model):
+    reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+    reason = models.CharField(max_length=200, null=True, blank=True)
+    fine = models.PositiveIntegerField(null=True, default=0)
 class BookLiquidation(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
@@ -130,4 +137,6 @@ class GetBook(models.Model):
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
     quantity = models.PositiveIntegerField(null=True, default=0)
     get_date = models.DateTimeField(null=True, auto_now_add=True)
-        
+
+
+
