@@ -140,11 +140,13 @@ def search_book(request):
     books = Book.objects.all()
     num_books = len(books)
     return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
+
 def get_Cart_from_Reader_and_book(reader,book):
     try:
         return Cart.objects.get(reader = reader, book = book)
     except Cart.DoesNotExist:
         return None
+
 def detail_info_book(request,pk):
     book = Book.objects.get(bId=pk)
     user = User.objects.get(username =get_username(request) )
@@ -215,7 +217,7 @@ def register_reader(request):
             try:
                 reader.save()
             except IntegrityError:
-                messages.error(request, 'Đã có độc giả/nhân viên khác sử dụng tài khoản ' + user.username)
+                messages.error(request, 'Đã có độc giả/nhân viên khác sử dụng tài khoản "' + user.username + '"')
                 reader.delete()
                 return redirect('register_reader')
 
@@ -246,6 +248,7 @@ def return_book(request):
 def penalty_ticket(request,pk):
     ticket = PenaltyTicket.objects.get(id=pk)
     return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
+
 def reader_borrow_detail(request):
     return render(request,'pages/librarian/reader_borrow_detail.html')
 
@@ -307,7 +310,6 @@ def add_staff(request):
             group = Group.objects.get(name='staff')
             user.groups.add(group)
 
-            messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('manager_dashboard')
 
     context = {
@@ -315,3 +317,21 @@ def add_staff(request):
         'user_form':user_form
         }
     return render(request, 'pages/manager/register_staff.html', context)
+
+def delete_staff(request, sId):
+    staff = Staff.objects.get(sId=sId)
+
+    if request.method == 'POST':
+        name = staff.name
+
+        user = staff.user
+        user.delete()
+
+        messages.success(request, 'Xóa nhân viên {} thanh cong'.format(name))
+        return redirect('manager_dashboard')
+
+    context={
+        'staff':staff
+    }
+
+    return render(request, 'pages/manager/delete_staff.html', context)

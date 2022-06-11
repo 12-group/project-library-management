@@ -27,6 +27,7 @@ urlpatterns = [
 
    path('manager/manager_dashboard/', views.manager_dashboard, name="manager_dashboard"),
    path('manager/add_staff/', views.add_staff, name="add_staff"),
+   path('manager/delete_staff/<str:sId>', views.delete_staff, name="delete_staff"),
 
 
    path('list_book/', views.list_book, name="list_book"),

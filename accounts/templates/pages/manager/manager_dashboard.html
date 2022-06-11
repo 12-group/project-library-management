@@ -22,7 +22,8 @@
 <th>Bằng cấp</th>
 <th>Vị trí</th>
 <th>Bộ phận</th>
-<th>Người lập</th>
+<th></th>
+<th></th>
 </tr>
 {% endblock table_head %}
 {% block table_body %}
@@ -36,8 +37,12 @@
 	<th>{{i.get_certificate_display}}</th>
 	<th>{{i.get_position_display}}</th>
 	<th>{{i.get_service_display}}</th>
-	<th></th>
+	<th><a type="submit" class="btn btn-outline-primary" href ="">Cập nhật</a></th>
+	<th><a type="submit" class="btn btn-outline-danger" href ="{% url 'delete_staff' i.pk %}">Xóa</a></th>
+	{% for message in messages %}
+		<p id="messages">{{message}}</p>
+	{% endfor %}	
 </tr>
+
 {% endfor %}
 {% endblock table_body %}
-
