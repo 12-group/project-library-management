@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 
@@ -10,10 +11,17 @@ class CustomerForm(ModelForm):
 		fields = '__all__'
 		exclude = ['user']
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class ReaderForm(ModelForm):
 	class Meta:
 		model = Reader
-		fields = ['name','reader_type','address','email']		
+		fields = ['name','reader_type','address','birth','email']
+		widgets = {
+            'birth': DateInput()
+        }
+		
 
 class StaffForm(ModelForm):
 	class Meta:

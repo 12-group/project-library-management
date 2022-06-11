@@ -1,7 +1,6 @@
 {% extends 'pages/table_form.html' %}
 {% load static %}
 
-
 {% block title_name %}
 	<p>Danh sách độc giả</p>
 
@@ -37,5 +36,7 @@
 	<th>{{i.card_maker.name}}</th>
 </tr>
 {% endfor %}
+{% for message in messages %}
+	<p id="messages">{{message}}</p>
+{% endfor %}
 {% endblock table_body %}
-
