@@ -1,4 +1,3 @@
-from csv import reader
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
@@ -29,11 +28,6 @@ def register(request):
             if group == None:
                 raise ValueError('Chưa có group reader')
             user.groups.add(group)
-            # Reader.objects.create(
-            #     user=user,
-            #     name=user.username,
-            #     email=user.email
-            #     )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -62,7 +56,7 @@ def loginPage(request):
     context = {}
     return render(request, 'pages/user_account/login.html', context)
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def logoutUser(request):
     logout(request)
     return redirect('home')
@@ -101,7 +95,7 @@ def accountSettings(request):
     return render(request, 'pages/user_account/account_setting.html', context)
 
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def password_change(request):
     form = PasswordChangeForm(request.user)
     if request.method == 'POST':
@@ -117,6 +111,7 @@ def password_change(request):
     context = {'form':form}
     return render(request, 'pages/user_account/password_change.html', context)
 
+@login_required(login_url='login')
 def password_change_done(request):
     context = {}
     return render(request, 'pages/user_account/password_change_done.html', context)
@@ -143,7 +138,7 @@ def search_book(request):
 def detail_info_book(request,pk):
     book = Book.objects.get(id=pk)	
     return render(request,'pages/reader/book_detail.html',{'book':book})
-   
+
 def cart(request):
     books = Book.objects.all()
     return render(request,'pages/reader/cart.html',{'books':books})
@@ -158,49 +153,33 @@ def borrowers(request):
     context = {}
     return render(request,'pages/librarian/borrower_list.html',context)
 
-def get_username(request):
-    username = None
-    if request.user.is_authenticated:
-        username = request.user.username
-    return username
-
-def get_object(email):
-    try:
-        return User.objects.get(email=email)
-    except User.DoesNotExist:
-        return None
-
+@login_required(login_url='login')
 def register_reader(request):
     form = ReaderForm()
     if request.method == 'POST':
         form = ReaderForm(request.POST)
+
+        username = request.POST.get("username", "")
+
+        user = User.objects.filter(username=username).exists()
+
+        if not user:
+            messages.error(request, 'Độc giả chưa có tài khoản.')
+            return redirect('register_reader')
+        else:
+            user = User.objects.get(username=username)
+
         if form.is_valid():
-            email = form.cleaned_data['email']
 
-            user = get_object(email) # tim theo username
-
-            if user is None:
-                messages.info(request,'Email không phù hợp với user nào')
-            else: 
-                # rd = Reader()
-                # rd.name = form.cleaned_data['name']
-                # rd.reader_type = form.cleaned_data['reader_type']
-                # rd.address = form.cleaned_data['address']
-                # rd.email = email
-                # rd.user = user
-                # rd.creator = get_username(request)
-                # rd.save()
-
-                # Sua thanh nhu vay di
-                # Reader.objects.create(
-                # user=user,
-                # name=user.username,
-                # email=user.email,
-                # )
-                pass
+            reader = form.save()
+            reader.user = user
+            reader.card_maker = request.user.customer.staff
+            print(reader)
+            reader.save()
 
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
+
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 
 def request_onl(request):
@@ -275,9 +254,7 @@ def add_staff(request):
                 '',
                 'password'
             )
-            
-
-            
+                      
             staff = staff_form.save()
             staff.user = user
             staff.save()
