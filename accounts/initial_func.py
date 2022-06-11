@@ -37,3 +37,15 @@ def username_gen():
 		gen_username = 'staff{}'.format(count)
 
 	return gen_username
+
+def book_pk_gen():
+	
+	books = models.Book.objects.all()
+	pk = 0
+	for book in books:
+		pk += 1
+		if book.pk != 'S{}'.format(str(pk).zfill(6)):
+			print(book.pk)
+			return 'S{}'.format(str(pk).zfill(6))
+	pk += 1
+	return 'S{}'.format(str(pk).zfill(6))

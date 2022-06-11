@@ -18,44 +18,36 @@
 <div class="form" >
     <form class="row g-3">
         <div class="col-md-6">
-          <label for="inputEmail4" class="form-label ">Mã sách</label>
-          <input type="maSach" class="form-control form-control-sm" >
-        </div>
-        <div class="col-md-6">
           <label for="inputPassword4" class="form-label" >Tên sách</label>
-          <input class="form-control form-control-sm">
+          {{form.name}}
         </div>
         <div class="col-md-12">
             <label for="formFile" class="form-label ">Ảnh bìa sách</label>
-            <input class="form-control form-control-sm" type="file" id="formFile">
+            {{form.cover_pic}}
           </div>
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label ">Tác giả</label>
-            <input class="form-control form-control-sm" >
+            {{form.author}}
         </div>
         <div class="col-md-6">
             <label for="inputPassword4" class="form-label ">Thể loại</label>
-            <input class="form-control form-control-sm">
+            {{form.ctg}}
         </div> 
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label ">Năm xuất bản</label>
-            <input  class="form-control form-control-sm" >
+            {{form.pubYear}}
         </div>
         <div class="col-md-6">
             <label for="inputPassword4" class="form-label ">Nhà xuất bản</label>
-            <input class="form-control form-control-sm">
+            {{form.publisher}}
         </div>
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label ">Trị giá</label>
-            <input  class="form-control form-control-sm">
+            {{form.price}}
         </div>
         <div class="col-md-6">
             <label for="inputPassword4" class="form-label ">Ngày nhập</label>
-            <input class="form-control form-control-sm">
-        </div>
-        <div class="col-12">
-            <label for="inputAddress" class="form-label ">Người tiếp nhận</label>
-            <input class="form-control form-control-sm" >
+            {{form.addDate}}
         </div>
         <div style="margin-top:30px;">
             <a href="#myModal" class=" btn btn-dark btn-block" data-toggle="modal">Thêm</a>
