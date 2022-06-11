@@ -246,6 +246,9 @@ def return_book(request):
 def penalty_ticket(request,pk):
     ticket = PenaltyTicket.objects.get(id=pk)
     return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
+def reader_borrow_detail(request):
+    return render(request,'pages/librarian/reader_borrow_detail.html')
+
 
 #---THỦ KHO
 def list_book(request):
