@@ -41,7 +41,7 @@ class Staff(Customer):
     certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
     position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
     service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
-    sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255)
+    sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255,editable=False)
     force_password_change = models.BooleanField(default=True)
 
 class Reader(Customer):
@@ -52,7 +52,7 @@ class Reader(Customer):
 
     reader_type = models.CharField(max_length=200, null=True, choices=READER_TYPE, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
-    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255)	
+    rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255,editable=False)	
     card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     total_debt = models.PositiveIntegerField(null=True, default=0)
 

@@ -29,11 +29,11 @@ def register(request):
             if group == None:
                 raise ValueError('Chưa có group reader')
             user.groups.add(group)
-            #Reader.objects.create(
-            #    user=user,
-            #    name=user.username,
-            #    email=user.email
-            #    )
+            # Reader.objects.create(
+            #     user=user,
+            #     name=user.username,
+            #     email=user.email
+            #     )
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
@@ -176,18 +176,29 @@ def register_reader(request):
         form = ReaderForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            user = get_object(email)
+
+            user = get_object(email) # tim theo username
+
             if user is None:
                 messages.info(request,'Email không phù hợp với user nào')
             else: 
-                rd = Reader()
-                rd.name = form.cleaned_data['name']
-                rd.reader_type = form.cleaned_data['reader_type']
-                rd.address = form.cleaned_data['address']
-                rd.email = email
-                rd.user = user
-                rd.creator = get_username(request)
-                rd.save()
+                # rd = Reader()
+                # rd.name = form.cleaned_data['name']
+                # rd.reader_type = form.cleaned_data['reader_type']
+                # rd.address = form.cleaned_data['address']
+                # rd.email = email
+                # rd.user = user
+                # rd.creator = get_username(request)
+                # rd.save()
+
+                # Sua thanh nhu vay di
+                # Reader.objects.create(
+                # user=user,
+                # name=user.username,
+                # email=user.email,
+                # )
+                pass
+
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')
     return render(request,'pages/librarian/register_reader.html',{'form':form})
@@ -220,8 +231,10 @@ def list_book(request):
     books = Book.objects.all()
     count_books = books.count()
     return render(request,'pages/stockkeeper/list_book.html',{'books':books,'count_books':count_books})
+    
 def thanh_ly(request):
     return render(request,'pages/stockkeeper/thanh_ly.html')
+
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':
