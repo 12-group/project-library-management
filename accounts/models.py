@@ -56,6 +56,10 @@ class Reader(Customer):
     card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     total_debt = models.PositiveIntegerField(null=True, default=0)
 
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+        return super().save(force_insert, force_update, using, update_fields)
+
 class BookCategory(models.Model):
     name = models.CharField(max_length=200, null=True)
 
@@ -133,4 +137,6 @@ class GetBook(models.Model):
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
     quantity = models.PositiveIntegerField(null=True, default=0)
     get_date = models.DateTimeField(null=True, auto_now_add=True)
-        
+
+
+
