@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
-from .initial_func import pk_gen, staff_pk_gen
+from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from django.contrib.postgres.fields import ArrayField
 
 class Customer(models.Model):
@@ -68,6 +68,7 @@ class BookCategory(models.Model):
 
 class Book(models.Model):
 
+    bId = models.CharField(default=book_pk_gen, primary_key=True, unique=True, max_length=255,editable=False)	
     name = models.CharField(max_length=200, null=True)
     cover_pic = models.ImageField(default="logo.png", null=True, blank=True)
     ctg = models.ManyToManyField(BookCategory, blank=True)							# Category
