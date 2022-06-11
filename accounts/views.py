@@ -10,6 +10,7 @@ from .forms import *
 from .decorators import *
 
 from .initial_func import username_gen
+DEFAULT_PASSWORD = 'password'
 
 def is_in_group(check_group, groups):
     if check_group in [group.name for group in groups]:
@@ -300,16 +301,30 @@ def add_staff(request):
             user = User.objects.create_user(
                 username_gen(),
                 '',
-                'password'
+                DEFAULT_PASSWORD
             )
-                      
             staff = staff_form.save()
             staff.user = user
             staff.save()
+    
+            staff_group = Group.objects.get(name='staff')
+            user.groups.add(staff_group)
 
-            group = Group.objects.get(name='staff')
-            user.groups.add(group)
+            if staff.position != 'Staff':
+                staff.service = 'Manager deparment'
+                staff.save()
+                manager_group = Group.objects.get(name='manager')
+                user.groups.add(manager_group)
+            else:
+                not_manager_group = Group.objects.get(name=staff.service.lower())
+                user.groups.add(not_manager_group)
 
+            messages.success(
+                request,
+                'Thêm nhân viên thành công.\n'
+                'Tên tài khoản = {} \n'
+                'Mật khẩu mặc định = {} '.format(user.username, DEFAULT_PASSWORD)
+                )
             return redirect('manager_dashboard')
 
     context = {

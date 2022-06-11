@@ -47,14 +47,20 @@ def populate_models(sender, **kwargs):
         user:
             username = manager
             email = ''
-            password = password
+            password = DEFAULT_PASSWORD
     '''
 
     # tim user co username = manager
     user, user_created = User.objects.get_or_create(
         username='manager',
-        defaults={'email': '', 'password':'password'}
+        defaults={
+            'email': '', 
+            }
     )
+    if user_created:
+        user.set_password(DEFAULT_PASSWORD)
+        user.save()
+
     
     if not user.groups.filter(name='manager').exists():
         # them user vao group manager

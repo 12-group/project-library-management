@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from django.contrib.postgres.fields import ArrayField
-
+DEFAULT_PASSWORD = 'password'
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
@@ -37,11 +37,11 @@ class Staff(Customer):
         ('Librarian', 'Thủ thư'), 
         ('Cashier', 'Thủ quỹ'), 
         ('Stockkeeper', 'Thủ kho'), 
-        ('Manager deparment', 'Ban giám đốc'), 
+        ('Manager department', 'Ban giám đốc'), 
     ]
     certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)
-    position = models.CharField(max_length=200, null=True, choices=POSITION, blank=True)
-    service = models.CharField(max_length=200, null=True, choices=SERVICE, blank=True)
+    position = models.CharField(max_length=200, null=True, choices=POSITION)
+    service = models.CharField(max_length=200, null=True, choices=SERVICE)
     sId = models.CharField(default=staff_pk_gen, primary_key=True, unique=True, max_length=255,editable=False)
     force_password_change = models.BooleanField(default=True)
 

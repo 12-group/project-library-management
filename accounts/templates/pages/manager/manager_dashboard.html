@@ -22,27 +22,26 @@
 <th>Bằng cấp</th>
 <th>Vị trí</th>
 <th>Bộ phận</th>
-<th></th>
+{% comment %} <th></th> {% endcomment %}
 <th></th>
 </tr>
 {% endblock table_head %}
 {% block table_body %}
-{% for i in staffs %}
-<tr>
-	<th>{{i.pk}}</th>
-	<th>{{i.name}}</th>
-	<th>{{i.birth}}</th>
-	<th>{{i.address}}</th>
-	<th>{{i.date_created}}</th>
-	<th>{{i.get_certificate_display}}</th>
-	<th>{{i.get_position_display}}</th>
-	<th>{{i.get_service_display}}</th>
-	<th><a type="submit" class="btn btn-outline-primary" href ="">Cập nhật</a></th>
-	<th><a type="submit" class="btn btn-outline-danger" href ="{% url 'delete_staff' i.pk %}">Xóa</a></th>
+	{% for i in staffs %}
+		<tr>
+			<th>{{i.pk}}</th>
+			<th>{{i.name}}</th>
+			<th>{{i.birth}}</th>
+			<th>{{i.address}}</th>
+			<th>{{i.date_created}}</th>
+			<th>{{i.get_certificate_display}}</th>
+			<th>{{i.get_position_display}}</th>
+			<th>{{i.get_service_display}}</th>
+			{% comment %} <th><a type="submit" class="btn btn-outline-primary" href ="">Cập nhật</a></th> {% endcomment %}
+			<th><a type="submit" class="btn btn-outline-danger" href ="{% url 'delete_staff' i.pk %}">Xóa nhân viên</a></th>	
+		</tr>
+	{% endfor %}
 	{% for message in messages %}
 		<p id="messages">{{message}}</p>
-	{% endfor %}	
-</tr>
-
-{% endfor %}
+	{% endfor %}
 {% endblock table_body %}
