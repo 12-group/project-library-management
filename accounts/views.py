@@ -1,4 +1,5 @@
 from csv import reader
+from types import CellType
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
@@ -142,7 +143,9 @@ def search_book(request):
 
 def detail_info_book(request,pk):
     book = Book.objects.get(id=pk)	
-    return render(request,'pages/reader/book_detail.html',{'book':book})
+    books = []
+
+    return render(request,'pages/reader/book_detail.html',{'book':book,'books':books})
    
 def cart(request):
     books = Book.objects.all()
@@ -178,18 +181,18 @@ def register_reader(request):
             email = form.cleaned_data['email']
 
             user = get_object(email) # tim theo username
-
+            staff = Staff.objects.get(user = request.user)
             if user is None:
                 messages.info(request,'Email không phù hợp với user nào')
             else: 
-                # rd = Reader()
-                # rd.name = form.cleaned_data['name']
-                # rd.reader_type = form.cleaned_data['reader_type']
-                # rd.address = form.cleaned_data['address']
-                # rd.email = email
-                # rd.user = user
-                # rd.creator = get_username(request)
-                # rd.save()
+                rd = Reader()
+                rd.name = form.cleaned_data['name']
+                rd.reader_type = form.cleaned_data['reader_type']
+                rd.address = form.cleaned_data['address']
+                rd.email = email
+                rd.user = user
+                rd.card_maker = staff
+                rd.save()
 
                 # Sua thanh nhu vay di
                 # Reader.objects.create(
@@ -197,7 +200,7 @@ def register_reader(request):
                 # name=user.username,
                 # email=user.email,
                 # )
-                pass
+                #pass
 
             messages.success(request, 'Thêm độc giả thành công.')
             return redirect('librarian')

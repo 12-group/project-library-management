@@ -47,9 +47,13 @@
                 <p>Năm xuất bản: {{book.publisher}} </p>
                 <p>Đáng giá: </p>
                 <p>Trạng thái: {% if book.number_of_book_remain > 0 %} <span style= " background:green; padding:2px 10px; border-radius:5px; ">Có sẵn</span> {% else %} <span style= " background:red; padding:2px 10px; border-radius:5px; ">Đã được mượn</span>{% endif %}  </p>
-            </div>                
-            <button type="button" class="btn btn-outline-primary" style="margin-top:20px;">Thêm vào giỏ hàng</button>
+            </div>     
+            {% books.append(book) %}      
+            <button type="button" class="btn btn-outline-primary" style="margin-top:20px;" onclick ="add_cart()">Thêm vào giỏ hàng</button>
         </div>
+        {% for i in books %}
+        <div>{{i.name}} </div>
+        {% endfor %}
     </div>
     <div class="row" style="padding:20px 30px;">
         <p class="book-info" style="margin: 0px;">Mô tả sách :</p>
@@ -58,5 +62,10 @@
         </div>
     </div>
 </div>
-
+ 
+<script>
+    function add_cart(){
+        
+    }
+</script>
 {% endblock content %}
