@@ -137,8 +137,10 @@ def search_book(request):
 
 def detail_info_book(request,pk):
     book = Book.objects.get(id=pk)	
-    return render(request,'pages/reader/book_detail.html',{'book':book})
+    books = []
 
+    return render(request,'pages/reader/book_detail.html',{'book':book,'books':books})
+   
 def cart(request):
     books = Book.objects.all()
     return render(request,'pages/reader/cart.html',{'books':books})

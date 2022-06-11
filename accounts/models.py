@@ -55,7 +55,6 @@ class Reader(Customer):
     rId = models.CharField(default=pk_gen, primary_key=True, unique=True, max_length=255,editable=False)	
     card_maker = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     total_debt = models.PositiveIntegerField(null=True, default=0)
-
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         return super().save(force_insert, force_update, using, update_fields)
@@ -89,7 +88,10 @@ class Book(models.Model):
 
         return super().save(force_insert, force_update, using, update_fields)
 
-
+"""class Cart(models.Model):
+    reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    books = []"""
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)

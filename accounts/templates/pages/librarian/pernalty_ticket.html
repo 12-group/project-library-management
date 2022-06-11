@@ -31,14 +31,12 @@
     <div class="title_name list_name_title">
         <p>Phiếu phạt</p>
     </div>
-    
     <div class="container_contain">
-        <p class="hoten">Họ và tên: <span>  {{ticket.reader}}</span></p>
-        <p class="tienphat">Tiền phạt:<span> {{ticket.fine}}.000đ</span></p>
-        <p class="lydo">Lý do: <span> {{ticket.reason}}</span></p>
-        <p class="nguoilap">Người lập phiếu:<span>{{ticket.staff}}</span></p>
+        <p class="hoten">Họ và tên:     Nguyễn Văn A</p>
+        <p class="tienphat">Tiền phạt:  20.000đ</p>
+        <p class="lydo">Lý do:  Mất sách ngày ...</p>
+        <p class="nguoilap">Người lập phiếu:    Trần Minh B</p>
     </div>
-    
     <div class="gr_button">
         <a class="btn btn-danger" href="{% url 'borrowers' %}">Hủy bỏ</a>
 		<a class="btn btn-primary" href="{% url 'borrowers' %}">Xác nhận</a>
