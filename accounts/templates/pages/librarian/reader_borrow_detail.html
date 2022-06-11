@@ -1,0 +1,43 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+{% block style_extra %}
+	.table{
+        margin: auto;
+		width: 70%;
+	}
+    .submit{
+        margin:20px 45% ;
+    }
+{% endblock style_extra %}
+
+{% block title_name %}
+    <p>Danh sách sách</p>
+{% endblock title_name %}
+
+{% block table_head %}
+<tr >
+    <th>STT</th>
+    <th>Mã sách</th>
+    <th>Tên sách</th>
+    <th>Ngày mượn</th>
+    <th>Ngày trả</th>
+
+</tr>
+
+{% endblock table_head %}
+{% block table_body %}
+<tr>
+    <th>STT</th>
+    <th>Mã sách</th>
+    <th>Tên sách</th>
+    <th>Ngày mượn</th>
+    <th>Ngày trả</th>
+
+</tr>
+{% endblock table_body %}pyt
+
+
+
+
+
