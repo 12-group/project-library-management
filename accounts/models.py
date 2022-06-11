@@ -4,7 +4,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from django.contrib.postgres.fields import ArrayField
+
 DEFAULT_PASSWORD = 'password'
+
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
@@ -89,6 +91,10 @@ class Book(models.Model):
             raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
 
         return super().save(force_insert, force_update, using, update_fields)
+
+    def get_all_ctg_to_string(self):
+        all_this_book_ctg = self.ctg.all()
+        return ', '.join([ctg.name for ctg in all_this_book_ctg])
 
 class Cart(models.Model):
     reader = models.OneToOneField(Reader, null=True, on_delete=models.SET_NULL, blank=True)

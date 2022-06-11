@@ -17,7 +17,6 @@
 
 {% block table_head %}
     <tr>
-        <th></th>
         <th>Mã sách</th>
         <th>Tên sách</th>
         <th>Thể loại</th>
@@ -26,7 +25,8 @@
         <th>Nhà xuất bản</th>
         <th>Ngày nhập</th>
         <th>Trị giá</th>
-        <th>Người tiếp nhận</th>
+        <th>Tổng số</th>
+        <th>Số sách còn lại</th>
     </tr>
 
 {% endblock %}
@@ -34,16 +34,16 @@
 {% block table_body %}
     {% for i in books %}
     <tr>
-        <th><label><input type="checkbox" id="choice" value="return" name="return" /></label></th>
-        <th>{{i.id}}</th>
+        <th>{{i.bId}}</th>
         <th>{{i.name}}</th>
-        <th>{{i.ctg}}</th>
-        <th>{{i.auth}}</th>
+        <th>{{i.get_all_ctg_to_string}}</th>
+        <th>{{i.author}}</th>
         <th>{{i.pubYear}}</th>
         <th>{{i.publisher}}</th>
-        <th>{{i.inputDate}}</th>
+        <th>{{i.addDate}}</th>
         <th>{{i.price}}</th>
-        <th>Người tiếp nhận</th>
+        <th>{{i.total}}</th>
+        <th>{{i.number_of_book_remain}}</th>
     </tr>
     {% endfor %}
 {% endblock %}

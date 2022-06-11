@@ -24,21 +24,27 @@ def register(request):
         form = CreateUserForm(request.POST)
 
         if form.is_valid():
+
             user = form.save()
+
             group = Group.objects.get(name='reader')
+
             if group == None:
                 raise ValueError('Chưa có group reader')
+
             user.groups.add(group)
+
             messages.success(request, 'Tạo tài khoản thành công.')
             return redirect('login')
 
     context = {'form':form}
     return render(request, 'pages/user_account/register.html', context)
 
-# @unauthenticated_user
+@unauthenticated_user
 def loginPage(request):
 
     if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -46,11 +52,17 @@ def loginPage(request):
 
         if username == '':
             messages.info(request, 'Tên đăng nhập không được để trống')
+
         elif password == '' : 
             messages.info(request, 'Mật khẩu không được bỏ trống')
+
         elif user is not None:
             login(request, user)
+            if user.groups.filter(name='staff').exists():
+                if user.customer.staff.force_password_change:
+                    return redirect('password_change')
             return redirect('home')
+
         else: 
             messages.info(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
             
@@ -257,7 +269,11 @@ def reader_borrow_detail(request):
 def list_book(request):
     books = Book.objects.all()
     count_books = books.count()
-    return render(request,'pages/stockkeeper/list_book.html',{'books':books,'count_books':count_books})
+    context = {
+        'books':books,
+        'count_books':count_books
+    }
+    return render(request,'pages/stockkeeper/list_book.html',context)
     
 def thanh_ly(request):
     return render(request,'pages/stockkeeper/thanh_ly.html')
