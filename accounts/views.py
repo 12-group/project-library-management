@@ -152,24 +152,30 @@ def get_username(request):
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
-        top_book = books[len(books)-4:]
-        top_book.reverse()
+        top_book = books[:4]
+        print(top_book)
         return render(request,'pages/home.html',{'books':books,'top_book':top_book})
     return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
-
-        
-
     books = Book.objects.all()
     num_books = len(books)
     return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
 
+#kiểm tra sách này đã có trong giỏ hàng của độc giả chưa
 def get_Cart_from_Reader_and_book(reader,book):
     try:
         return Cart.objects.get(reader = reader, book = book)
     except Cart.DoesNotExist:
         return None
+#kiểm tra sách này đã có trong danh sách đã mượn của độc giả chưa
+def get_Borrow_from_Reader_and_book(reader,book):
+    try:
+        return BorrowBook.objects.get(reader = reader, book = book)
+    except BorrowBook.DoesNotExist:
+        return None
+
+
 
 def detail_info_book(request,pk):
     book = Book.objects.get(bId=pk)
@@ -182,6 +188,8 @@ def detail_info_book(request,pk):
             cart.reader = reader
             cart.book = book 
             cart.save()
+        elif get_Borrow_from_Reader_and_book (reader,book) is not None:
+            raise ValueError('Bạn đã mượn sách này trước đó.')
         else:
             raise ValueError('Đã có trong giỏ hàng')
     return render(request,'pages/reader/book_detail.html',{'book':book})
@@ -191,13 +199,35 @@ def cart(request):
     reader = Reader.objects.get(user=user)
     cart = Cart.objects.filter(reader = reader)
     count_book = len(cart)
-    if request.method == 'POST':
-        Cart.objects.filter(reader = reader).delete()
+    if request.method == 'POST': #đăng ký mượn 
+        #xóa toàn bộ sách trong giỏ hàng
+        cart.delete()
+        count_book = len(cart)
+        for book in cart:
+            print(book.book.bId)
+            # giảm số lượng sách 
+            b = Book.objects.get(bId = book.book.bId)
+            b.number_of_book_remain -= 1
+            b.save()
+            #thêm thông tin mượn
+            borrow_Book = BorrowBook()
+            borrow_Book.reader = reader
+            borrow_Book.book = book.book
+            borrow_Book.save()
+            print("xong")
+
     context = {
         'books':cart,
-        'count_books':count_book
+        'count_book':count_book
         }
     return render(request,'pages/reader/cart.html',context)
+
+def reader_borrow_detail(request):
+    user = User.objects.get(username =get_username(request) )
+    reader = Reader.objects.get(user=user)
+    borrowBook = BorrowBook.objects.filter(reader = reader)
+
+    return render(request,'pages/reader/reader_borrow_detail.html',{'borrowBook':borrowBook})
 
 #--THỦ THƯ
 def librarian_home(request):
@@ -272,10 +302,6 @@ def return_book(request):
 def penalty_ticket(request,pk):
     ticket = PenaltyTicket.objects.get(id=pk)
     return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
-
-def reader_borrow_detail(request):
-    return render(request,'pages/librarian/reader_borrow_detail.html')
-
 
 #---THỦ KHO
 def list_book(request):
