@@ -97,7 +97,7 @@ class Book(models.Model):
         return ', '.join([ctg.name for ctg in all_this_book_ctg])
 
 class Cart(models.Model):
-    reader = models.OneToOneField(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+    reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)

@@ -18,16 +18,14 @@
                                 <img src="{{baseUrl}}images/{{i.book.cover_pic}}" class="img-fluid rounded-3">
                             </div>
                             <div class="col ">
-                                <a class="lead fw-normal mb-2" href="{% url 'detail' i.id %}" style="color:black ;">{{i.book.name}}</a>
+                                <a class="lead fw-normal mb-2"  href="{% url 'detail' i.book.bId %}" style="color:black ;">{{i.book.name}}</a>
                                 <p><span class="text-muted">Số lượng còn lại: </span>{{i.book.number_of_book_remain}}</p>
                             </div>
 
 
                             <div class="col text-end">
-                                <form action="" method="POST">
-                                    {% csrf_token %}
+
                                     <input type="submit" value="Xóa khỏi giỏ hàng" class="btn btn-outline-danger" href ="{% url 'cart' %}">
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -37,15 +35,14 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-normal mb-0 text-black">Số lượng:
-                        <span id="count"></span>/5
-                        </span>
+                        <span id="count"></span>{{count_book}}/5</span>
                     </h6>
                 </div>
                 <div class="card">
                     <div class="card-body">
                     <form action="" method="post">
                     {% csrf_token %}    
-                        <input type="submit"  href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal"  value="Đăng ký mượn">
+                        <input type="submit" href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal"  value="Đăng ký mượn">
                     </div>
                 </div>
                 {% else %}
