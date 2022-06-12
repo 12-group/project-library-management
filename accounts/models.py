@@ -109,9 +109,6 @@ class BorrowBook(models.Model):
         if self.book != None:
             if self.book.number_of_book_remain == 0:
                 raise ValueError('Sách ' + self.book.name + ' không còn')
-        #     else:
-        #         self.book.number_of_book_remain -= 1
-        #         self.book.save()
         return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):
@@ -153,10 +150,8 @@ class BookLiquidation(models.Model):
              update_fields=None) -> None:
         if self.quantity > self.book.number_of_book_remain:
             raise ValueError('Không thể thanh lý nhiều hơn {} quyển sách'.format(self.book.number_of_book_remain))
-        
         else:
             self.book.number_of_book_remain -= self.quantity
-            self.book.save()
         return super().save(force_insert, force_update, using, update_fields)
 
 

@@ -39,18 +39,20 @@
     </tr>
 
 {% endblock %}
-
 {% block table_body %}
+{% for form in formset %}
     <tr>
         <th>{{form.book}}</th>
         <th>{{form.quantity}}</th>
         <th>{{form.reason}}</th>
     </tr>
+    {% endfor %}
 {% endblock %}
 
 {% block confirm_button %}
 <div class="text-center">
 	<a href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
+    <a href={% url 'list_book' %} class=" btn btn-primary trigger-btn" data-toggle="modal">Trở lại</a>
 </div>
 <div id="myModal" class="modal fade">
 	<div class="modal-dialog modal-confirm">

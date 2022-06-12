@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
+from django.forms import formset_factory
 
 from .models import *
 from .forms import *
@@ -329,15 +330,21 @@ def list_book(request):
     return render(request,'pages/stockkeeper/list_book.html',context)
     
 def thanh_ly(request):
+    BookLiquidationFormset = formset_factory(BookLiquidationForm,extra=4)
     today = date.today()
-    book_liquidation_form = BookLiquidationForm()
+    formset = BookLiquidationFormset()
+    # book_liquidation_form = BookLiquidationForm()
     if request.method == 'POST':
+        # book_liquidation_form = BookLiquidationForm(request.POST)
+        # print(book_liquidation_form.is_valid())
+        # if book_liquidation_form.is_valid():
+        #     book_liquidation_form.save()
         pass
 
     context = {
         'user': request.user,
         'date': today.strftime("%d/%m/%Y"),
-        'form': book_liquidation_form
+        'formset': formset
     }
     return render(request,'pages/stockkeeper/thanh_ly.html', context)
 
