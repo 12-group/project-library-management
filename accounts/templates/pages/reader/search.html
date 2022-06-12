@@ -137,14 +137,14 @@ body {
             </div>
         </div>
         <div class="form-group col-md-2">
-            <a class="btn btn-primary" href="#" role="button" style="margin-top:30px;margin-left:50px;">Tìm kiếm</a>
+            <a class="btn btn-primary"role="button" style="margin-top:30px;margin-left:50px;"onclick="myFunction()">Tìm kiếm</a>
         </div>
 
     </div>
 </form>
 
 
-<div class="container overflow-auto" style="height:800px; margin-top:50px;">
+<div id ="result" class="container overflow-auto" style="height :0px;overflow:hidden;">
 
     <div class="row">
         {% if num_books == 0 %}
@@ -173,6 +173,12 @@ body {
     </div>
 </div>
 
-
+<script>
+function myFunction() {
+    document.getElementById("result").style.marginTop = '50px';
+    document.getElementById("result").style.height = '800px';
+    document.getElementById("result").style.overflow = "scroll";
+}
+</script>
 
 {% endblock content %}
