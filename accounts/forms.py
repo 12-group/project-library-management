@@ -43,3 +43,11 @@ class BookForm(ModelForm):
 		widgets = {
 			'ctg': forms.CheckboxSelectMultiple()
 		}
+
+class BookLiquidationForm(ModelForm):
+	class Meta:
+		model = BookLiquidation
+		fields = ['book', 'quantity', 'reason']
+		widgets = {
+			'reason': forms.TextInput(attrs={'class': 'textarea'})
+		}

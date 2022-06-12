@@ -1,6 +1,20 @@
 {% extends 'pages/table_form.html' %}
 {% load static %}
-
+<head>
+<style>
+.textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+  }
+</style>
+</head>
+<body>
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã thủ kho:</p>
@@ -8,7 +22,7 @@
     </div>
     <div class="infor_title">
         <p class="infor_title_name">Ngày thanh lý:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="22/11/2021" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" placeholder={{date}} readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock %}
 
@@ -20,7 +34,7 @@
 {% block table_head %}
     <tr>
         <th>Mã sách</th>
-        <th>Tên sách</th>
+        <th>Số lượng</th>
         <th>Lý do thanh lý</th>
     </tr>
 
@@ -28,9 +42,9 @@
 
 {% block table_body %}
     <tr>
-        <th>Mã sách</th>
-        <th>Tên sách</th>
-        <th>Lý do thanh lý</th>
+        <th>{{form.book}}</th>
+        <th>{{form.quantity}}</th>
+        <th>{{form.reason}}</th>
     </tr>
 {% endblock %}
 
@@ -55,3 +69,4 @@
 </div>     
 
 {% endblock %}
+</body>

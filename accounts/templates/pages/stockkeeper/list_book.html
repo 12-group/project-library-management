@@ -46,6 +46,9 @@
         <th>{{i.number_of_book_remain}}</th>
     </tr>
     {% endfor %}
+    {% for message in messages %}
+        <p id="messages">{{message}}</p>
+    {% endfor %}
 {% endblock %}
 
 {% block confirm_button %}

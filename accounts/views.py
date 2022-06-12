@@ -13,6 +13,7 @@ from .initial_func import username_gen
 
 from datetime import date
 
+
 def is_in_group(check_group, groups):
     if check_group in [group.name for group in groups]:
         return True
@@ -124,8 +125,6 @@ def password_change(request):
                     staff = user.customer.staff
                     staff.force_password_change = False
                     staff.save()
-                    # user.customer.staff.force_password_change = False
-                    # user.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Your password was successfully updated!')
             return redirect('password_change_done')
@@ -217,10 +216,22 @@ def cart(request):
             print("xong")
 
     context = {
-        'books':cart,
+        'cart':cart,
         'count_book':count_book
         }
     return render(request,'pages/reader/cart.html',context)
+
+def remove_from_cart(request, cart_pk):
+    cart = Cart.objects.get(pk=cart_pk)
+
+    if request.method == 'POST':
+        cart.delete()
+        return redirect('cart')
+
+    context = {
+        'cart':cart
+    }
+    return render(request,'pages/reader/remove_from_cart.html',context)
 
 def reader_borrow_detail(request):
     user = User.objects.get(username =get_username(request) )
@@ -263,8 +274,6 @@ def register_reader(request):
             user = User.objects.get(username=username)
 
         if form.is_valid():
-
-            
             reader = form.save()
             reader.user = user
             reader.card_maker = request.user.customer.staff
@@ -314,10 +323,15 @@ def list_book(request):
     return render(request,'pages/stockkeeper/list_book.html',context)
     
 def thanh_ly(request):
+    today = date.today()
+    book_liquidation_form = BookLiquidationForm()
+    if request.method == 'POST':
+        pass
 
     context = {
         'user': request.user,
-        'date': date.today()
+        'date': today.strftime("%d/%m/%Y"),
+        'form': book_liquidation_form
     }
     return render(request,'pages/stockkeeper/thanh_ly.html', context)
 
