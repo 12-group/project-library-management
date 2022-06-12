@@ -187,10 +187,14 @@ def detail_info_book(request,pk):
             cart.reader = reader
             cart.book = book 
             cart.save()
+            messages.success(request,'Thêm {} vào giỏ hàng thành công'.format(book.name))
+
         elif get_Borrow_from_Reader_and_book (reader,book) is not None:
-            raise ValueError('Bạn đã mượn sách này trước đó.')
+            messages.error(request,'Bạn đã mượn sách này trước đó')
+            # raise ValueError('Bạn đã mượn sách này trước đó.')
         else:
-            raise ValueError('Đã có trong giỏ hàng')
+            messages.error(request,'Đã có trong giỏ hàng')
+            # raise ValueError('Đã có trong giỏ hàng')
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
@@ -225,7 +229,9 @@ def remove_from_cart(request, cart_pk):
     cart = Cart.objects.get(pk=cart_pk)
 
     if request.method == 'POST':
+        book_name = cart.book.name
         cart.delete()
+        messages.success(request,'Lấy {} khỏi giỏ hàng thành công'.format(book_name))
         return redirect('cart')
 
     context = {
