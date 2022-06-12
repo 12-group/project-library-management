@@ -11,6 +11,8 @@ from .decorators import *
 
 from .initial_func import username_gen
 
+from datetime import date
+
 def is_in_group(check_group, groups):
     if check_group in [group.name for group in groups]:
         return True
@@ -111,13 +113,23 @@ def accountSettings(request):
 @login_required(login_url='login')
 def password_change(request):
     form = PasswordChangeForm(request.user)
+
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
+
         if form.is_valid():
             user = form.save()
+            if user.groups.filter(name='staff').exists():
+                if user.customer.staff.force_password_change:
+                    staff = user.customer.staff
+                    staff.force_password_change = False
+                    staff.save()
+                    # user.customer.staff.force_password_change = False
+                    # user.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Your password was successfully updated!')
             return redirect('password_change_done')
+
         else:
             messages.error(request, 'Please correct the error below.')
 
@@ -276,16 +288,21 @@ def list_book(request):
     return render(request,'pages/stockkeeper/list_book.html',context)
     
 def thanh_ly(request):
-    return render(request,'pages/stockkeeper/thanh_ly.html')
+
+    context = {
+        'user': request.user,
+        'date': date.today()
+    }
+    return render(request,'pages/stockkeeper/thanh_ly.html', context)
 
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Sách được thêm thành công với ID là " + form.id)
-            return redirect('add_book')
+            book = form.save()
+            messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
+            return redirect('list_book')
         
     context = {'form':form}
     return render(request, 'pages/stockkeeper/add_book.html', context)

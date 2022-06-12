@@ -40,3 +40,6 @@ class BookForm(ModelForm):
 		model = Book
 		fields = '__all__'
 		exclude = ['bId']
+		widgets = {
+			'ctg': forms.CheckboxSelectMultiple()
+		}

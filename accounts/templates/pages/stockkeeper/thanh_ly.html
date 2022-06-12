@@ -4,8 +4,7 @@
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã thủ kho:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="DG10001" readonly style="margin-left: 10px;width:150px;">
-    
+        <input class="form-control form-control-sm" type="text" placeholder={{user.customer.staff.sId}} readonly style="margin-left: 10px;width:150px;">
     </div>
     <div class="infor_title">
         <p class="infor_title_name">Ngày thanh lý:</p>
@@ -14,7 +13,7 @@
 {% endblock %}
 
 {% block title_name %}
-	<p style="margin-left:600px;">Thanh lý</p>
+	<p style="">Thanh lý</p>
 {% endblock %}
 
 
