@@ -16,7 +16,7 @@ urlpatterns = [
    path('account/', views.accountSettings, name='account'),
 
    
-   path('librarian/', views.librarian_home, name="librarian"),
+   path('librarian/', views.librarian_home, name="librarian"), 
    path('borrowers/', views.borrowers, name="borrowers"),
    path('register_reader/', views.register_reader, name="register_reader"),
    path('request_onl/', views.request_onl, name="request_onl"),

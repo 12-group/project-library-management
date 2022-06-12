@@ -284,7 +284,11 @@ def penalty_ticket(request,pk):
     return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
 
 def reader_borrow_detail(request):
-    return render(request,'pages/librarian/reader_borrow_detail.html')
+    user = User.objects.get(username =get_username(request) )
+    reader = Reader.objects.get(user=user)
+    borrowBook = BorrowBook.objects.filter(reader = reader)
+
+    return render(request,'pages/reader/reader_borrow_detail.html',{'borrowBook':borrowBook})
 
 
 #---THỦ KHO

@@ -21,21 +21,21 @@
     <th>Mã sách</th>
     <th>Tên sách</th>
     <th>Ngày mượn</th>
-    <th>Ngày trả</th>
 
 </tr>
 
 {% endblock table_head %}
 {% block table_body %}
+{% for i in borrowBook %}
 <tr>
-    <th>STT</th>
-    <th>Mã sách</th>
-    <th>Tên sách</th>
-    <th>Ngày mượn</th>
-    <th>Ngày trả</th>
+    <th>{{i.id}}</th>
+    <th>{{i.book.bId}}</th>
+    <th>{{i.book.name}}</th>
+    <th>{{i.date_borrow}}</th>
 
 </tr>
-{% endblock table_body %}pyt
+{% endfor %}
+{% endblock table_body %}
 
 
 
