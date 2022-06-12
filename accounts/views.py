@@ -189,7 +189,8 @@ def cart(request):
     count_book = len(cart)
     if request.method == 'POST': #đăng ký mượn 
         #xóa toàn bộ sách trong giỏ hàng
-        Cart.objects.filter(reader = reader).delete()
+        cart.delete()
+        count_book = len(cart)
         for book in cart:
             print(book.book.bId)
             # giảm số lượng sách 
@@ -208,6 +209,13 @@ def cart(request):
         'count_book':count_book
         }
     return render(request,'pages/reader/cart.html',context)
+
+def reader_borrow_detail(request):
+    user = User.objects.get(username =get_username(request) )
+    reader = Reader.objects.get(user=user)
+    borrowBook = BorrowBook.objects.filter(reader = reader)
+
+    return render(request,'pages/reader/reader_borrow_detail.html',{'borrowBook':borrowBook})
 
 #--THỦ THƯ
 def librarian_home(request):
@@ -282,14 +290,6 @@ def return_book(request):
 def penalty_ticket(request,pk):
     ticket = PenaltyTicket.objects.get(id=pk)
     return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
-
-def reader_borrow_detail(request):
-    user = User.objects.get(username =get_username(request) )
-    reader = Reader.objects.get(user=user)
-    borrowBook = BorrowBook.objects.filter(reader = reader)
-
-    return render(request,'pages/reader/reader_borrow_detail.html',{'borrowBook':borrowBook})
-
 
 #---THỦ KHO
 def list_book(request):

@@ -42,7 +42,7 @@
                     <div class="card-body">
                     <form action="" method="post">
                     {% csrf_token %}    
-                        <input type="submit" href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal"  value="Đăng ký mượn">
+                        <input href="{% url 'cart' %}" type="submit" href="#myModal_dangkymuon" class=" btn btn-warning btn-block btn-lg " data-toggle="modal"  value="Đăng ký mượn">
                     </div>
                 </div>
                 {% else %}
