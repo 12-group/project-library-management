@@ -14,6 +14,6 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Python version: 3.9.7
 - Django version: 4.0.1
 # Current status
-- Chức năng mượn sách cho thủ thư
+- Update các màn hình thanh lý sách
 # Future works
-- Chức năng trả sách cho thủ thư
+- Làm sao để confirm trong template thanh_ly.html vậy, không thể confirm hay redirect gì được
