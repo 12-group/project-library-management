@@ -1,5 +1,6 @@
 {% extends 'pages/main/main.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block style %}
 body {
@@ -102,11 +103,15 @@ body {
 
 {% block content %}
 
-<form>
+<form method='get'>
     <div class="row" style="display:flex; justify-content: space-around ;">
         <div class="form-group col-md-2">
             <label for="bookname">Tên sách : </label>
-            <input type="text" class="form-control" id="bookname">
+            {% comment %} <input type="text" class="form-control" id="bookname"> {% endcomment %}
+            {{books_filter.form.name}}
+            {% comment %} {{ books_filter.form.name.label_tag }} {% endcomment %}
+            {% comment %} {% render_field books_filter.form.name type="search" %} {% endcomment %}
+    
         </div>
 
         <div class="form-group col-md-2">

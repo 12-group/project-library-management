@@ -4,11 +4,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
-from django.forms import formset_factory
 
 from .models import *
 from .forms import *
 from .decorators import *
+from .filter import *
 
 from .initial_func import username_gen
 
@@ -159,8 +159,18 @@ def home(request):
 
 def search_book(request):
     books = Book.objects.all()
+
+    books_filter = BookFilter(request.GET, queryset=books)
+    books = books_filter.qs
+
     num_books = len(books)
-    return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
+
+    context = {
+        'books':books,
+        'num_books':num_books,
+        'books_filter':books_filter
+    }
+    return render(request,'pages/reader/search.html',context)
 
 #kiểm tra sách này đã có trong giỏ hàng của độc giả chưa
 def get_Cart_from_Reader_and_book(reader,book):
