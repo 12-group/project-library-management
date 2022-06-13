@@ -154,7 +154,7 @@ class PenaltyTicket(models.Model):
 class BookLiquidation(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
-    quantity = models.PositiveIntegerField(null=True, default=0)
+    quantity = models.PositiveIntegerField(null=True, default=1)
     reason = models.CharField(max_length=200, null=True, blank=True)
     date_liquidation = models.DateTimeField(null=True, auto_now_add=True)
 
