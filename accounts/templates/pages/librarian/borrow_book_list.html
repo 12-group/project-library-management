@@ -15,14 +15,18 @@
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã độc giả:</p>
-        <input class="form-control form-control-sm" type="text" value="{{order.reader.rId}}" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" placeholder="DG10001" readonly style="margin-left: 10px;width:150px;">
     
+    </div>
+    <div class="infor_title">
+        <p class="infor_title_name">Ngày mượn:</p>
+        <input class="form-control form-control-sm" type="text" placeholder="22/11/2021" readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock line_info %}
 
 
 {% block title_name %}
-<p>Danh sách sách đăng ký</p>
+<p>Danh sách sách mượn</p>
 
 {% endblock title_name %}
 
@@ -34,18 +38,14 @@
 
 {% endblock table_head %}
 {% block table_body %}
-
-{% for i in order.list_book %}
 <tr>
-    <th>{{i.bId}}</th>
-    <th>{{i.name}}</th>
+    <th>Mã sách</th>
+    <th>Tên sách</th>
 </tr>	
-{% endfor %}
-
 {% endblock table_body %}
 {% block confirm_button %}
 <div class="submit">
-        <a class="btn btn-primary" href="{% url 'request_onl_list' %}">Xác nhận</a> 
+        <a class="btn btn-primary" href="{% url 'borrowers' %}">Xác nhận</a> 
 
 </div>
 {% endblock %}

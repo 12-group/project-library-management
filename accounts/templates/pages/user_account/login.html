@@ -77,16 +77,16 @@
 			<div class="button-loginnn">
 				<input class="btn btn-block" type="submit" style="background-color: #4C3876; color:white;" value="Đăng nhập">
 			</div>
-			{% if messages %}
-			<ul class="messages">
-				{% for message in messages %}
-					<li class="{{ message.tags }}">
-						{{ message|safe }}
-						<a href="#" class="close">x</a>
-					</li>
-				{% endfor %}
-			</ul>
-		{% endif %}			
+		{% if messages %}
+		{% for message in messages %}
+		<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+			{{ message }}
+		</div>
+		{% endfor %}
+		{% endif %}		
 		</form>
 
 	</div>

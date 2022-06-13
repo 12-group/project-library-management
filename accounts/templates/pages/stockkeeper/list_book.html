@@ -26,8 +26,12 @@
         <th>Trị giá</th>
         <th>Tổng số</th>
         <th>Số sách còn lại</th>
+<<<<<<< HEAD
         <th></th>
         
+=======
+        <th>Người tiếp nhận</th>
+>>>>>>> d5841cca788be17d7a6911a923c19c19f9019e88
     </tr>
 
 {% endblock %}
@@ -45,20 +49,25 @@
         <th>{{i.price}}</th>
         <th>{{i.total}}</th>
         <th>{{i.number_of_book_remain}}</th>
+<<<<<<< HEAD
         <th>
             <a href="{% url 'liquidation_info' i.bId %}" class=" btn btn-danger" >Thanh Lý</a>
         </th>
+=======
+        <th>{{i.nguoinhan}}</th>
+>>>>>>> d5841cca788be17d7a6911a923c19c19f9019e88
     </tr>
     {% endfor %}
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                {{ message|safe }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block confirm_button %}

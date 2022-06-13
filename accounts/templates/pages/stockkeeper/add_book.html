@@ -2,88 +2,64 @@
 {% load static %}
 
 {% block style %}
-    .form{
+    .a{
         margin: auto;
         margin-top:30px;
         padding: 20px 50px;
-        width: 50%;
-        background: #e6e6fa ;
+        background: white ;
         border-radius:5px;
+        width:50%;
     }
 {% endblock style %}
 
 
 {% block content %}
 
-{% comment %} <div class="form" >
-    <form class="row g-3">
-        <div class="col-md-6">
-          <label for="inputPassword4" class="form-label" >Tên sách</label>
-          {{form.name}}
+<div class="a" >
+    <form class="row g-3" method="POST" action="">
+        {% csrf_token %}
+		<div class="form-outline">
+            <label for="inputPassword4" class="form-label" >Tên sách</label>
+            {{form.name}}
         </div>
-        <div class="col-md-12">
+		<div class="form-outline">
             <label for="formFile" class="form-label ">Ảnh bìa sách</label>
             {{form.cover_pic}}
           </div>
-        <div class="col-md-6">
-            <label for="inputEmail4" class="form-label ">Tác giả</label>
-            {{form.author}}
-        </div>
-        <div class="col-md-6">
+		<div class="">
             <label for="inputPassword4" class="form-label ">Thể loại</label>
             {{form.ctg}}
         </div> 
-        <div class="col-md-6">
-            <label for="inputEmail4" class="form-label ">Năm xuất bản</label>
-            {{form.pubYear}}
+		<div class="form-outline">
+            <label for="inputEmail4" class="form-label ">Tác giả</label>
+            {{form.author}}
         </div>
-        <div class="col-md-6">
-            <label for="inputPassword4" class="form-label ">Nhà xuất bản</label>
-            {{form.publisher}}
-        </div>
-        <div class="col-md-6">
+		<div class="form-outline">
             <label for="inputEmail4" class="form-label ">Trị giá</label>
             {{form.price}}
         </div>
-        <div class="col-md-6">
-            <label for="inputPassword4" class="form-label ">Ngày nhập</label>
-            {{form.addDate}}
+		<div class="form-outline">
+            <label for="inputPassword4" class="form-label ">Nhà xuất bản</label>
+            {{form.publisher}}
+        </div>
+		<div class="form-outline">
+            <label for="inputEmail4" class="form-label ">Năm xuất bản</label>
+            {{form.pubYear}}
+        </div>
+		<div class="form-outline">Số lượng nhập</label>
+            {{form.total}}
+        </div>
+		<div class="form-outline">Mô tả sách</label>
+            {{form.description}}
         </div>
         <div style="margin-top:30px;">
-            <a href="#myModal" class=" btn btn-dark btn-block" data-toggle="modal">Thêm</a>
+        	<input class="btn btn-primary btn-block" type="submit" name="update" value="Cập nhật">
         </div>
 
-        <div id="myModal" class="modal fade">
-            <div class="modal-dialog modal-confirm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="icon-box">
-                            <i class="material-icons">&#xE876;</i>
-                        </div>				
-                        <h4 class="modal-title w-100">Cập nhật thành công!</h4>	
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'list_book' %}" >Ok</a>
-                    </div>
-                </div>
-            </div>
-        </div>     
         
     </form>
-</div> {% endcomment %}
+</div>  
 
-<div class="row">
-	<div class="col-md-9">
-		<div class="card card-body">
-			
-			<form method="POST" action="" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{form.as_p}}
-		
-			<input class="btn btn-primary" type="submit" name="update" value="Cập nhật">
-			</form>
-		</div>
-	</div>
-</div>
+
 
 {% endblock content %}

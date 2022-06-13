@@ -55,10 +55,10 @@ def loginPage(request):
         user = authenticate(request, username=username, password=password)
 
         if username == '':
-            messages.info(request, 'Tên đăng nhập không được để trống')
+            messages.error(request, 'Tên đăng nhập không được để trống')
 
         elif password == '' : 
-            messages.info(request, 'Mật khẩu không được bỏ trống')
+            messages.error(request, 'Mật khẩu không được bỏ trống')
 
         elif user is not None:
             login(request, user)
@@ -68,7 +68,7 @@ def loginPage(request):
             return redirect('home')
 
         else: 
-            messages.info(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
+            messages.error(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
             
     context = {}
     return render(request, 'pages/user_account/login.html', context)
@@ -205,26 +205,29 @@ def cart(request):
     count_book = len(cart)
     if request.method == 'POST': #đăng ký mượn 
         #xóa toàn bộ sách trong giỏ hàng
-        cart.delete()
-        count_book = len(cart)
+        order = BorrowOrder()
+        order.reader = reader
         for book in cart:
-            print(book.book.bId)
             # giảm số lượng sách 
             b = Book.objects.get(bId = book.book.bId)
             b.number_of_book_remain -= 1
             b.save()
-            #thêm thông tin mượn
-            borrow_Book = BorrowBook()
-            borrow_Book.reader = reader
-            borrow_Book.book = book.book
-            borrow_Book.save()
-            print("xong")
+            #thêm thông tin order
+            order.list_book.append(book.book)
+            order.save()
+        cart.delete()
+        count_book = len(cart)
 
     context = {
         'cart':cart,
         'count_book':count_book
         }
     return render(request,'pages/reader/cart.html',context)
+def order_book(request,pk):
+    reader = Reader.objects.get(rId=pk)
+    order = BorrowOrder.objects.get(reader = reader)
+    return render(request,'pages/librarian/request_online.html',{'order':order})
+
 
 def remove_from_cart(request, cart_pk):
     cart = Cart.objects.get(pk=cart_pk)
@@ -297,6 +300,11 @@ def register_reader(request):
             return redirect('librarian')
 
     return render(request,'pages/librarian/register_reader.html',{'form':form})
+
+def request_onl_list(request):
+    orders = BorrowOrder.objects.all()
+    context={'orders':orders}
+    return render(request,'pages/librarian/request_onl_list.html',context)
 
 def request_onl(request):
     readers = Reader.objects.all()
@@ -395,6 +403,8 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             book = form.save()
+            book.nguoinhan = request.user.customer.staff
+            book.save()
             messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
             return redirect('list_book')
         
