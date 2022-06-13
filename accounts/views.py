@@ -397,6 +397,13 @@ def liquidation_info(request, bId):
 
     return render(request,'pages/stockkeeper/liquidation_info.html', context)
 
+def liquidation_history(request):
+    liquidation = BookLiquidation.objects.all()
+    context = {
+        'liquidation':liquidation,
+    }
+    return render(request,'pages/stockkeeper/liquidation_history.html',context)
+
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':

@@ -1,0 +1,48 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+
+
+
+{% block title_name %}
+	<p>Lịch sử thanh lý</p>
+{% endblock %}
+
+
+{% block table_head %}
+    <tr>
+        <th>Nhân viên thanh lý</th>
+        <th>Mã sách</th>
+        <th>Tên sách</th>
+        <th>Số lượng thanh lý</th>
+        <th>Lý do</th>
+        <th>Ngày thanh lý</th>
+    </tr>
+
+{% endblock %}
+
+{% block table_body %}
+    {% for i in liquidation %}
+    <tr>
+        <th>{{i.staff}}</th>
+        <th>{{i.book.bId}}</th>
+        <th>{{i.book}}</th>
+        <th>{{i.quantity}}</th>
+        <th>{{i.reason}}</th>
+        <th>{{i.date_liquidation}}</th>
+    </tr>
+    {% endfor %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block confirm_button %}
+{% endblock %}
