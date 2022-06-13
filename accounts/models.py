@@ -99,6 +99,17 @@ class Book(models.Model):
 class Cart(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+
+class BorrowOrder(models.Model):
+    STATUS = [
+        ('Pending ','Chờ xác nhận'),
+        ('Inprocess', 'Đang soạn sách'), 
+        ('Complete', 'Hoàn thành')
+    ]
+    #cart = models.ForeignKey(Cart, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
+    reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
+    list_book = []
+    status = models.CharField(max_length=200, null=True, choices=STATUS, blank=True,default='Chờ xác nhận')
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)

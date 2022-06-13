@@ -189,26 +189,36 @@ def cart(request):
     count_book = len(cart)
     if request.method == 'POST': #đăng ký mượn 
         #xóa toàn bộ sách trong giỏ hàng
-        cart.delete()
-        count_book = len(cart)
+        order = BorrowOrder()
+        order.reader = reader
+        print(reader.rId)
         for book in cart:
             print(book.book.bId)
             # giảm số lượng sách 
             b = Book.objects.get(bId = book.book.bId)
             b.number_of_book_remain -= 1
             b.save()
-            #thêm thông tin mượn
-            borrow_Book = BorrowBook()
-            borrow_Book.reader = reader
-            borrow_Book.book = book.book
-            borrow_Book.save()
+            #thêm thông tin order
+            print(book.book)
+            order.list_book.append(book.book)
+            print(order.list_book)
+            order.save()
             print("xong")
+        cart.delete()
+        count_book = len(cart)
 
     context = {
         'books':cart,
         'count_book':count_book
         }
     return render(request,'pages/reader/cart.html',context)
+def order_book(request,pk):
+    reader = Reader.objects.get(rId=pk)
+    print(reader.rId)
+    order = BorrowOrder.objects.get(reader = reader)
+    print(order.list_book)
+    return render(request,'pages/librarian/request_online.html',{'order':order})
+
 
 def reader_borrow_detail(request):
     user = User.objects.get(username =get_username(request) )
@@ -267,6 +277,11 @@ def register_reader(request):
             return redirect('librarian')
 
     return render(request,'pages/librarian/register_reader.html',{'form':form})
+
+def request_onl_list(request):
+    orders = BorrowOrder.objects.all()
+    context={'orders':orders}
+    return render(request,'pages/librarian/request_onl_list.html',context)
 
 def request_onl(request):
     readers = Reader.objects.all()

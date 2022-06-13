@@ -7,6 +7,7 @@ urlpatterns = [
    path('search/', views.search_book,name='search'),
    path('detail_info/<str:pk>/', views.detail_info_book,name='detail'),
    path('cart/', views.cart,name='cart'),
+   path('order_book/<str:pk>/', views.order_book,name='order_book'),
 
    path('login/', views.loginPage,name='login'),
    path('register/', views.register,name='register'),
@@ -19,6 +20,7 @@ urlpatterns = [
    path('librarian/', views.librarian_home, name="librarian"), 
    path('borrowers/', views.borrowers, name="borrowers"),
    path('register_reader/', views.register_reader, name="register_reader"),
+   path('request_onl_list/', views.request_onl_list, name="request_onl_list"),
    path('request_onl/', views.request_onl, name="request_onl"),
    path('request_off/', views.request_off, name="request_off"),
    path('return_books/', views.return_book, name="return_books"),
