@@ -369,6 +369,8 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             book = form.save()
+            book.nguoinhan = request.user.customer.staff
+            book.save()
             messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
             return redirect('list_book')
         

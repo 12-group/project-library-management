@@ -39,7 +39,7 @@ class BookForm(ModelForm):
 	class Meta:
 		model = Book
 		fields = '__all__'
-		exclude = ['bId']
+		exclude = ['bId','number_of_book_remain','nguoinhan','addDate']
 		widgets = {
 			'ctg': forms.CheckboxSelectMultiple()
 		}

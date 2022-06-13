@@ -27,6 +27,7 @@
         <th>Trị giá</th>
         <th>Tổng số</th>
         <th>Số sách còn lại</th>
+        <th>Người tiếp nhận</th>
     </tr>
 
 {% endblock %}
@@ -44,6 +45,7 @@
         <th>{{i.price}}</th>
         <th>{{i.total}}</th>
         <th>{{i.number_of_book_remain}}</th>
+        <th>{{i.nguoinhan}}</th>
     </tr>
     {% endfor %}
     {% if messages %}
