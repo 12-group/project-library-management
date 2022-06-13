@@ -404,6 +404,7 @@ def add_book(request):
         if form.is_valid():
             book = form.save()
             book.nguoinhan = request.user.customer.staff
+            book.number_of_book_remain = book.total
             book.save()
             messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
             return redirect('list_book')

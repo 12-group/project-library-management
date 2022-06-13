@@ -26,12 +26,8 @@
         <th>Trị giá</th>
         <th>Tổng số</th>
         <th>Số sách còn lại</th>
-<<<<<<< HEAD
-        <th></th>
-        
-=======
         <th>Người tiếp nhận</th>
->>>>>>> d5841cca788be17d7a6911a923c19c19f9019e88
+        <th></th>
     </tr>
 
 {% endblock %}
@@ -49,13 +45,8 @@
         <th>{{i.price}}</th>
         <th>{{i.total}}</th>
         <th>{{i.number_of_book_remain}}</th>
-<<<<<<< HEAD
-        <th>
-            <a href="{% url 'liquidation_info' i.bId %}" class=" btn btn-danger" >Thanh Lý</a>
-        </th>
-=======
         <th>{{i.nguoinhan}}</th>
->>>>>>> d5841cca788be17d7a6911a923c19c19f9019e88
+        <th><a href="{% url 'liquidation_info' i.bId %}" class="btn btn-danger" >Thanh lý</a></th>
     </tr>
     {% endfor %}
     {% if messages %}

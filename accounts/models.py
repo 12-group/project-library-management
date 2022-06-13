@@ -167,13 +167,3 @@ class BookLiquidation(models.Model):
             self.book.total -= self.quantity
             self.book.save()
         return super().save(force_insert, force_update, using, update_fields)
-
-
-class GetBook(models.Model):
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
-    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
-    quantity = models.PositiveIntegerField(null=True, default=0)
-    get_date = models.DateTimeField(null=True, auto_now_add=True)
-
-
-
