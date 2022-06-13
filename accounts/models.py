@@ -152,6 +152,8 @@ class BookLiquidation(models.Model):
             raise ValueError('Không thể thanh lý nhiều hơn {} quyển sách'.format(self.book.number_of_book_remain))
         else:
             self.book.number_of_book_remain -= self.quantity
+            self.book.total -= self.quantity
+            self.book.save()
         return super().save(force_insert, force_update, using, update_fields)
 
 

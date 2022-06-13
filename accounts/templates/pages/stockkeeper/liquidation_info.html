@@ -1,0 +1,64 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+
+{% block title_name %}
+	<p>Điền thông tin thanh lý</p>
+{% endblock %}
+
+{% block table_head %}
+    <tr>
+        <th>Mã sách</th>
+        <th>Tên sách</th>
+        <th>Thể loại</th>
+        <th>Tác giả</th>
+        <th>Năm xuất bản</th>
+        <th>Nhà xuất bản</th>
+        <th>Ngày nhập</th>
+        <th>Trị giá</th>
+        <th>Tổng số</th>
+        <th>Số sách còn lại</th>
+        
+    </tr>
+
+{% endblock %}
+
+{% block table_body %}
+    <tr>
+        <th>{{book.bId}}</th>
+        <th>{{book.name}}</th>
+        <th>{{book.get_all_ctg_to_string}}</th>
+        <th>{{book.author}}</th>
+        <th>{{book.pubYear}}</th>
+        <th>{{book.publisher}}</th>
+        <th>{{book.addDate}}</th>
+        <th>{{book.price}}</th>
+        <th>{{book.total}}</th>
+        <th>{{book.number_of_book_remain}}</th>
+    </tr>
+    <tr>
+        <td colspan="10">
+    {% comment %} <div class="row">
+        <div class="col-md-9"> {% endcomment %}
+            <div class="card card-body">
+                <form method="post" action="{% url 'thanh_ly'%}">
+                    {% csrf_token %}
+                    {{form.as_p}}
+            
+                <button name='submit' type='submit' class="btn btn-primary" value="reconfirm">Thanh lý</button>
+                </form>
+            </div>
+        {% comment %} </div>
+        </div> {% endcomment %}
+    </td>
+    </tr>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
