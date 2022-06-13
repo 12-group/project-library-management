@@ -1,5 +1,15 @@
 {% extends 'pages/main/main.html' %} {% load static %} {% block content %}
 
+{% if messages %}
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
 
 <section class="h-100" >
     <div class="container h-100 py-5">
@@ -48,18 +58,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-normal mb-0 text-black">Giỏ hàng trống</h6>
                 </div>
-
                 {% endif %}
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">
-                            {{ message|safe }}
-                            <a href="#" class="close">x</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
             </div>
         </div>
     </div>
@@ -80,14 +79,4 @@
         </div>
     </div>
 </div>
-
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript">
-    function count_checked() {
-        var numberOfChecked = $('input:checkbox:checked').length;
-        document.getElementById("count").innerHTML = numberOfChecked
-    }
-</script>
-
-
 {% endblock content %}

@@ -55,10 +55,10 @@ def loginPage(request):
         user = authenticate(request, username=username, password=password)
 
         if username == '':
-            messages.info(request, 'Tên đăng nhập không được để trống')
+            messages.error(request, 'Tên đăng nhập không được để trống')
 
         elif password == '' : 
-            messages.info(request, 'Mật khẩu không được bỏ trống')
+            messages.error(request, 'Mật khẩu không được bỏ trống')
 
         elif user is not None:
             login(request, user)
@@ -68,7 +68,7 @@ def loginPage(request):
             return redirect('home')
 
         else: 
-            messages.info(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
+            messages.error(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
             
     context = {}
     return render(request, 'pages/user_account/login.html', context)
