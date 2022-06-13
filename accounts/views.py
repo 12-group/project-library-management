@@ -207,19 +207,14 @@ def cart(request):
         #xóa toàn bộ sách trong giỏ hàng
         order = BorrowOrder()
         order.reader = reader
-        print(reader.rId)
         for book in cart:
-            print(book.book.bId)
             # giảm số lượng sách 
             b = Book.objects.get(bId = book.book.bId)
             b.number_of_book_remain -= 1
             b.save()
             #thêm thông tin order
-            print(book.book)
             order.list_book.append(book.book)
-            print(order.list_book)
             order.save()
-            print("xong")
         cart.delete()
         count_book = len(cart)
 
@@ -230,9 +225,7 @@ def cart(request):
     return render(request,'pages/reader/cart.html',context)
 def order_book(request,pk):
     reader = Reader.objects.get(rId=pk)
-    print(reader.rId)
     order = BorrowOrder.objects.get(reader = reader)
-    print(order.list_book)
     return render(request,'pages/librarian/request_online.html',{'order':order})
 
 
