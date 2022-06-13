@@ -59,12 +59,23 @@
         <div>{{i.name}} </div>
         {% endfor %}
     </div>
+    
     <div class="row" style="padding:20px 30px;">
         <p class="book-info" style="margin: 0px;">Mô tả sách :</p>
         <div class="overflow-auto" style="height: 200px;background-color: pink; padding: 10px;">
             <p> {{book.description}} </p>
         </div>
     </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
 </div>
 <script>
     function add_cart(){

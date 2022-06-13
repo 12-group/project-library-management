@@ -36,7 +36,14 @@
 	<th>{{i.card_maker.name}}</th>
 </tr>
 {% endfor %}
-{% for message in messages %}
-	<p id="messages">{{message}}</p>
-{% endfor %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock table_body %}

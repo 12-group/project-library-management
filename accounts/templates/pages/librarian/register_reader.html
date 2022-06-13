@@ -65,9 +65,16 @@
                 <input class="btn btn-block" type="submit" style="background-color: #4C3876; color: white;" value="Thêm">
             </div>           
     </form>
-    {% for message in messages %}
-        <p id="messages">{{message}}</p>
-    {% endfor %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
 </div>
 <script>
 						

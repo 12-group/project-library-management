@@ -15,7 +15,7 @@
 
 {% block content %}
 
-<div class="form" >
+{% comment %} <div class="form" >
     <form class="row g-3">
         <div class="col-md-6">
           <label for="inputPassword4" class="form-label" >Tên sách</label>
@@ -70,5 +70,20 @@
         </div>     
         
     </form>
+</div> {% endcomment %}
+
+<div class="row">
+	<div class="col-md-9">
+		<div class="card card-body">
+			
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form.as_p}}
+		
+			<input class="btn btn-primary" type="submit" name="update" value="Cập nhật">
+			</form>
+		</div>
+	</div>
 </div>
+
 {% endblock content %}
