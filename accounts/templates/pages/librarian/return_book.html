@@ -41,8 +41,8 @@
     <th>{{return_book.date_borrow}}</th>
     <th>{{return_book.date_return}}</th>
     <th></th>
-    <th><label><input type="radio" id="choice1" value="return" name="return" /></label></th>
-    <th><label><input type="radio" id="choice2" value="lost" name="return" /></label></th>
+    <th><label><input type="radio" id="choice" value="return" name="return{{i}}" /></label></th>
+    <th><label><input type="radio" id="choice" value="lost" name="return{{i}}" /></label></th>
     <th>{{return_book.fine}}</th>
 </tr>	
 {% endfor %}

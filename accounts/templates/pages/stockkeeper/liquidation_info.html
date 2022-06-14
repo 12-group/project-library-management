@@ -41,11 +41,11 @@
     {% comment %} <div class="row">
         <div class="col-md-9"> {% endcomment %}
             <div class="card card-body">
-                <form method="post" action="{% url 'thanh_ly'%}">
+                <form method="post">
                     {% csrf_token %}
                     {{form.as_p}}
             
-                <button name='submit' type='submit' class="btn btn-primary" value="reconfirm">Thanh lý</button>
+                <input  href="{% url 'thanh_ly' %}" name='submit' type='submit' class="btn btn-primary" value="Thanh lý">
                 </form>
             </div>
         {% comment %} </div>

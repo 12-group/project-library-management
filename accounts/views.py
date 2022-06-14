@@ -378,27 +378,13 @@ def list_book(request):
     return render(request,'pages/stockkeeper/list_book.html',context)
 
 # re-confirm liquidation screen
-def thanh_ly(request):
+def thanh_ly(request,pk):
+    
     today = date.today()
-    book_liquidation_form = None
+    book_liquidation = BookLiquidation.objects.get(id=pk)
+    book_liquidation_form = BookLiquidationForm(instance=book_liquidation)
     if request.method == 'POST':
-
         book_liquidation_form = BookLiquidationForm(request.POST)
-
-        action = request.POST.get('submit')
-        if action == 'reconfirm':
-            # render this page,
-            # do nothing
-            pass
-
-        # if confirm
-        elif action == 'confirm':
-            if book_liquidation_form.is_valid():
-                book_liquidation_form.save()
-                return redirect('list_book')
-
-
-
     context = {
         'user': request.user,
         'date': today.strftime("%d/%m/%Y"),
@@ -420,13 +406,13 @@ def liquidation_info(request, bId):
     book_liquidation_form.fields['book'].widget = forms.HiddenInput()
 
     if request.method == 'POST':
+        print('y')
+        book_liquidation_form = BookLiquidationForm(request.POST)
 
-        # book_liquidation_form = BookLiquidationForm(request.POST)
-
-        # if book_liquidation_form.is_valid():
-        #     book_liquidation = book_liquidation_form.save()
-        #     return redirect('thanh_ly', book_liquidation.pk)
-        pass
+        if book_liquidation_form.is_valid():
+            book_liquidation = book_liquidation_form.save()
+            print('tl')
+            return thanh_ly(request,book_liquidation.id)
 
     context={
         'form':book_liquidation_form,

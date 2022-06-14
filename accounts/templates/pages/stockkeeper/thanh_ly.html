@@ -52,7 +52,7 @@
 {% block confirm_button %}
 <div class="text-center">
 	<a name='submit' value='confirm' type='submit' href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
-    <a href={% url 'list_book' %} class=" btn btn-primary trigger-btn" data-toggle="modal">Trở lại</a>
+    <a href="{% url 'list_book' %}" class=" btn btn-primary trigger-btn" data-toggle="modal">Trở lại</a>
 </div>
 <div id="myModal" class="modal fade">
 	<div class="modal-dialog modal-confirm">
