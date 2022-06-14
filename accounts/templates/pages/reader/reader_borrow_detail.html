@@ -17,7 +17,6 @@
 
 {% block table_head %}
 <tr >
-    <th>STT</th>
     <th>Mã sách</th>
     <th>Tên sách</th>
     <th>Ngày mượn</th>
@@ -26,11 +25,10 @@
 
 {% endblock table_head %}
 {% block table_body %}
-{% for i in borrowBook %}
+{% for i in list_book %}
 <tr>
-    <th>{{i.id}}</th>
-    <th>{{i.book.bId}}</th>
-    <th>{{i.book.name}}</th>
+    <th>{{i.bId}}</th>
+    <th>{{i.name}}</th>
     <th>{{i.date_borrow}}</th>
 
 </tr>

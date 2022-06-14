@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
-from django.contrib.postgres.fields import ArrayField
+from jsonfield import JSONField
 
 DEFAULT_PASSWORD = 'password'
 
@@ -96,36 +96,36 @@ class Book(models.Model):
     def get_all_ctg_to_string(self):
         all_this_book_ctg = self.ctg.all()
         return ', '.join([ctg.name for ctg in all_this_book_ctg])
-
 class Cart(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
 
 class BorrowOrder(models.Model):
     STATUS = [
-        ('Pending ','Chờ xác nhận'),
-        ('Inprocess', 'Đang soạn sách'), 
-        ('Complete', 'Hoàn thành')
+        ('Chờ xác nhận','Chờ xác nhận'),
+        ('Đang soạn sách', 'Đang soạn sách'), 
+        ('Hoàn thành', 'Hoàn thành'),
+        ('Đã nhận sách','Đã nhận sách')
     ]
     #cart = models.ForeignKey(Cart, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
-    list_book = []
+    list_book = JSONField()
     status = models.CharField(max_length=200, null=True, choices=STATUS, blank=True,default='Chờ xác nhận')
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
-    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    list_book = JSONField()
     date_borrow = models.DateTimeField(null=True, auto_now_add=True)
-    
-    def save(self, force_insert=False, force_update=False, using=None, 
+
+    """def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         if self.book != None:
             if self.book.number_of_book_remain == 0:
                 raise ValueError('Sách ' + self.book.name + ' không còn')
-        return super().save(force_insert, force_update, using, update_fields)
+        return super().save(force_insert, force_update, using, update_fields)"""
     
-    def __str__(self):
-        return self.reader.name + " " + self.book.name
-
+    def __str__(self):  
+        return ""
+    
 class ReturnBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)

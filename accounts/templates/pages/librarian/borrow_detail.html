@@ -15,12 +15,12 @@
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã độc giả:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="DG10001" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" value="{{borrow.reader.rId}}" readonly style="margin-left: 10px;width:150px;">
     
     </div>
     <div class="infor_title">
         <p class="infor_title_name">Ngày mượn:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="22/11/2021" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" value="{{borrow.date_borrow}}" readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock line_info %}
 
@@ -38,14 +38,18 @@
 
 {% endblock table_head %}
 {% block table_body %}
+
+{% for i,j in list %}
 <tr>
-    <th>Mã sách</th>
-    <th>Tên sách</th>
+    <th>{{i}}</th>
+    <th>{{j}}</th>
 </tr>	
+{% endfor %}
+
 {% endblock table_body %}
 {% block confirm_button %}
 <div class="submit">
-        <a class="btn btn-primary" href="{% url 'borrowers' %}">Xác nhận</a> 
+        <a class="btn btn-primary" href="{% url 'borrowers' %}">Trở lại</a> 
 
 </div>
 {% endblock %}

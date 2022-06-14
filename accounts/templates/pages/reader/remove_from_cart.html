@@ -10,7 +10,7 @@
             <p>Bạn có chắc muốn xóa sách "{{cart.book.name}}"?</p>
             <form action="{% url 'remove_from_cart' cart.pk %}" method="POST">
                 {% csrf_token %}
-                <a class='btn btn-warning' href={% url 'cart' %}>Cancel</a>
+                <a class='btn btn-warning' href="{% url 'cart' %}">Cancel</a>
 
                 <input class='btn btn-danger' type="submit" value="Confirm">
             </form>
