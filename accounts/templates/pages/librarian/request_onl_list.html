@@ -10,8 +10,9 @@
 {% block table_head %}
 <tr>
     <th>Mã độc giả</th>
-    <th></th>
+    <th>Xem chi tiết</th>
     <th>Trạng thái</th>
+    <th>Update</th>
 </tr>
 
 {% endblock table_head %}
@@ -20,8 +21,9 @@
 {% for i in orders %}
 <tr>
     <th>{{i.reader.rId}}</th>
-    <th><a class="btn btn-primary" href="{% url 'order_book' i.reader.rId %}">Xem chi tiết</a></th>
+    <th><a class="btn btn-primary" href="{% url 'request_onl' i.id %}">Xem chi tiết</a></th>
     <th>{{i.status}}</th>
+    <th><a class="btn btn-warning" href="{% url 'update_request' i.id %}">Update</a></th>
 </tr>	
 {% endfor %}
 

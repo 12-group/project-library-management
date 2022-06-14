@@ -35,19 +35,19 @@
 {% endblock table_head %}
 {% block table_body %}
 
-{% for i in order.list_book %}
+{% for i,j in list %}
 <tr>
-    <th>{{i.bId}}</th>
-    <th>{{i.name}}</th>
+    <th>{{i}}</th>
+    <th>{{j}}</th>
 </tr>	
 {% endfor %}
 
 {% endblock table_body %}
 {% block confirm_button %}
-<div class="submit">
-        <a class="btn btn-primary" href="{% url 'request_onl_list' %}">Xác nhận</a> 
-
-</div>
+<form method="POST"  action="">
+    {% csrf_token %}
+    <input class='btn btn-primary' type="submit" value="Xác nhận" >
+</form>
 {% endblock %}
 
 

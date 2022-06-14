@@ -43,7 +43,12 @@ class BookForm(ModelForm):
 		widgets = {
 			'ctg': forms.CheckboxSelectMultiple()
 		}
-
+class OrderForm(ModelForm):
+	class Meta:
+		model = BorrowOrder
+		fields = '__all__'
+		exclude = ['list_book']
+		
 class BookLiquidationForm(ModelForm):
 	class Meta:
 		model = BookLiquidation
