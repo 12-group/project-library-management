@@ -450,9 +450,12 @@ def money_list(request):
 #--QUẢN LÝ
 def manager_dashboard(request):
     staffs = Staff.objects.all()
+    staff_filter = StaffFilter(request.GET, queryset=Staff.objects.all())
+    staffs = staff_filter.qs
 
     context = {
-        'staffs':staffs
+        'staffs':staffs,
+        'staff_filter': staff_filter
     }
 
     return render(request, 'pages/manager/manager_dashboard.html',context)
@@ -479,7 +482,7 @@ def add_staff(request):
             user.groups.add(staff_group)
 
             if staff.position != 'Staff':
-                staff.service = 'Manager deparment'
+                staff.service = 'Manager department'
                 staff.save()
                 manager_group = Group.objects.get(name='manager')
                 user.groups.add(manager_group)

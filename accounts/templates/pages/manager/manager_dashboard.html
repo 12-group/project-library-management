@@ -12,6 +12,21 @@
 		<a href={% url 'add_staff' %} type="button" class="btn btn-outline-primary" >Thêm nhân viên</a>
 	</div>
 {% endblock button %}
+{% block filter %}
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+				{{staff_filter.form}}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+</div>
+
+{% endblock filter %}
+
+
 {% block table_head %}
 <tr>
 <th>Mã nhân viên</th>

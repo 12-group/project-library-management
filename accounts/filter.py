@@ -37,3 +37,14 @@ class BookFilter(django_filters.FilterSet):
             },
         },
         }
+
+class StaffFilter(django_filters.FilterSet):
+    class Meta:
+        model = Staff
+        fields = {
+            'sId',
+            'name',
+            'certificate',
+            'position',
+            'service'
+        }

@@ -58,8 +58,11 @@
 
 {% endblock style %}
 {% block content %}
+
+
 <div class="list_item">
-   
+
+
 	<div class="title_button" >
 
 		<div class="list_name_title">
@@ -71,6 +74,7 @@
         {% endblock %}
 
 	</div>
+	{% block filter %}{% endblock filter %}
 
 	 <div class="line_info" >
         {% block line_info %}
