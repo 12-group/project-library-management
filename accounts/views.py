@@ -226,10 +226,13 @@ def cart(request):
             b.save()
             #thêm thông tin order
             #--thêm kiểm tra đã có 1 order khác chưa
+<<<<<<< HEAD
             # print('{}'.format(book.book.bId))
             # print('{}'.format(book.book.bId))
             # print(type(order.list_book))
             # print(type(order)
+=======
+>>>>>>> a3d6e3fcf4064c26a3599c7df5dec106747f2b65
             print(type(order.list_book))
             order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
             print(order.list_book)
