@@ -16,7 +16,7 @@
 {% block content %}
 
 <div class="a" >
-    <form class="row g-3" method="POST" action="">
+    <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
 		<div class="form-outline">
             <label for="inputPassword4" class="form-label" >Tên sách</label>
