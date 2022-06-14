@@ -14,6 +14,6 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Python version: 3.9.7
 - Django version: 4.0.1
 # Current status
-- Làm chức năng search
+- Đã xong search
 # Future works
-- Tìm cách để style lại field
+- Muốn style lại nhưng chưa biết làm

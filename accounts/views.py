@@ -159,10 +159,10 @@ def home(request):
 
 def search_book(request):
     books = Book.objects.all()
-
+    print(request.GET)
     books_filter = BookFilter(request.GET, queryset=books)
     books = books_filter.qs
-
+    print(books)
     num_books = len(books)
 
     context = {

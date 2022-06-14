@@ -29,7 +29,7 @@ body {
 	margin: 40px auto;
 }
 .userprofile .userpic {
-	height: 250px;
+	height: auto;
 	width: auto;
 	clear: both;
 	margin: 0 auto;
@@ -39,6 +39,7 @@ body {
 	-webkit-box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.15);
 	-ms-box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.15);
 	position: relative; 
+    
 }
 .userprofile .userpic .userpicimg {
 	height: 100%;
@@ -106,26 +107,23 @@ body {
 <form method='get'>
     <div class="row" style="display:flex; justify-content: space-around ;">
         <div class="form-group col-md-2">
-            <label for="bookname">Tên sách : </label>
-            {% comment %} <input type="text" class="form-control" id="bookname"> {% endcomment %}
+            <label for="books_filter.form.name.label_tag"> Tên sách : </label>
+            {% comment %} {% render_field books_filter.form.name class="form-control"%} {% endcomment %}
             {{books_filter.form.name}}
-            {% comment %} {{ books_filter.form.name.label_tag }} {% endcomment %}
-            {% comment %} {% render_field books_filter.form.name type="search" %} {% endcomment %}
-    
         </div>
 
         <div class="form-group col-md-2">
-            <label for="authorname">Tên tác giả :</label>
-            <input type="text" class="form-control" id="authorname">
+            <label for="books_filter.form.author">Tên tác giả :</label>
+            {% comment %} {% render_field books_filter.form.author class="form-control"%} {% endcomment %}
+            {{books_filter.form.author}}
+
         </div>
 
         <div class="form-group col-md-2">
-            <label for="inputState">Thể loại : </label>
-            <select id="inputState" class="form-control">
-                <option selected>Khoa học</option>
-                <option selected>Tiếng anh</option>
-                <option selected>Tiểu thuyết</option>
-            </select>
+            <label for="books_filter.form.ctg.label_tag">Thể loại : </label>
+            {% comment %} {% render_field books_filter.form.ctg class="form-control" %} {% endcomment %}
+            {{books_filter.form.ctg}}
+
         </div>
 
         <div class="form-group col-md-3">
@@ -133,22 +131,47 @@ body {
             <div class="row">
                 <div class="row gx-3 col">
                     <label class="col"> từ :</label>
-                    <input type="number" min="1900" max="2022" step="1" value="2022" class="form-control col"/>
+                    {% comment %} {% render_field books_filter.form.pubYear type="number" class="form-control col"%} {% endcomment %}
+                    {{books_filter.form.min_year}}
+
                 </div>
                 <div class="row gx-3 col">
                     <label class="col"> đến :</label>
-                    <input type="number" min="1900" max="2022" step="1" value="2022" class="form-control col" />                   
+                    {% comment %} {% render_field books_filter.form.pubYear type="number" class="form-control col"%} {% endcomment %}
+                    {{books_filter.form.max_year}}
+
                 </div>
             </div>
         </div>
         <div class="form-group col-md-2">
-            <a class="btn btn-primary"role="button" style="margin-top:30px;margin-left:50px;"onclick="myFunction()">Tìm kiếm</a>
+            <button type='submit' class="btn btn-primary" style="margin-top:30px;margin-left:50px;" >Tìm kiếm</button>
         </div>
-
     </div>
 </form>
 
-
+<div class="row">
+    {% if num_books == 0 %}
+        <p style="text-align:center;">Không có kết quả phù hợp</p>
+    {% else %}
+    {% for i in books %}
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <a href="{% url 'detail' i.bId %}" >
+        <div class="panel panel-default userlist">
+            <div class="panel-body text-center">
+                <div class="userprofile">
+                    <div class="userpic"> 
+                        {% static "" as baseUrl %}
+                        <img src="{{baseUrl}}images/{{i.cover_pic}}" alt="" class="userpicimg"> 
+                    </div>
+                </div>
+            </div>
+            <!-- -->
+            <div class="panel-footer"> <a href="{% url 'detail' i.bId %} " class="btn btn-link">{{i.name}}</a></div>       
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %} 
+</div>
 <div id ="result" class="container overflow-auto" style="height :0px;overflow:hidden;">
 
     <div class="row">
