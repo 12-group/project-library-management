@@ -13,7 +13,7 @@ from .filter import *
 from .initial_func import username_gen
 
 from datetime import date
-
+import json
 
 def is_in_group(check_group, groups):
     if check_group in [group.name for group in groups]:
@@ -208,9 +208,15 @@ def cart(request):
     user = User.objects.get(username =get_username(request) )
     reader = Reader.objects.get(user=user)
     cart = Cart.objects.filter(reader = reader)
+
     count_book = len(cart)
     order = BorrowOrder()
     order.reader = reader
+    test_string = '{}' 
+    order.list_book = json.loads(test_string)
+
+    print(type(order.list_book))
+
     if request.method == 'POST': #đăng ký mượn 
         #xóa toàn bộ sách trong giỏ hàng
         for book in cart:
@@ -220,6 +226,11 @@ def cart(request):
             b.save()
             #thêm thông tin order
             #--thêm kiểm tra đã có 1 order khác chưa
+            # print('{}'.format(book.book.bId))
+            # print('{}'.format(book.book.bId))
+            # print(type(order.list_book))
+            # print(type(order)
+            print(type(order.list_book))
             order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
             print(order.list_book)
 
