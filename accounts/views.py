@@ -258,10 +258,10 @@ def remove_from_cart(request, cart_pk):
 def reader_borrow_detail(request):
     user = User.objects.get(username =get_username(request) )
     reader = Reader.objects.get(user=user)
-    borrowBook = BorrowBook.objects.filter(reader = reader)
-    return render(request,'pages/reader/reader_borrow_detail.html',{'borrowBook':borrowBook})
-
-
+    borrow = BorrowBook.objects.get(reader = reader)
+    list =  zip(borrow.list_book,borrow.list_book.values())
+    context = {'borrow':borrow,'list':list}
+    return render(request,'pages/reader/reader_borrow_detail.html',context)
 
 #--THỦ THƯ
 def librarian_home(request):
@@ -352,21 +352,20 @@ def request_off(request):
                 'books': books}
     return render(request,'pages/librarian/request_offline.html')
 def borrow_detail(request,pk):
-    print('y')
-    print(pk)
     borrow = BorrowBook.objects.get(id=pk)
     list =  zip(borrow.list_book,borrow.list_book.values())
     context = {'borrow':borrow,'list':list}
     return render(request,'pages/librarian/borrow_detail.html',context)
 
-def return_book(request):
-    return_books = ReturnBook.objects.all()
-    context = {'return_books': return_books}
+def return_book(request,pk):
+    return_book = ReturnBook.objects.get(id=pk)
+    list =  zip(return_book.list_book,return_book.list_book.values())
+    context = {'return_book': return_book,'list':list}
     return render(request,'pages/librarian/return_book.html', context)
 
 def penalty_ticket(request,pk):
     ticket = PenaltyTicket.objects.get(id=pk)
-    return render(request,'pages/librarian/penalty_ticket.html',{'ticket':ticket})
+    return render(request,'pages/librarian/home.html',{'ticket':ticket})
 
 #---THỦ KHO
 def list_book(request):

@@ -25,11 +25,11 @@
 
 {% endblock table_head %}
 {% block table_body %}
-{% for i in list_book %}
+{% for i,j in list %}
 <tr>
-    <th>{{i.bId}}</th>
-    <th>{{i.name}}</th>
-    <th>{{i.date_borrow}}</th>
+    <th>{{i}}</th>
+    <th>{{j}}</th>
+    <th>{{borrow.date_borrow}}</th>
 
 </tr>
 {% endfor %}

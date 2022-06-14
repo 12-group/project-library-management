@@ -25,7 +25,7 @@ urlpatterns = [
    path('update_request/<str:pk>/', views.update_request, name="update_request"),
    path('borrow_detail/<str:pk>/', views.borrow_detail, name="borrow_detail"),
    path('request_off/', views.request_off, name="request_off"),
-   path('return_books/', views.return_book, name="return_books"),
+   path('return_book/<str:pk>/', views.return_book, name="return_book"),
    path('penalty_ticket/<str:pk>/', views.penalty_ticket, name="penalty_ticket"),
    path('reader_borrow_detail/',views.reader_borrow_detail, name="reader_borrow_detail"),
 

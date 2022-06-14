@@ -128,7 +128,8 @@ class BorrowBook(models.Model):
     
 class ReturnBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
-    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    list_book = JSONField()
+    date_borrow = models.DateTimeField(null=True, auto_now_add=True)
     date_return = models.DateTimeField(null=True, auto_now_add=True)
     fine = models.PositiveIntegerField(null=True, default=0)
 

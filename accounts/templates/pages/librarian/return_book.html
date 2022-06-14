@@ -8,7 +8,7 @@
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã độc giả:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="DG10001" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" value = "{{return_book.reader.rId}}" readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock line_info %}
 
@@ -33,17 +33,19 @@
 
 {% endblock table_head %}
 {% block table_body %}
+
+{% for i,j in list %}
 <tr>
-    <th>Mã sách</th>
-    <th>Tên sách</th>
-    <th>Ngày mượn</th>
-    <th>Ngày trả</th>
-    <th>Số ngày mượn</th>
+    <th>{{i}}</th>
+    <th>{{j}}</th>
+    <th>{{return_book.date_borrow}}</th>
+    <th>{{return_book.date_return}}</th>
+    <th></th>
     <th><label><input type="radio" id="choice1" value="return" name="return" /></label></th>
     <th><label><input type="radio" id="choice2" value="lost" name="return" /></label></th>
-    <th>200</th>
-
+    <th>{{return_book.fine}}</th>
 </tr>	
+{% endfor %}
 
 <tr>
     <th colspan="7" >Tổng tiền phạt: </th>
@@ -73,7 +75,7 @@
                 <p class="text-center">Tiền phạt :</p>
 			</div>
 			<div class="modal-footer">
-				<a class="btn btn-danger btn-block" href="{% url 'pernalty_ticket' %}" >Lập phiếu phạt</a>
+				{#<a class="btn btn-danger btn-block" href="{% url 'penalty_ticket' %}" >Lập phiếu phạt</a>#}
 			</div>
 		</div>
 	</div>
