@@ -38,18 +38,14 @@
     </tr>
     <tr>
         <td colspan="10">
-    {% comment %} <div class="row">
-        <div class="col-md-9"> {% endcomment %}
             <div class="card card-body">
-                <form method="post">
+                <form method="post" action="{% url 'thanh_ly'%}">
                     {% csrf_token %}
                     {{form.as_p}}
             
-                <input  href="{% url 'thanh_ly' %}" name='submit' type='submit' class="btn btn-primary" value="Thanh lý">
+                    <button name='submit' type='submit' class="btn btn-primary" value="reconfirm">Thanh lý</button>
                 </form>
             </div>
-        {% comment %} </div>
-        </div> {% endcomment %}
     </td>
     </tr>
     {% if messages %}

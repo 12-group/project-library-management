@@ -159,3 +159,12 @@ class BookLiquidation(models.Model):
     reason = models.CharField(max_length=200, null=True, blank=True)
     date_liquidation = models.DateTimeField(null=True, auto_now_add=True)
 
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+        if self.quantity > self.book.number_of_book_remain:
+            raise ValueError('Không thể thanh lý nhiều hơn {} quyển sách'.format(self.book.number_of_book_remain))
+        else:
+            self.book.number_of_book_remain -= self.quantity
+            self.book.total -= self.quantity
+            self.book.save()
+        return super().save(force_insert, force_update, using, update_fields)

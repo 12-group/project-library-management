@@ -371,27 +371,24 @@ def list_book(request):
     return render(request,'pages/stockkeeper/list_book.html',context)
 
 # re-confirm liquidation screen
-def thanh_ly(request,pk):
-    
+def thanh_ly(request):
     today = date.today()
-    book_liquidation = BookLiquidation.objects.get(id=pk)
-    book_liquidation_form = BookLiquidationForm(instance=book_liquidation)
-    print(book_liquidation.book.number_of_book_remain)
     if request.method == 'POST':
         book_liquidation_form = BookLiquidationForm(request.POST)
-        book_liquidation = book_liquidation_form.save()
-        book_liquidation.book.number_of_book_remain -= book_liquidation.quantity
-        book_liquidation.book.total -= book_liquidation.quantity
-        book_liquidation.save()
-        print(book_liquidation.id,'sau khi luu',book_liquidation.book.number_of_book_remain)
-    a = BookLiquidation.objects.get(id=book_liquidation.id)
-    print(a.book.number_of_book_remain)
+        print(request.POST)
+        action = request.POST.get('submit')
+        if action == 'reconfirm':
+            pass
+        elif action == 'confirm':
+            book_liquidation_form.save()
+            messages.success(request,'Thanh lý thành công')
+            return redirect('list_book')
+
     context = {
         'user': request.user,
         'date': today.strftime("%d/%m/%Y"),
         'form': book_liquidation_form
     }
-    print(book_liquidation.book.name,'sau khi luu',book_liquidation.book.number_of_book_remain)
     return render(request,'pages/stockkeeper/thanh_ly.html', context)
 
 # fill in liquidation info screen
@@ -406,14 +403,6 @@ def liquidation_info(request, bId):
     )
     book_liquidation_form.fields['staff'].widget = forms.HiddenInput()
     book_liquidation_form.fields['book'].widget = forms.HiddenInput()
-
-    if request.method == 'POST':
-        book_liquidation_form = BookLiquidationForm(request.POST)
-
-        if book_liquidation_form.is_valid():
-            book_liquidation = book_liquidation_form.save()
-
-            return thanh_ly(request,book_liquidation.id)
 
     context={
         'form':book_liquidation_form,

@@ -46,15 +46,30 @@
         <th>{{form.cleaned_data.quantity}}</th>
         <th>{{form.cleaned_data.reason}}</th>
     </tr>
+    {% comment %} <tr>
+        <td colspan="3">
+        <div class="text-center">
+            <button name='submit' value='confirm' type='submit' class="btn btn-outline-danger ">Xác nhận</button>
+            <a href="{% url 'list_book' %}" class=" btn btn-primary trigger-btn" >Trở lại</a>
+
+        </div>            
+        </td>
+    </tr> {% endcomment %}
     {% endif %}
 
 {% endblock %}
 {% block confirm_button %}
 <div class="text-center">
-	<a name='submit' value='confirm' type='submit' href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
-    <a href="{% url 'list_book' %}" class=" btn btn-primary trigger-btn" data-toggle="modal">Trở lại</a>
+    <form method="POST">
+        {% csrf_token %}
+        <div style="display: none;">
+        {{form}}
+        </div>
+    <button name='submit' value='confirm' type='submit' class="btn btn-outline-danger ">Xác nhận</button>
+    <a href="{% url 'list_book' %}" class=" btn btn-primary trigger-btn" >Trở lại</a>
+    </form>
 </div>
-<div id="myModal" class="modal fade">
+{% comment %} <div id="myModal" class="modal fade">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -68,7 +83,7 @@
 			</div>
 		</div>
 	</div>
-</div>     
+</div>      {% endcomment %}
 
 {% endblock %}
 </body>
