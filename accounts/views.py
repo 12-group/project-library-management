@@ -448,6 +448,8 @@ def add_book(request):
 def money_list(request):
     return render(request,'pages/cashier/money_list.html')
 
+
+
 #--QUẢN LÝ
 def manager_dashboard(request):
     staffs = Staff.objects.all()

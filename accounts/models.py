@@ -135,9 +135,11 @@ class ReturnBook(models.Model):
 
 class FineReceipts(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+    debt = models.PositiveIntegerField(null=True, default=0)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     proceeds = models.PositiveIntegerField(null=True, default=0)
-    date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
+    debt_left = models.PositiveIntegerField(null=True, default=0)
+    #date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         return super().save(force_insert, force_update, using, update_fields)
