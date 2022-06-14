@@ -172,19 +172,6 @@ def search_book(request):
     }
     return render(request,'pages/reader/search.html',context)
 
-
-#kiểm tra sách này đã có trong giỏ hàng của độc giả chưa
-def get_Cart_from_Reader_and_book(reader,book):
-    try:
-        return Cart.objects.get(reader = reader, book = book)
-    except Cart.DoesNotExist:
-        return None
-#kiểm tra sách này đã có trong danh sách đã mượn của độc giả chưa
-def get_Borrow_from_Reader_and_book(reader,book):
-    try:
-        return BorrowBook.objects.get(reader = reader, book = book)
-    except BorrowBook.DoesNotExist:
-        return None
 def detail_info_book(request,pk):
     book = Book.objects.get(bId=pk)
     user = User.objects.get(username =get_username(request) )
@@ -194,21 +181,27 @@ def detail_info_book(request,pk):
         if is_reader is False:
             messages.error(request,'Độc giả mới có quyền đăng ký mượn sách')
             return render(request,'pages/reader/book_detail.html',{'book':book})
+        elif book.number_of_book_remain <=0 :
+            messages.error(request,'Sách đã được mượn hết')
+            return render(request,'pages/reader/book_detail.html',{'book':book})
+
         else:
             reader = Reader.objects.get(user=user)
-            if get_Cart_from_Reader_and_book(reader,book) is None:
+            if Cart.objects.filter(reader = reader).exists() is False:
                 cart = Cart()
                 cart.reader = reader
                 cart.book = book 
                 cart.save()
                 messages.success(request,'Thêm {} vào giỏ hàng thành công'.format(book.name))
+            elif Cart.objects.filter(reader = reader).exists() is True:
+                messages.error(request,'Sách đã có trong giỏ hàng')
+                return render(request,'pages/reader/book_detail.html',{'book':book})
 
-            elif get_Borrow_from_Reader_and_book (reader,book) is not None:
-                messages.error(request,'Bạn đã mượn sách này trước đó')
-                # raise ValueError('Bạn đã mượn sách này trước đó.')
-            else:
-                messages.error(request,'Đã có trong giỏ hàng')
-                # raise ValueError('Đã có trong giỏ hàng')
+            elif BorrowOrder.objects.filter(reader = reader).exists() is True:
+                borrow = BorrowOrder.objects.get(reader = reader)
+                if book in borrow.list_book:
+                    messages.error(request,'Bạn đã mượn sách này trước đó')
+                    return render(request,'pages/reader/book_detail.html',{'book':book})
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
@@ -383,13 +376,22 @@ def thanh_ly(request,pk):
     today = date.today()
     book_liquidation = BookLiquidation.objects.get(id=pk)
     book_liquidation_form = BookLiquidationForm(instance=book_liquidation)
+    print(book_liquidation.book.number_of_book_remain)
     if request.method == 'POST':
         book_liquidation_form = BookLiquidationForm(request.POST)
+        book_liquidation = book_liquidation_form.save()
+        book_liquidation.book.number_of_book_remain -= book_liquidation.quantity
+        book_liquidation.book.total -= book_liquidation.quantity
+        book_liquidation.save()
+        print(book_liquidation.id,'sau khi luu',book_liquidation.book.number_of_book_remain)
+    a = BookLiquidation.objects.get(id=book_liquidation.id)
+    print(a.book.number_of_book_remain)
     context = {
         'user': request.user,
         'date': today.strftime("%d/%m/%Y"),
         'form': book_liquidation_form
     }
+    print(book_liquidation.book.name,'sau khi luu',book_liquidation.book.number_of_book_remain)
     return render(request,'pages/stockkeeper/thanh_ly.html', context)
 
 # fill in liquidation info screen
@@ -406,12 +408,11 @@ def liquidation_info(request, bId):
     book_liquidation_form.fields['book'].widget = forms.HiddenInput()
 
     if request.method == 'POST':
-        print('y')
         book_liquidation_form = BookLiquidationForm(request.POST)
 
         if book_liquidation_form.is_valid():
             book_liquidation = book_liquidation_form.save()
-            print('tl')
+
             return thanh_ly(request,book_liquidation.id)
 
     context={
