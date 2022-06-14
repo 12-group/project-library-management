@@ -4,8 +4,9 @@
 
 {% block button %}
 	<div class="add_button">
+        <a href="{% url 'liquidation_history' %}" class="btn btn-outline-primary"  >Lịch sử thanh lý</a>
+
         <a href="{% url 'add_book' %}" class="btn btn-outline-primary"  >Thêm sách mới</a>
-        <a href="{% url 'thanh_ly' %}" class=" btn btn-primary" >Thanh Lý</a>
 	</div>
 {% endblock %}
 
@@ -28,6 +29,7 @@
         <th>Tổng số</th>
         <th>Số sách còn lại</th>
         <th>Người tiếp nhận</th>
+        <th></th>
     </tr>
 
 {% endblock %}
@@ -46,6 +48,7 @@
         <th>{{i.total}}</th>
         <th>{{i.number_of_book_remain}}</th>
         <th>{{i.nguoinhan}}</th>
+        <th><a href="{% url 'liquidation_info' i.bId %}" class="btn btn-danger" >Thanh lý</a></th>
     </tr>
     {% endfor %}
     {% if messages %}
@@ -62,5 +65,3 @@
 
 {% block confirm_button %}
 {% endblock %}
-
-

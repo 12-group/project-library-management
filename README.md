@@ -14,6 +14,6 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Python version: 3.9.7
 - Django version: 4.0.1
 # Current status
-- Chức năng mượn sách cho thủ thư
+- Đã xong search
 # Future works
-- Chức năng trả sách cho thủ thư
+- Muốn style lại nhưng chưa biết làm

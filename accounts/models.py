@@ -154,7 +154,7 @@ class PenaltyTicket(models.Model):
 class BookLiquidation(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
-    quantity = models.PositiveIntegerField(null=True, default=0)
+    quantity = models.PositiveIntegerField(null=True, default=1)
     reason = models.CharField(max_length=200, null=True, blank=True)
     date_liquidation = models.DateTimeField(null=True, auto_now_add=True)
 
@@ -164,14 +164,6 @@ class BookLiquidation(models.Model):
             raise ValueError('Không thể thanh lý nhiều hơn {} quyển sách'.format(self.book.number_of_book_remain))
         else:
             self.book.number_of_book_remain -= self.quantity
+            self.book.total -= self.quantity
+            self.book.save()
         return super().save(force_insert, force_update, using, update_fields)
-
-
-class GetBook(models.Model):
-    staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
-    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
-    quantity = models.PositiveIntegerField(null=True, default=0)
-    get_date = models.DateTimeField(null=True, auto_now_add=True)
-
-
-

@@ -36,7 +36,10 @@ urlpatterns = [
 
    path('stockkeeper/list_book/', views.list_book, name="list_book"),
    path('stockkeeper/thanh_ly/', views.thanh_ly, name="thanh_ly"),
+   path('stockkeeper/liquidation_info/<str:bId>/', views.liquidation_info, name="liquidation_info"),
    path('stockkeeper/add_book/', views.add_book, name="add_book"),
+   path('stockkeeper/liquidation_history/', views.liquidation_history, name="liquidation_history"),
+
 
    path('money_list/', views.money_list, name="money_list"),
 ]  

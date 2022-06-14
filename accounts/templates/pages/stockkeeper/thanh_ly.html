@@ -40,18 +40,18 @@
 
 {% endblock %}
 {% block table_body %}
-{% for form in formset %}
+{% if form.is_valid %}
     <tr>
-        <th>{{form.book}}</th>
-        <th>{{form.quantity}}</th>
-        <th>{{form.reason}}</th>
+        <th>{{form.cleaned_data.book}}</th>
+        <th>{{form.cleaned_data.quantity}}</th>
+        <th>{{form.cleaned_data.reason}}</th>
     </tr>
-    {% endfor %}
-{% endblock %}
+    {% endif %}
 
+{% endblock %}
 {% block confirm_button %}
 <div class="text-center">
-	<a href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
+	<a name='submit' value='confirm' type='submit' href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
     <a href={% url 'list_book' %} class=" btn btn-primary trigger-btn" data-toggle="modal">Trở lại</a>
 </div>
 <div id="myModal" class="modal fade">

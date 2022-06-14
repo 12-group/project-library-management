@@ -4,11 +4,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
-from django.forms import formset_factory
 
 from .models import *
 from .forms import *
 from .decorators import *
+from .filter import *
 
 from .initial_func import username_gen
 
@@ -159,8 +159,18 @@ def home(request):
 
 def search_book(request):
     books = Book.objects.all()
+    print(request.GET)
+    books_filter = BookFilter(request.GET, queryset=books)
+    books = books_filter.qs
+    print(books)
     num_books = len(books)
-    return render(request,'pages/reader/search.html',{'books':books,'num_books':num_books})
+
+    context = {
+        'books':books,
+        'num_books':num_books,
+        'books_filter':books_filter
+    }
+    return render(request,'pages/reader/search.html',context)
 
 
 #kiểm tra sách này đã có trong giỏ hàng của độc giả chưa
@@ -250,6 +260,8 @@ def reader_borrow_detail(request):
     reader = Reader.objects.get(user=user)
     borrowBook = BorrowBook.objects.filter(reader = reader)
     return render(request,'pages/reader/reader_borrow_detail.html',{'borrowBook':borrowBook})
+
+
 
 #--THỦ THƯ
 def librarian_home(request):
@@ -365,25 +377,71 @@ def list_book(request):
         'count_books':count_books
     }
     return render(request,'pages/stockkeeper/list_book.html',context)
-    
+
+# re-confirm liquidation screen
 def thanh_ly(request):
-    BookLiquidationFormset = formset_factory(BookLiquidationForm,extra=4)
     today = date.today()
-    formset = BookLiquidationFormset()
-    # book_liquidation_form = BookLiquidationForm()
+    book_liquidation_form = None
     if request.method == 'POST':
-        # book_liquidation_form = BookLiquidationForm(request.POST)
-        # print(book_liquidation_form.is_valid())
-        # if book_liquidation_form.is_valid():
-        #     book_liquidation_form.save()
-        pass
+
+        book_liquidation_form = BookLiquidationForm(request.POST)
+
+        action = request.POST.get('submit')
+        if action == 'reconfirm':
+            # render this page,
+            # do nothing
+            pass
+
+        # if confirm
+        elif action == 'confirm':
+            if book_liquidation_form.is_valid():
+                book_liquidation_form.save()
+                return redirect('list_book')
+
+
 
     context = {
         'user': request.user,
         'date': today.strftime("%d/%m/%Y"),
-        'formset': formset
+        'form': book_liquidation_form
     }
     return render(request,'pages/stockkeeper/thanh_ly.html', context)
+
+# fill in liquidation info screen
+def liquidation_info(request, bId):
+
+    book = Book.objects.get(bId=bId)
+    book_liquidation_form = BookLiquidationForm(
+        initial={
+            'staff':request.user.customer.staff,
+            'book':book
+        }
+    )
+    book_liquidation_form.fields['staff'].widget = forms.HiddenInput()
+    book_liquidation_form.fields['book'].widget = forms.HiddenInput()
+
+    if request.method == 'POST':
+
+        # book_liquidation_form = BookLiquidationForm(request.POST)
+
+        # if book_liquidation_form.is_valid():
+        #     book_liquidation = book_liquidation_form.save()
+        #     return redirect('thanh_ly', book_liquidation.pk)
+        pass
+
+    context={
+        'form':book_liquidation_form,
+        'book':book
+    }
+
+    return render(request,'pages/stockkeeper/liquidation_info.html', context)
+
+def liquidation_history(request):
+    liquidation = BookLiquidation.objects.all()
+    context = {
+        'liquidation':liquidation,
+    }
+    return render(request,'pages/stockkeeper/liquidation_history.html',context)
 
 def add_book(request):
     form = BookForm()
@@ -392,6 +450,7 @@ def add_book(request):
         if form.is_valid():
             book = form.save()
             book.nguoinhan = request.user.customer.staff
+            book.number_of_book_remain = book.total
             book.save()
             messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
             return redirect('list_book')
