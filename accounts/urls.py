@@ -41,6 +41,5 @@ urlpatterns = [
    path('stockkeeper/liquidation_history/', views.liquidation_history, name="liquidation_history"),
 
 
-   path('receipt_list/', views.receipt_list, name="receipt_list"),
-   path('add_receipt/', views.add_receipt, name="add_receipt"),
+   path('money_list/', views.money_list, name="money_list"),
 ]  

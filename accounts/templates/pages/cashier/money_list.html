@@ -31,7 +31,6 @@
     <th>Tiền nợ</th>
     <th>Tiền thu</th>
     <th>Còn lại</th>
-    <th>Ngày thu</th>
     <th>Người thu tiền</th>
 </tr>
 
@@ -43,13 +42,12 @@
     <th>Tiền nợ</th>
     <th>Tiền thu</th>
     <th>Còn lại</th>
-    <th>Ngày thu</th>
     <th>Người thu tiền</th>
 </tr>	
 {% endblock table_body %}
 {% block confirm_button %}
 <div class="submit">
-        <a class="btn btn-primary" href="{% url 'add_receipt' %}">Cập nhật</a> 
+        <a class="btn btn-primary" href="{% url 'home' %}">Cập nhật</a> 
 
 </div>
 {% endblock %}
