@@ -36,17 +36,21 @@
 </tr>
 
 {% endblock table_head %}
+
 {% block table_body %}
+{% for i in receipts %}
 <tr>
-    <th>STT</th>
-    <th>Mã độc giả</th>
-    <th>Tiền nợ</th>
-    <th>Tiền thu</th>
-    <th>Còn lại</th>
-    <th>Ngày thu</th>
-    <th>Người thu tiền</th>
-</tr>	
+    <th>{{ forloop.counter }}</th>
+    <th>{{i.reader.rId}}</th>
+    <th>{{i.debt}}</th>
+    <th>{{i.proceeds}}</th>
+    <th>{{i.debt_left}}</th>
+    <th>{{i.date_pay_fine}}</th>
+    <th>{{i.staff.name}}</th>
+</tr>
+{% endfor %}
 {% endblock table_body %}
+
 {% block confirm_button %}
 <div class="submit">
         <a class="btn btn-primary" href="{% url 'add_receipt' %}">Cập nhật</a> 
