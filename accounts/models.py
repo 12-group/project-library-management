@@ -73,6 +73,13 @@ class Reader(Customer):
             return False
         return True
 
+    def valid_age(self):
+        age = datetime.datetime.now().year - self.birth.year
+        if age not in range(18, 56):
+            return False
+        return True
+
+
 
 
 class BookCategory(models.Model):
