@@ -213,10 +213,14 @@ class FineReceipt(models.Model):
     proceeds = models.PositiveIntegerField(null=True, default=0)
     debt_left = models.PositiveIntegerField(null=True, default=0)
     date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
+
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
-        return super().save(force_insert, force_update, using, update_fields)
+        # Kiểm tra tiền thu không vượt quá tiền mượn
+        if self.proceeds > self.debt:
+            raise Exception('Tiền thu không được vượt quá tiền nợ.')
 
+        return super().save(force_insert, force_update, using, update_fields)
 
 class PenaltyTicket(models.Model):   
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)

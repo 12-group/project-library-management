@@ -572,8 +572,35 @@ def receipt_list(request):
     return render(request,'pages/cashier/receipt_list.html', context)
 
 def add_receipt(request):
+    form = ReceiptForm()
+    if request.method == 'POST':
+        try:
+            form = ReceiptForm(request.POST)
 
-    return render(request,'pages/cashier/add_receipt.html')
+            rId = request.POST.get("rId", "")
+
+            reader = Reader.objects.filter(rId=rId).exists()
+
+            if not reader:
+                messages.error(request, 'Độc giả không tồn tại.')
+                return redirect('add_receipt')
+            else:
+                reader = Reader.objects.get(rId=rId)
+
+            if form.is_valid():
+                receipt = form.save()
+                receipt.reader = reader
+                receipt.debt = reader.total_debt
+                receipt.staff = request.user.customer.staff
+                receipt.debt_left = receipt.debt - receipt.proceeds
+                receipt.save()
+                messages.success(request, "Thu tiền phạt thành công.")
+                return redirect('receipt_list')
+        except Exception as e:
+            messages.error(request, e)
+            return render(request,'pages/cashier/add_receipt.html', context)
+    context = {'form':form}
+    return render(request,'pages/cashier/add_receipt.html', context)
 
 #--QUẢN LÝ
 def manager_dashboard(request):
