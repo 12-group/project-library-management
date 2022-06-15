@@ -68,11 +68,11 @@ class Reader(Customer):
             raise ValueError('Tuổi của độc giả là {},độc giả phải có độ tuổi nằm trong 18 đến 55'.format(age))
 
         return super().save(force_insert, force_update, using, update_fields)
-    def is_validate(self): # kiem tra xem the con han hay khong
+    def is_out_of_date(self): # kiem tra xem the con han hay khong
         validate_value = datetime.datetime.now().month - self.date_created.month
         if validate_value > 6:
-            return False
-        return True
+            return True
+        return False
 
 
 
@@ -165,8 +165,8 @@ class BorrowBook(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         
-        # borrow_books = BorrowBook.objects.filter(reader=self.reader)
-
+        borrow_books = BorrowBook.objects.filter(reader=self.reader)
+        if reader.is_validate
 
 
 
