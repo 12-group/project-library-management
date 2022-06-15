@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from jsonfield import JSONField
+from django.utils.translation import gettext as _
 
 DEFAULT_PASSWORD = 'password'
 
@@ -73,13 +74,6 @@ class Reader(Customer):
             return False
         return True
 
-    def valid_age(self):
-        age = datetime.datetime.now().year - self.birth.year
-        if age not in range(18, 56):
-            return False
-        return True
-
-
 
 
 class BookCategory(models.Model):
@@ -87,6 +81,10 @@ class BookCategory(models.Model):
 
     def __str__(self):
         return self.name
+class MyMaxValueValidator(MaxValueValidator):
+    message = _('Năm xuất bản không hợp lệ %(limit_value)s.')
+class MyMinValueValidator(MinValueValidator):
+    message = _('Chỉ được nhận sách xuất bản trong vòng 8 năm (từ %(limit_value)s).')
 
 class Book(models.Model):
 
@@ -97,7 +95,10 @@ class Book(models.Model):
     author = models.CharField(max_length=200, null=True, blank=True)					# Author
     price = models.PositiveIntegerField(null=True, default=0)
     publisher = models.CharField(max_length=200, null=True, blank=True)
-    pubYear = models.PositiveIntegerField(default=datetime.date.today().year, validators=[MaxValueValidator(datetime.date.today().year+1), MinValueValidator(1500)])
+    pubYear = models.PositiveIntegerField(
+        null=True,
+        validators=[MyMaxValueValidator(datetime.date.today().year+1), MyMinValueValidator(datetime.date.today().year-8)],
+        )
     addDate = models.DateTimeField(null=True, auto_now_add=True)
     total = models.PositiveIntegerField(null=True, default=1)
     number_of_book_remain = models.PositiveIntegerField(null=True, default=1)
@@ -110,7 +111,6 @@ class Book(models.Model):
              update_fields=None) -> None:
         if self.total < self.number_of_book_remain:
             raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
-
         return super().save(force_insert, force_update, using, update_fields)
 
     def get_all_ctg_to_string(self):
@@ -119,6 +119,13 @@ class Book(models.Model):
 class Cart(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    # def save(self, force_insert=False, force_update=False, using=None, 
+    #          update_fields=None) -> None:
+    #     if self.total < self.number_of_book_remain:
+    #         raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
+    #     if datetime.datetime.now().year - self.pubYear > 8:
+    #         raise ValueError('Chỉ được nhận sách xuất bản trong vòng 8 năm')
+    #     return super().save(force_insert, force_update, using, update_fields)
 
 class BorrowOrder(models.Model):
     STATUS = [
@@ -131,6 +138,7 @@ class BorrowOrder(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     list_book = JSONField()
     status = models.CharField(max_length=200, null=True, choices=STATUS, blank=True,default='Chờ xác nhận')
+
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     list_book = JSONField()
