@@ -21,9 +21,6 @@ class ReaderForm(ModelForm):
 		widgets = {
             'birth': DateInput()
         }
-	def save(self, commit: bool = True, *args, **kwargs):
-		self.instance.request = kwargs.pop('request', None)
-		return super(ReaderForm, self).save(commit, *args, **kwargs)
 		
 
 class StaffForm(ModelForm):
