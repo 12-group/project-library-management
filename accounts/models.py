@@ -1,3 +1,4 @@
+from email import message
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -174,7 +175,7 @@ class BorrowBook(models.Model):
             count_book += len(borrow_book.list_book)
         
         if count_book >= 5:
-            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+            raise ValueError ('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
 
 
 

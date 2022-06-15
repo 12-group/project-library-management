@@ -376,22 +376,33 @@ def update_request(request,pk):
 
 def request_off(request):
     id = [1,2,3,4,5]
+    context = {'id':id}
     if request.method == 'GET':
         form = request.GET
-        print(form)
-        reader = Reader.objects.get(rId = form["rId"])
-        borrow_check = BorrowBook.objects.filter(reader = reader)
-        if borrow_check is not None:
-            list = borrow_check.list_book
-            for i in form.values():
-                for j in list :
-                    if i in j.list_book:
-                        messages.error(request,'Bạn đã mượn {} trước đó'.format(j.list_book.values()))
-                        return render(request,'pages/reader/cart.html',context)
-        return redirect('borrowers')
-
-    context = {'id':id
-    }
+        myDict = dict(form.lists())
+        context = {'id':id,'myDict':myDict}
+        if myDict != {}:
+            reader = Reader.objects.get(rId = myDict['rId'][0])
+            borrow = BorrowBook()
+            borrow.reader = reader
+            if BorrowBook.objects.filter(reader = reader).exists():
+                borrow_check = BorrowBook.objects.filter(reader = reader)
+                for b in borrow_check:
+                    list = b.list_book
+                    for i in myDict.values():
+                        if i[0] in list.keys() :
+                            messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
+                        elif Book.objects.filter(bId = i[0]).exists() is True:
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                    borrow.save()
+                    return render(request,'pages/librarian/request_offline.html',context)
+            else:
+                for i in myDict.values():
+                    if Book.objects.filter(bId = i[0]).exists() is True:
+                        borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                        borrow.save()
+            
+            return redirect('borrowers')
     return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
