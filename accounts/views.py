@@ -443,10 +443,18 @@ def borrow_detail(request,pk):
     context = {'borrow':borrow,'list':list}
     return render(request,'pages/librarian/borrow_detail.html',context)
 
+
+
 def return_book(request,pk):
-    return_book = ReturnBook.objects.get(id=pk)
-    list =  zip(return_book.list_book,return_book.list_book.values())
-    context = {'return_book': return_book,'list':list}
+    reader = Reader.objects.get(rId=pk)
+    borrow_book = reader.borrowbook_set.all()
+    print(borrow_book)
+    # list =  zip(return_book.list_book,return_book.list_book.values())
+
+    context = {
+        # 'return_book': return_book,
+        # 'list':list
+        }
     return render(request,'pages/librarian/return_book.html', context)
 
 def penalty_ticket(request,pk):
