@@ -177,13 +177,13 @@ class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     list_book = JSONField()
     date_borrow = models.DateTimeField(null=True, auto_now_add=True)
-
+    
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         
         borrow_books = BorrowBook.objects.filter(reader=self.reader)
         if self.reader.is_out_of_date():
-            raise ValueError('Thẻ quá hạn')
+            raise Exception('Thẻ quá hạn')
         
         count_book = 0
         for borrow_book in borrow_books:

@@ -405,6 +405,32 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
+<<<<<<< HEAD
+        form = request.GET
+        myDict = dict(form.lists())
+        context = {'id':id,'myDict':myDict}
+        if myDict != {}:
+            reader = Reader.objects.get(rId = myDict['rId'][0])
+            borrow = BorrowBook()
+            borrow.reader = reader
+            if BorrowBook.objects.filter(reader = reader).exists():
+                borrow_check = BorrowBook.objects.filter(reader = reader)
+                for b in borrow_check:
+                    list = b.list_book
+                    for i in myDict.values():
+                        if i[0] in list.keys() :
+                            messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
+                        elif Book.objects.filter(bId = i[0]).exists() is True:
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                   # borrow.date_trunc_field()
+                    borrow.save()
+                    return render(request,'pages/librarian/request_offline.html',context)
+            else:
+                for i in myDict.values():
+                    if Book.objects.filter(bId = i[0]).exists() is True:
+                        borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                    #    borrow.date_trunc_field()
+=======
         try:
             form = request.GET
             myDict = dict(form.lists())
@@ -422,6 +448,7 @@ def request_off(request):
                                 messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                             elif Book.objects.filter(bId = i[0]).exists() is True:
                                 borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+>>>>>>> b45d1728fba37fa9a1f5bee40b6186e5840f99b8
                         borrow.save()
                         return render(request,'pages/librarian/request_offline.html',context)
                 else:
@@ -443,10 +470,18 @@ def borrow_detail(request,pk):
     context = {'borrow':borrow,'list':list}
     return render(request,'pages/librarian/borrow_detail.html',context)
 
+
+
 def return_book(request,pk):
-    return_book = ReturnBook.objects.get(id=pk)
-    list =  zip(return_book.list_book,return_book.list_book.values())
-    context = {'return_book': return_book,'list':list}
+    reader = Reader.objects.get(rId=pk)
+    borrow_book = reader.borrowbook_set.all()
+    print(borrow_book)
+    # list =  zip(return_book.list_book,return_book.list_book.values())
+
+    context = {
+        # 'return_book': return_book,
+        # 'list':list
+        }
     return render(request,'pages/librarian/return_book.html', context)
 
 def penalty_ticket(request,pk):
