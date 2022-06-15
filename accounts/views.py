@@ -443,17 +443,39 @@ def borrow_detail(request,pk):
     context = {'borrow':borrow,'list':list}
     return render(request,'pages/librarian/borrow_detail.html',context)
 
+def get_all_borrowing_book_of_reader(reader:Reader):
+    res = []
+    all_borrow_book = reader.borrowbook_set.all()
+    today = datetime.datetime.now()
+    num_days_borrow = 0
+    for borrow_book in all_borrow_book:
+            # res.update(borrow_book.list_book)
+            # print(borrow_book)
+            list_book = borrow_book.list_book
+            num_days_borrow = today - borrow_book.date_borrow.replace(tzinfo=None)
+            for key in list_book:
+                res.append((key, list_book[key], borrow_book.date_borrow, num_days_borrow.days))
+
+    return res
 
 
 def return_book(request,pk):
+
     reader = Reader.objects.get(rId=pk)
-    borrow_book = reader.borrowbook_set.all()
-    print(borrow_book)
-    # list =  zip(return_book.list_book,return_book.list_book.values())
+    list_book = get_all_borrowing_book_of_reader(reader)
+    today = date.today()
+
+    if request.method == 'POST':
+        
+        return_book_model = ReturnBook()
+
+        for book in request.POST:
+            action = request.POST[book]
 
     context = {
-        # 'return_book': return_book,
-        # 'list':list
+        'reader':reader,
+        'list_book':list_book,
+        'today': today.strftime("%d/%m/%Y")
         }
     return render(request,'pages/librarian/return_book.html', context)
 

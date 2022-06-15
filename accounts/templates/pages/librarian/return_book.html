@@ -8,13 +8,13 @@
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã độc giả:</p>
-        <input class="form-control form-control-sm" type="text" value = "{{return_book.reader.rId}}" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" value = "{{reader.rId}}" readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock line_info %}
 
 
 {% block title_name %}
-<p>Danh sách độc giả mượn sách</p>
+<p>Sách độc giả đang mượn</p>
 {% endblock title_name %}
 
 
@@ -33,52 +33,54 @@
 
 {% endblock table_head %}
 {% block table_body %}
+<form method="post">
+    {% csrf_token %}
+    {% for book,staff,date_borrow,num_days_borrow in list_book %}
+    <tr>
+        <th>{{book}}</th>
+        <th>{{staff}}</th>
+        <th>{{date_borrow}}</th>
+        <th>{{today}}</th>
+        <th>{{num_days_borrow}}</th>
+        <th><label><input type="radio" id="choice" value="return" name="return{{book}}" /></label></th>
+        <th><label><input type="radio" id="choice" value="lost" name="return{{book}}" /></label></th>
+        <th>{{return_book.fine}}</th>
+    </tr>	
+    {% endfor %}
 
-{% for i,j in list %}
-<tr>
-    <th>{{i}}</th>
-    <th>{{j}}</th>
-    <th>{{return_book.date_borrow}}</th>
-    <th>{{return_book.date_return}}</th>
-    <th></th>
-    <th><label><input type="radio" id="choice" value="return" name="return{{i}}" /></label></th>
-    <th><label><input type="radio" id="choice" value="lost" name="return{{i}}" /></label></th>
-    <th>{{return_book.fine}}</th>
-</tr>	
-{% endfor %}
-
-<tr>
-    <th colspan="7" >Tổng tiền phạt: </th>
-    <th>200</th>
-</tr>
-
-
-{% endblock table_body %}
+    <tr>
+        <th colspan="7" >Tổng tiền phạt: </th>
+        <th>200</th>
+    </tr>
 
 
-{% block confirm_button %}
-<div class="text-center">
-	<!-- Button HTML (to Trigger Modal) -->
-	<a href="#myModal_lapphieuphat" class=" btn btn-primary trigger-btn" data-toggle="modal">Lưu</a>
-</div>
-<div id="myModal_lapphieuphat" class="modal fade">
-	<div class="modal-dialog modal-confirm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="icon-box">
-					<i class="material-icons">&#xE876;</i>
-				</div>				
-				<h4 class="modal-title w-100">Cập nhật thành công!</h4>	
-			</div>
-			<div class="modal-body">
-				<p class="text-center">Số sách mượn còn lại :</p>
-                <p class="text-center">Tiền phạt :</p>
-			</div>
-			<div class="modal-footer">
-				{#<a class="btn btn-danger btn-block" href="{% url 'penalty_ticket' %}" >Lập phiếu phạt</a>#}
-			</div>
-		</div>
-	</div>
-</div>     
+    {% endblock table_body %}
 
-{% endblock confirm_button%}
+
+    {% block confirm_button %}
+    <div class="text-center">
+        <!-- Button HTML (to Trigger Modal) -->
+        <button type='submit' class=" btn btn-primary trigger-btn" data-toggle="modal">Lưu</button>
+    </div>
+    <div id="myModal_lapphieuphat" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="icon-box">
+                        <i class="material-icons">&#xE876;</i>
+                    </div>				
+                    <h4 class="modal-title w-100">Cập nhật thành công!</h4>	
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Số sách mượn còn lại :</p>
+                    <p class="text-center">Tiền phạt :</p>
+                </div>
+                <div class="modal-footer">
+                    {#<a class="btn btn-danger btn-block" href="{% url 'penalty_ticket' %}" >Lập phiếu phạt</a>#}
+                </div>
+            </div>
+        </div>
+    </div>     
+
+    {% endblock confirm_button%}
+</form>
