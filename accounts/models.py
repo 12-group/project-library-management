@@ -148,6 +148,7 @@ class BorrowOrder(models.Model):
         
         count_books = 0
         for borrow_order in borrow_orders:
+            print(borrow_order.list_book)
             count_books += len(borrow_order.list_book)
 
         if count_books >= 5:
@@ -163,6 +164,12 @@ class BorrowBook(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
+        
+        # borrow_books = BorrowBook.objects.filter(reader=self.reader)
+
+
+
+
         return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
