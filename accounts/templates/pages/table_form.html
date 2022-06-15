@@ -96,6 +96,33 @@
 			</tbody>
 		</table>
 	</div>
+	
+
+	<div class="title_button" >
+
+		<div class="list_name_title">
+			{% block title_name1 %}
+			{% endblock %}
+		</div>
+	
+		{% block button1 %}
+		{% endblock %}
+	</div>
+
+	<div class="table_list_item">
+		<table class="table">
+			<thead class="thead-dark">
+				
+                {% block table_head1 %}
+                {% endblock %}
+
+			</thead>
+			<tbody>
+                {% block table_body1 %}
+                {% endblock %}
+			</tbody>
+		</table>
+	</div>
     {% block confirm_button %}
     {% endblock %}
 

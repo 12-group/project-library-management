@@ -152,7 +152,7 @@ class BorrowBook(models.Model):
         return super().save(force_insert, force_update, using, update_fields)"""
     
     def __str__(self):  
-        return ""
+        return self.reader.name
     
 class ReturnBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
