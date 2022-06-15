@@ -11,8 +11,9 @@
     }
 {% endblock style_extra %}
 
+
 {% block title_name %}
-    <p>Danh sách sách</p>
+    <p>Sách đang mượn</p>
 {% endblock title_name %}
 
 {% block table_head %}
@@ -25,17 +26,37 @@
 
 {% endblock table_head %}
 {% block table_body %}
-{% for i,j in list %}
+{% for i,j,z in list_borrow %}
 <tr>
     <th>{{i}}</th>
     <th>{{j}}</th>
-    <th>{{borrow.date_borrow}}</th>
+    <th>{{z}}</th>
 
 </tr>
 {% endfor %}
 {% endblock table_body %}
 
+{% block title_name1 %}
+    <p>Sách đăng ký mượn</p>
+{% endblock title_name1 %}
 
+{% block table_head1 %}
+<tr >
+    <th>Mã sách</th>
+    <th>Tên sách</th>
+    <th>Trạng thái</th>
 
+</tr>
+
+{% endblock table_head1 %}
+{% block table_body1 %}
+{% for i,j,z in list_order %}
+<tr>
+    <th>{{i}}</th>
+    <th>{{j}}</th>
+    <th>{{z}}</th>
+</tr>
+{% endfor %}
+{% endblock table_body1 %}
 
 

@@ -187,53 +187,52 @@ def detail_info_book(request,pk):
 
         else:
             reader = Reader.objects.get(user=user)
-            if Cart.objects.filter(reader = reader).exists() is False:
+            if Cart.objects.filter(reader = reader,book =book).exists() is True:
+                print('y')
+                messages.error(request,'Sách đã có trong giỏ hàng')
+                return render(request,'pages/reader/book_detail.html',{'book':book})
+            else:
                 cart = Cart()
                 cart.reader = reader
                 cart.book = book 
                 cart.save()
                 messages.success(request,'Thêm {} vào giỏ hàng thành công'.format(book.name))
-            elif Cart.objects.filter(reader = reader).exists() is True:
-                messages.error(request,'Sách đã có trong giỏ hàng')
-                return render(request,'pages/reader/book_detail.html',{'book':book})
-
-            elif BorrowOrder.objects.filter(reader = reader).exists() is True:
-                borrow = BorrowOrder.objects.get(reader = reader)
-                if book in borrow.list_book:
-                    messages.error(request,'Bạn đã mượn sách này trước đó')
-                    return render(request,'pages/reader/book_detail.html',{'book':book})
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
 def cart(request):
     user = User.objects.get(username =get_username(request) )
     reader = Reader.objects.get(user=user)
     cart = Cart.objects.filter(reader = reader)
-
     count_book = len(cart)
+
     order = BorrowOrder()
     order.reader = reader
     test_string = '{}' 
     order.list_book = json.loads(test_string)
-
-    print(type(order.list_book))
+    context = {
+    'cart':cart,
+    'count_book':count_book
+    }
 
     if request.method == 'POST': #đăng ký mượn 
-        #xóa toàn bộ sách trong giỏ hàng
-        for book in cart:
-            # giảm số lượng sách 
-            b = Book.objects.get(bId = book.book.bId)
-            b.number_of_book_remain -= 1
-            b.save()
-            #thêm thông tin order
-            #--thêm kiểm tra đã có 1 order khác chưa
-            # print('{}'.format(book.book.bId))
-            # print('{}'.format(book.book.bId))
-            # print(type(order.list_book))
-            # print(type(order)
-            print(type(order.list_book))
-            order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
-            print(order.list_book)
 
+        for book in cart:
+
+            if BorrowOrder.objects.filter(reader = reader).exists() is True:
+                borrow_order = BorrowOrder.objects.filter(reader = reader)
+                for i in borrow_order:
+                    if book.book.bId in i.list_book:
+                        messages.error(request,'Bạn đã được đăng ký mượn {} trước đó'.format(book.book.name))
+                        return render(request,'pages/reader/cart.html',context)
+
+            elif BorrowBook.objects.filter(reader = reader).exists() is True:
+                borrow = BorrowBook.objects.filter(reader = reader)
+                for i in borrow:
+                    if book.book.bId in i.list_book:
+                        messages.error(request,'Bạn đã mượn {} trước đó'.format(book.book.name))
+                        return render(request,'pages/reader/cart.html',context)
+
+            order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
             order.save()
 
         cart.delete()
@@ -260,11 +259,30 @@ def remove_from_cart(request, cart_pk):
     return render(request,'pages/reader/remove_from_cart.html',context)
 
 def reader_borrow_detail(request):
-    user = User.objects.get(username =get_username(request) )
+    user = User.objects.get(username =get_username(request))
     reader = Reader.objects.get(user=user)
-    borrow = BorrowBook.objects.get(reader = reader)
-    list =  zip(borrow.list_book,borrow.list_book.values())
-    context = {'borrow':borrow,'list':list}
+    borrow = BorrowBook()
+    order = BorrowOrder()
+    list_book_order= {}
+    list_book_borrow= {}
+    status_order = []
+    date_borrow = []
+
+    if BorrowOrder.objects.filter(reader = reader).exists() is True :
+        order = BorrowOrder.objects.filter(reader = reader)
+        for i in order:
+            list_book_order.update(i.list_book)
+            status_order.append(i.status)
+    if BorrowBook.objects.filter(reader = reader).exists() is True :
+        borrow = BorrowBook.objects.filter(reader = reader)
+        for i in borrow:     
+            list_book_borrow.update(i.list_book)
+            date_borrow.append(i.date_borrow)
+
+
+    list_order = zip(list_book_order,list_book_order.values(),status_order)
+    list_borrow = zip(list_book_borrow,list_book_borrow.values(),date_borrow)
+    context = {'list_order':list_order,'list_borrow':list_borrow}
     return render(request,'pages/reader/reader_borrow_detail.html',context)
 
 #--THỦ THƯ
@@ -344,6 +362,11 @@ def update_request(request,pk):
                 borrow.list_book = order.list_book
                 list =  zip(borrow.list_book,borrow.list_book.values())
                 borrow.save()
+                for i in order.list_book.keys():
+                    print(i)
+                    book = Book.objects.get(bId = i)
+                    book.number_of_book_remain -= 1
+                    book.save()
                 order.list_book.clear()
             return redirect('request_onl_list')
     context = {'form':form,'list':list}
