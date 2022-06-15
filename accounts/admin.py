@@ -15,6 +15,6 @@ admin.site.register(BorrowOrder)
 admin.site.register(BorrowBook)
 admin.site.register(ReturnBook)
 
-admin.site.register(FineReceipts)
+admin.site.register(FineReceipt)
 admin.site.register(PenaltyTicket)
 admin.site.register(BookLiquidation)

@@ -535,9 +535,12 @@ def add_book(request):
 
 #--THỦ QUỸ
 def receipt_list(request):
-    return render(request,'pages/cashier/receipt_list.html')
+    receipts = FineReceipt.objects.all()
+    context={'receipts':receipts}
+    return render(request,'pages/cashier/receipt_list.html', context)
 
 def add_receipt(request):
+
     return render(request,'pages/cashier/add_receipt.html')
 
 #--QUẢN LÝ

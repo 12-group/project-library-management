@@ -56,5 +56,5 @@ class BookLiquidationForm(ModelForm):
 
 class ReceiptForm(ModelForm):
 	class Meta:
-		model = FineReceipts
-		fields = ['reader', 'proceeds']
+		model = FineReceipt
+		fields = ['proceeds']

@@ -206,7 +206,7 @@ class ReturnBook(models.Model):
     date_return = models.DateTimeField(null=True, auto_now_add=True)
     fine = models.PositiveIntegerField(null=True, default=0)
 
-class FineReceipts(models.Model):
+class FineReceipt(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     debt = models.PositiveIntegerField(null=True, default=0)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
