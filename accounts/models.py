@@ -6,6 +6,7 @@ import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from jsonfield import JSONField
 from django.utils.translation import gettext as _
+from django.contrib import messages
 
 DEFAULT_PASSWORD = 'password'
 
@@ -62,11 +63,22 @@ class Reader(Customer):
     total_debt = models.PositiveIntegerField(null=True, default=0)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
+        # request = kwargs.get('request')
+        # request = None
+        # if self.request != None:
+        #     request = self.request
+        # else:
+        #     request = kwargs.get('request')
         age = datetime.datetime.now().year - self.birth.year
 
-        # kiem tra xem tuoi cua doc gia co nam trong  18 den 55 khong
+        # # kiem tra xem tuoi cua doc gia co nam trong  18 den 55 khong
+        # if age not in range(18, 56):
+        #     messages.error(request, 'Tuổi của độc giả là {},độc giả phải có độ tuổi nằm trong 18 đến 55'.format(age))
+        #     return None
+                # kiem tra xem tuoi cua doc gia co nam trong  18 den 55 khong
         if age not in range(18, 56):
-            raise ValueError('Tuổi của độc giả là {},độc giả phải có độ tuổi nằm trong 18 đến 55'.format(age))
+            raise Exception('Tuổi của độc giả là {},độc giả phải có độ tuổi nằm trong 18 đến 55'.format(age))
+
 
         return super().save(force_insert, force_update, using, update_fields)
     def is_out_of_date(self): # kiem tra xem the con han hay khong
@@ -108,10 +120,13 @@ class Book(models.Model):
 
     def __str__(self):
         return self.name
+    # def __init__(self, *args, **kwargs) -> None:
+    #     self.request = None
+    #     super().__init__(*args, **kwargs)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         if self.total < self.number_of_book_remain:
-            raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
+            raise Exception('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
         return super().save(force_insert, force_update, using, update_fields)
 
     def get_all_ctg_to_string(self):
@@ -126,7 +141,7 @@ class Cart(models.Model):
         carts = Cart.objects.filter(reader=self.reader)
 
         if carts.count() >= 5:
-            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
 
         return super().save(force_insert, force_update, using, update_fields)
 
@@ -153,7 +168,7 @@ class BorrowOrder(models.Model):
             count_books += len(borrow_order.list_book)
 
         if count_books >= 5:
-            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
 
         return super().save(force_insert, force_update, using, update_fields)
 
@@ -168,14 +183,14 @@ class BorrowBook(models.Model):
         
         borrow_books = BorrowBook.objects.filter(reader=self.reader)
         if self.reader.is_out_of_date():
-            raise ValueError('Thẻ quá hạn')
+            raise Exception('Thẻ quá hạn')
         
         count_book = 0
         for borrow_book in borrow_books:
             count_book += len(borrow_book.list_book)
         
         if count_book >= 5:
-            raise ValueError ('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
 
 
 
@@ -228,7 +243,7 @@ class BookLiquidation(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         if self.quantity > self.book.number_of_book_remain:
-            raise ValueError('Không thể thanh lý nhiều hơn {} quyển sách'.format(self.book.number_of_book_remain))
+            raise Exception('Không thể thanh lý nhiều hơn {} quyển sách'.format(self.book.number_of_book_remain))
         else:
             self.book.number_of_book_remain -= self.quantity
             self.book.total -= self.quantity
