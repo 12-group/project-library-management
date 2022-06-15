@@ -405,7 +405,6 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
-<<<<<<< HEAD
         form = request.GET
         myDict = dict(form.lists())
         context = {'id':id,'myDict':myDict}
@@ -430,7 +429,6 @@ def request_off(request):
                     if Book.objects.filter(bId = i[0]).exists() is True:
                         borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
                     #    borrow.date_trunc_field()
-=======
         try:
             form = request.GET
             myDict = dict(form.lists())
@@ -448,7 +446,6 @@ def request_off(request):
                                 messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                             elif Book.objects.filter(bId = i[0]).exists() is True:
                                 borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
->>>>>>> b45d1728fba37fa9a1f5bee40b6186e5840f99b8
                         borrow.save()
                         return render(request,'pages/librarian/request_offline.html',context)
                 else:
