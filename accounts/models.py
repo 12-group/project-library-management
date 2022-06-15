@@ -166,7 +166,15 @@ class BorrowBook(models.Model):
              update_fields=None) -> None:
         
         borrow_books = BorrowBook.objects.filter(reader=self.reader)
-        if reader.is_validate
+        if self.reader.is_out_of_date():
+            raise ValueError('Thẻ quá hạn')
+        
+        count_book = 0
+        for borrow_book in borrow_books:
+            count_book += len(borrow_book.list_book)
+        
+        if count_book >= 5:
+            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
 
 
 
