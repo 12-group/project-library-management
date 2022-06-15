@@ -202,7 +202,7 @@ class FineReceipts(models.Model):
         return super().save(force_insert, force_update, using, update_fields)
 
 
-class PenaltyTicket(models.Model):
+class PenaltyTicket(models.Model):   
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     reason = models.CharField(max_length=200, null=True, blank=True)
@@ -212,11 +212,17 @@ class PenaltyTicket(models.Model):
         return super().save(force_insert, force_update, using, update_fields)
 
 class BookLiquidation(models.Model):
+    REASON = [
+        ('lost','Mất'),
+        ('damaged', 'Hư hỏng'), 
+        ('user_lost', 'Người dùng làm mất'),
+    ]
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
     quantity = models.PositiveIntegerField(null=True, default=1)
-    reason = models.CharField(max_length=200, null=True, blank=True)
+    reason = models.CharField(max_length=200, null=True, choices=REASON)
     date_liquidation = models.DateTimeField(null=True, auto_now_add=True)
+
 
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
