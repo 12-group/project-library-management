@@ -1,0 +1,50 @@
+{% extends 'pages/main/main.html' %}
+{% load static %}
+{% load tags %}
+
+{% block style %}
+    .a{
+        margin: auto;
+        margin-top:30px;
+        padding: 20px 50px;
+        background: white ;
+        border-radius:5px;
+        width:50%;
+    }
+{% endblock style %}
+
+
+{% block content %}
+
+<div class="a" >
+    <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+		<div class="form-outline">
+            <label for="form2Example17" class="form-label" >Mã độc giả</label>
+            <input type="text" name="rId">
+        </div>
+		<div class="form-outline">
+            <label for="form2Example17" class="form-label ">Tiền nợ</label>
+            <input type="text" name="debt" readonly>
+          </div>
+		<div class="form-outline">
+            <label for="form2Example17" class="form-label ">Tiền thu</label>
+            {{form.proceeds}}
+        </div> 
+		<div class="form-outline">
+            <label for="form2Example17" class="form-label ">Còn lại</label>
+            <input type="text" name="debt" readonly>
+        </div>
+		
+        <div style="margin-top:30px;">
+        	<input class="btn btn-primary btn-block" type="submit" name="update" value="Cập nhật">
+            <a href="{% url 'receipt_list' %}" class=" btn btn-primary trigger-btn" >Trở lại</a>
+        </div>
+
+        
+    </form>
+</div>  
+
+
+
+{% endblock content %}

@@ -56,3 +56,8 @@ class BookLiquidationForm(ModelForm):
 		widgets = {
 			'reason': forms.TextInput(attrs={'class': 'textarea'})
 		}
+
+class ReceiptForm(ModelForm):
+	class Meta:
+		model = FineReceipts
+		fields = ['reader', 'proceeds']
