@@ -119,13 +119,15 @@ class Book(models.Model):
 class Cart(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
-    # def save(self, force_insert=False, force_update=False, using=None, 
-    #          update_fields=None) -> None:
-    #     if self.total < self.number_of_book_remain:
-    #         raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
-    #     if datetime.datetime.now().year - self.pubYear > 8:
-    #         raise ValueError('Chỉ được nhận sách xuất bản trong vòng 8 năm')
-    #     return super().save(force_insert, force_update, using, update_fields)
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+
+        carts = Cart.objects.filter(reader=self.reader)
+
+        if carts.count() >= 5:
+            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+
+        return super().save(force_insert, force_update, using, update_fields)
 
 class BorrowOrder(models.Model):
     STATUS = [
@@ -139,17 +141,29 @@ class BorrowOrder(models.Model):
     list_book = JSONField()
     status = models.CharField(max_length=200, null=True, choices=STATUS, blank=True,default='Chờ xác nhận')
 
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+
+        borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
+        
+        count_books = 0
+        for borrow_order in borrow_orders:
+            count_books += len(borrow_order.list_book)
+
+        if count_books >= 5:
+            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+
+        return super().save(force_insert, force_update, using, update_fields)
+
+
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     list_book = JSONField()
     date_borrow = models.DateTimeField(null=True, auto_now_add=True)
 
-    """def save(self, force_insert=False, force_update=False, using=None, 
+    def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
-        if self.book != None:
-            if self.book.number_of_book_remain == 0:
-                raise ValueError('Sách ' + self.book.name + ' không còn')
-        return super().save(force_insert, force_update, using, update_fields)"""
+        return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
         return self.reader.name
