@@ -53,9 +53,6 @@ class BookLiquidationForm(ModelForm):
 	class Meta:
 		model = BookLiquidation
 		fields = '__all__'
-		widgets = {
-			'reason': forms.TextInput(attrs={'class': 'textarea'})
-		}
 
 class ReceiptForm(ModelForm):
 	class Meta:

@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from jsonfield import JSONField
+from django.utils.translation import gettext as _
 
 DEFAULT_PASSWORD = 'password'
 
@@ -67,18 +68,11 @@ class Reader(Customer):
             raise ValueError('Tuổi của độc giả là {},độc giả phải có độ tuổi nằm trong 18 đến 55'.format(age))
 
         return super().save(force_insert, force_update, using, update_fields)
-    def is_validate(self): # kiem tra xem the con han hay khong
+    def is_out_of_date(self): # kiem tra xem the con han hay khong
         validate_value = datetime.datetime.now().month - self.date_created.month
         if validate_value > 6:
-            return False
-        return True
-
-    def valid_age(self):
-        age = datetime.datetime.now().year - self.birth.year
-        if age not in range(18, 56):
-            return False
-        return True
-
+            return True
+        return False
 
 
 
@@ -87,6 +81,10 @@ class BookCategory(models.Model):
 
     def __str__(self):
         return self.name
+class MyMaxValueValidator(MaxValueValidator):
+    message = _('Năm xuất bản không hợp lệ %(limit_value)s.')
+class MyMinValueValidator(MinValueValidator):
+    message = _('Chỉ được nhận sách xuất bản trong vòng 8 năm (từ %(limit_value)s).')
 
 class Book(models.Model):
 
@@ -97,7 +95,10 @@ class Book(models.Model):
     author = models.CharField(max_length=200, null=True, blank=True)					# Author
     price = models.PositiveIntegerField(null=True, default=0)
     publisher = models.CharField(max_length=200, null=True, blank=True)
-    pubYear = models.PositiveIntegerField(default=datetime.date.today().year, validators=[MaxValueValidator(datetime.date.today().year+1), MinValueValidator(1500)])
+    pubYear = models.PositiveIntegerField(
+        null=True,
+        validators=[MyMaxValueValidator(datetime.date.today().year+1), MyMinValueValidator(datetime.date.today().year-8)],
+        )
     addDate = models.DateTimeField(null=True, auto_now_add=True)
     total = models.PositiveIntegerField(null=True, default=1)
     number_of_book_remain = models.PositiveIntegerField(null=True, default=1)
@@ -110,7 +111,6 @@ class Book(models.Model):
              update_fields=None) -> None:
         if self.total < self.number_of_book_remain:
             raise ValueError('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
-
         return super().save(force_insert, force_update, using, update_fields)
 
     def get_all_ctg_to_string(self):
@@ -119,6 +119,15 @@ class Book(models.Model):
 class Cart(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+
+        carts = Cart.objects.filter(reader=self.reader)
+
+        if carts.count() >= 5:
+            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+
+        return super().save(force_insert, force_update, using, update_fields)
 
 class BorrowOrder(models.Model):
     STATUS = [
@@ -131,17 +140,45 @@ class BorrowOrder(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, unique=False,  blank=True)
     list_book = JSONField()
     status = models.CharField(max_length=200, null=True, choices=STATUS, blank=True,default='Chờ xác nhận')
+
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+
+        borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
+        
+        count_books = 0
+        for borrow_order in borrow_orders:
+            print(borrow_order.list_book)
+            count_books += len(borrow_order.list_book)
+
+        if count_books >= 5:
+            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+
+        return super().save(force_insert, force_update, using, update_fields)
+
+
 class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     list_book = JSONField()
     date_borrow = models.DateTimeField(null=True, auto_now_add=True)
 
-    """def save(self, force_insert=False, force_update=False, using=None, 
+    def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
-        if self.book != None:
-            if self.book.number_of_book_remain == 0:
-                raise ValueError('Sách ' + self.book.name + ' không còn')
-        return super().save(force_insert, force_update, using, update_fields)"""
+        
+        borrow_books = BorrowBook.objects.filter(reader=self.reader)
+        if self.reader.is_out_of_date():
+            raise ValueError('Thẻ quá hạn')
+        
+        count_book = 0
+        for borrow_book in borrow_books:
+            count_book += len(borrow_book.list_book)
+        
+        if count_book >= 5:
+            raise ValueError('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+
+
+
+        return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
         return self.reader.name
@@ -165,7 +202,7 @@ class FineReceipts(models.Model):
         return super().save(force_insert, force_update, using, update_fields)
 
 
-class PenaltyTicket(models.Model):
+class PenaltyTicket(models.Model):   
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     reason = models.CharField(max_length=200, null=True, blank=True)
@@ -175,11 +212,17 @@ class PenaltyTicket(models.Model):
         return super().save(force_insert, force_update, using, update_fields)
 
 class BookLiquidation(models.Model):
+    REASON = [
+        ('lost','Mất'),
+        ('damaged', 'Hư hỏng'), 
+        ('user_lost', 'Người dùng làm mất'),
+    ]
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
     quantity = models.PositiveIntegerField(null=True, default=1)
-    reason = models.CharField(max_length=200, null=True, blank=True)
+    reason = models.CharField(max_length=200, null=True, choices=REASON)
     date_liquidation = models.DateTimeField(null=True, auto_now_add=True)
+
 
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
