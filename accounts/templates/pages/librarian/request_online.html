@@ -44,9 +44,9 @@
 
 {% endblock table_body %}
 {% block confirm_button %}
-<form method="POST"  action="">
+<form method="POST"  action="" class="text-center">
     {% csrf_token %}
-    <input class='btn btn-primary' type="submit" value="Xác nhận" >
+    <input class='btn btn-primary text-center' type="submit" style="margin-top:50px;" value="Xác nhận" >
 </form>
 {% endblock %}
 

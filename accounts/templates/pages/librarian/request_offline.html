@@ -1,57 +1,132 @@
-{% extends 'pages/table_form.html' %}
+{% extends 'pages/main/main.html' %}
 {% load static %}
 
-{% block style_extra %}
-	.table{
+{% block style %}
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	thead{
+		background-color:black;
+		color:white;
+	}
+	th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+		background-color: white;
+	}
+	
+	tbody{
+		background-color: white;
+	}
+	.title_button{
+		display: flex;
+		flex-direction:row;
+		justify-content:space-between;
+	}
+	.list_item{
+		width: 90%;
+		margin: auto;
+		margin-top:50px;
+	}
+    .line_info{
+        width:70%;
         margin:auto;
+        display:flex;
+        flex-direction:row;
+		justify-content:space-between;
+
+    }
+    .infor_title{
+        display:flex;
+        flex-direction:row;
+
+    }
+    .infor_title_name{
+        color: #351F63;
+        font-weight:700;
+        font-size:20px;
+    }
+    .text_item{
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+    .table{
+        margin:20px auto;
 		width: 50%;
 	}
 
     table, td {
     border: 1px solid #dddddd;
     }
-{% endblock style_extra %}
 
-{% block line_info %}
-    <div class="infor_title">
-        <p class="infor_title_name">Mã độc giả:</p>
-        <div class="form-group">
-        <input type="ID" class="form-control " style="margin-left: 10px;width:150px;">
+    {% block style_extra %}
+    {% endblock %}
+
+{% endblock style %}
+{% block content %}
+<div class="list_item">
+
+	<div class="title_button" >
+
+		<div class="list_name_title">
+            <p>Danh sách sách mượn</p>
+		</div>
+		
+        {% block button %}
+        {% endblock %}
+
+	</div>
+	{% block filter %}{% endblock filter %}
+    <form method="GET">
+
+	<div class="line_info" >
+        <div class="infor_title">
+            <p class="infor_title_name">Mã độc giả:</p>
+            <div class="form-group">
+            <input type="text" class="form-control " style="margin-left: 10px;width:150px;" name="rId">
+            </div>
+        
         </div>
-    
+        <div class="infor_title">
+            <p class="infor_title_name">Ngày mượn:</p>
+            <input type="date" class="form-control " style="margin-left: 10px;width:150px;" name="date">
+        </div>
     </div>
-    <div class="infor_title">
-        <p class="infor_title_name">Ngày mượn:</p>
-        <input type="date" class="form-control " style="margin-left: 10px;width:150px;">
+	
+	<div class="table_list_item">
+		<table class="table">
+			<thead class="thead-dark">				
+                <tr >
+                    <th style="width:200px;">Mã sách</th>
+                    <th>Tên sách</th>
+                    <th>Số lượng còn</th>
+                </tr>
+			</thead>
+
+			<tbody>
+                {% csrf_token %}
+                {% for i in id %}
+                <tr>
+                    <th><input type="text" name="id{{i}}"></th>
+                    <th></th>
+                    <th></th>
+                </tr>	
+                {% endfor %}
+			</tbody>            
+		</table>
+	</div>
+    <div class="text-center">
+        <input class="btn btn-success" id="myBtn" type="submit" value="Xác nhận">
     </div>
-{% endblock line_info %}
+    </form>
+</div>
+
+{% endblock content %}
 
 
-{% block title_name %}
-<p>Danh sách sách mượn</p>
-
-{% endblock title_name %}
-
-{% block table_head %}
-<tr >
-    <th style="width:200px;">Mã sách</th>
-    <th>Tên sách</th>
-    <th>Số lượng còn</th>
-
-</tr>
-
-{% endblock table_head %}
-{% block table_body %}
-<tr>
-    <th><input id="myInput0"></th>
-    <th></th>
-    <th></th>
-</tr>	
-{% endblock table_body %}
-
-
-{% block confirm_button %}
-<button class="btn btn-success" id="myBtn" type="button" onclick="addrow()" >Thêm dòng</button>
 
 <script>
 count = 1;
@@ -106,7 +181,7 @@ function addrow() {
 		</div>
 	</div>
 </div>     
-{% endblock %}
+
 
 
 

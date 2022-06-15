@@ -272,16 +272,18 @@ def reader_borrow_detail(request):
         order = BorrowOrder.objects.filter(reader = reader)
         for i in order:
             list_book_order.update(i.list_book)
-            status_order.append(i.status)
+            for j in i.list_book.values():
+                status_order.append(i.status)
     if BorrowBook.objects.filter(reader = reader).exists() is True :
         borrow = BorrowBook.objects.filter(reader = reader)
         for i in borrow:     
             list_book_borrow.update(i.list_book)
-            date_borrow.append(i.date_borrow)
-
+            for j in i.list_book.values():
+                date_borrow.append(i.date_borrow)
 
     list_order = zip(list_book_order,list_book_order.values(),status_order)
     list_borrow = zip(list_book_borrow,list_book_borrow.values(),date_borrow)
+
     context = {'list_order':list_order,'list_borrow':list_borrow}
     return render(request,'pages/reader/reader_borrow_detail.html',context)
 
@@ -373,11 +375,24 @@ def update_request(request,pk):
     return render(request, 'pages/librarian/update_status_request.html', context)
 
 def request_off(request):
-    readers = Reader.objects.all()
-    books = Book.objects.all()
-    context = {'readers': readers,
-                'books': books}
-    return render(request,'pages/librarian/request_offline.html')
+    id = [1,2,3,4,5]
+    if request.method == 'GET':
+        form = request.GET
+        print(form)
+        reader = Reader.objects.get(rId = form["rId"])
+        borrow_check = BorrowBook.objects.filter(reader = reader)
+        if borrow_check is not None:
+            list = borrow_check.list_book
+            for i in form.values():
+                for j in list :
+                    if i in j.list_book:
+                        messages.error(request,'Bạn đã mượn {} trước đó'.format(j.list_book.values()))
+                        return render(request,'pages/reader/cart.html',context)
+        return redirect('borrowers')
+
+    context = {'id':id
+    }
+    return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
     list =  zip(borrow.list_book,borrow.list_book.values())
