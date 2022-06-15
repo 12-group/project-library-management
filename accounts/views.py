@@ -394,12 +394,14 @@ def request_off(request):
                             messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                         elif Book.objects.filter(bId = i[0]).exists() is True:
                             borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                   # borrow.date_trunc_field()
                     borrow.save()
                     return render(request,'pages/librarian/request_offline.html',context)
             else:
                 for i in myDict.values():
                     if Book.objects.filter(bId = i[0]).exists() is True:
                         borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                    #    borrow.date_trunc_field()
                         borrow.save()
             
             return redirect('borrowers')

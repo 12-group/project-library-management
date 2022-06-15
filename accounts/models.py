@@ -162,7 +162,7 @@ class BorrowBook(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     list_book = JSONField()
     date_borrow = models.DateTimeField(null=True, auto_now_add=True)
-
+    
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         
