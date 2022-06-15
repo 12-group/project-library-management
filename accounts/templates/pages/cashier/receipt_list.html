@@ -12,16 +12,22 @@
 {% endblock style_extra %}
 
 {% block line_info %}
-    <div class="infor_title">
-        <p class="infor_title_name">Tìm mã độc giả:</p>
-        <input class="form-control form-control-sm" type="text" placeholder="DG10001" style="margin-left: 10px;width:150px;">
-    
+<form action="" method="POST">
+    {% csrf_token %}
+    <div>
+        <div class="input-group">
+                <p class="infor_title_name">Mã độc giả:</p>
+                <input class="form-control form-control-sm" type="text" id="rId" name="rId" required style="margin-left: 10px;width:150px;">
+            <div class="infor_title_name">
+                <input class="btn btn-primary" type="submit" value="Cập nhật tiền nợ cho độc giả" style="margin-left: 10px;width:250px;"></input>
+            </div>
+        </div>
     </div>
 {% endblock line_info %}
 
 
 {% block title_name %}
-    <p>Danh sách độc giả nợ tiền</p>
+    <p>Danh sách phiếu thu tiền phạt</p>
 {% endblock title_name %}
 
 {% block table_head %}
@@ -52,11 +58,5 @@
 {% endblock table_body %}
 
 {% block confirm_button %}
-<div class="submit">
-        <a class="btn btn-primary" href="{% url 'add_receipt' %}">Cập nhật</a> 
 
-</div>
 {% endblock %}
-
-
-

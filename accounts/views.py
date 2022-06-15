@@ -566,6 +566,18 @@ def add_book(request):
 #--THỦ QUỸ
 def receipt_list(request):
     receipts = FineReceipt.objects.all()
+    if 'rId' in request.POST:
+        rId = request.POST.get('rId')
+        reader = Reader.objects.filter(rId=rId).exists()
+        if not reader:
+                messages.error(request, 'Độc giả không tồn tại.')
+                return redirect('receipt_list')
+        else:
+            reader = Reader.objects.get(rId=rId)
+            request.session['rId'] = rId
+            request.session['debt'] = reader.total_debt
+            return redirect('add_receipt')
+
     context={'receipts':receipts}
     return render(request,'pages/cashier/receipt_list.html', context)
 
@@ -574,16 +586,8 @@ def add_receipt(request):
     if request.method == 'POST':
         try:
             form = ReceiptForm(request.POST)
-
-            rId = request.POST.get("rId", "")
-
-            reader = Reader.objects.filter(rId=rId).exists()
-
-            if not reader:
-                messages.error(request, 'Độc giả không tồn tại.')
-                return redirect('add_receipt')
-            else:
-                reader = Reader.objects.get(rId=rId)
+            rId = request.session['rId']
+            reader = Reader.objects.get(rId=rId)
 
             if form.is_valid():
                 receipt = form.save()
