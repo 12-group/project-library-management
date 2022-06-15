@@ -321,7 +321,11 @@ def register_reader(request):
             user = User.objects.get(username=username)
 
         if form.is_valid():
-            reader = form.save()
+            try:
+                reader = form.save()
+            except Exception as e:
+                messages.error(request, e)
+                return redirect('register_reader')
             reader.user = user
             reader.card_maker = request.user.customer.staff
             try:
