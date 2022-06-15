@@ -468,8 +468,11 @@ def add_book(request):
     return render(request, 'pages/stockkeeper/add_book.html', context)
 
 #--THỦ QUỸ
-def money_list(request):
-    return render(request,'pages/cashier/money_list.html')
+def receipt_list(request):
+    return render(request,'pages/cashier/receipt_list.html')
+
+def add_receipt(request):
+    return render(request,'pages/cashier/add_receipt.html')
 
 #--QUẢN LÝ
 def manager_dashboard(request):
@@ -487,6 +490,7 @@ def manager_dashboard(request):
 def add_staff(request):
     staff_form = StaffForm()
     user_form = CreateUserForm()
+    
 
     if request.method == 'POST':
         staff_form = StaffForm(request.POST)

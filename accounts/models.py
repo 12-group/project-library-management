@@ -10,7 +10,7 @@ DEFAULT_PASSWORD = 'password'
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
-    birth = models.DateField(null=True, blank=True)
+    birth = models.DateField(null=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     profile_pic = models.ImageField(default="profile_pic.png", null=True, blank=True)
     date_created = models.DateTimeField(null=True, auto_now_add=True)
@@ -60,7 +60,27 @@ class Reader(Customer):
     total_debt = models.PositiveIntegerField(null=True, default=0)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
+        age = datetime.datetime.now().year - self.birth.year
+
+        # kiem tra xem tuoi cua doc gia co nam trong  18 den 55 khong
+        if age not in range(18, 56):
+            raise ValueError('Tuổi của độc giả là {},độc giả phải có độ tuổi nằm trong 18 đến 55'.format(age))
+
         return super().save(force_insert, force_update, using, update_fields)
+    def is_validate(self): # kiem tra xem the con han hay khong
+        validate_value = datetime.datetime.now().month - self.date_created.month
+        if validate_value > 6:
+            return False
+        return True
+
+    def valid_age(self):
+        age = datetime.datetime.now().year - self.birth.year
+        if age not in range(18, 56):
+            return False
+        return True
+
+
+
 
 class BookCategory(models.Model):
     name = models.CharField(max_length=200, null=True)
@@ -135,8 +155,10 @@ class ReturnBook(models.Model):
 
 class FineReceipts(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+    debt = models.PositiveIntegerField(null=True, default=0)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     proceeds = models.PositiveIntegerField(null=True, default=0)
+    debt_left = models.PositiveIntegerField(null=True, default=0)
     date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
