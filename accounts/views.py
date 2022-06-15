@@ -195,7 +195,11 @@ def detail_info_book(request,pk):
                 cart = Cart()
                 cart.reader = reader
                 cart.book = book 
-                cart.save()
+                try:
+                    cart.save()
+                except Exception as e:
+                    messages.error(request, e)
+                    return render(request,'pages/reader/book_detail.html',{'book':book})
                 messages.success(request,'Thêm {} vào giỏ hàng thành công'.format(book.name))
     return render(request,'pages/reader/book_detail.html',{'book':book})
    
@@ -233,7 +237,13 @@ def cart(request):
                         return render(request,'pages/reader/cart.html',context)
 
             order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
-            order.save()
+            try:
+                order.save()
+            except Exception as e:
+                messages.error(request, e)
+                return render(request,'pages/reader/cart.html',context)
+
+
 
         cart.delete()
         count_book = len(cart)
@@ -350,7 +360,11 @@ def request_onl(request,pk):
     list =  zip(order.list_book,order.list_book.values())
     if request.method == 'POST':
         order.status = 'Đang soạn sách'
-        order.save()
+        try:
+            order.save()
+        except Exception as e:
+            messages.error(request, e)
+            return render(request,'pages/librarian/request_online.html',{'order':order,'list':list})
         return redirect('request_onl_list')
     return render(request,'pages/librarian/request_online.html',{'order':order,'list':list})
 
@@ -361,20 +375,29 @@ def update_request(request,pk):
     if request.method == 'POST':
         form = OrderForm(request.POST,instance=order)
         if form.is_valid():
-            form.save()
-            if order.status == 'Đã nhận sách':
-                borrow = BorrowBook()
-                borrow.reader = order.reader
-                borrow.list_book = order.list_book
-                list =  zip(borrow.list_book,borrow.list_book.values())
-                borrow.save()
-                for i in order.list_book.keys():
-                    print(i)
-                    book = Book.objects.get(bId = i)
-                    book.number_of_book_remain -= 1
-                    book.save()
-                order.list_book.clear()
-            return redirect('request_onl_list')
+            try:
+                form.save()
+
+                if order.status == 'Đã nhận sách':
+                    borrow = BorrowBook()
+                    borrow.reader = order.reader
+                    borrow.list_book = order.list_book
+                    list =  zip(borrow.list_book,borrow.list_book.values())
+
+                    borrow.save()
+                    for i in order.list_book.keys():
+                        print(i)
+                        book = Book.objects.get(bId = i)
+                        book.number_of_book_remain -= 1
+                        book.save()
+                    order.list_book.clear()
+                return redirect('request_onl_list')
+            except Exception as e:
+                messages.error(request, e)
+                return render(request, 'pages/librarian/update_status_request.html', context)
+
+
+            
     context = {'form':form,'list':list}
     return render(request, 'pages/librarian/update_status_request.html', context)
 
@@ -382,31 +405,37 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
-        form = request.GET
-        myDict = dict(form.lists())
-        context = {'id':id,'myDict':myDict}
-        if myDict != {}:
-            reader = Reader.objects.get(rId = myDict['rId'][0])
-            borrow = BorrowBook()
-            borrow.reader = reader
-            if BorrowBook.objects.filter(reader = reader).exists():
-                borrow_check = BorrowBook.objects.filter(reader = reader)
-                for b in borrow_check:
-                    list = b.list_book
-                    for i in myDict.values():
-                        if i[0] in list.keys() :
-                            messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
-                        elif Book.objects.filter(bId = i[0]).exists() is True:
-                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
-                    borrow.save()
-                    return render(request,'pages/librarian/request_offline.html',context)
-            else:
-                for i in myDict.values():
-                    if Book.objects.filter(bId = i[0]).exists() is True:
-                        borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+        try:
+            form = request.GET
+            myDict = dict(form.lists())
+            context = {'id':id,'myDict':myDict}
+            if myDict != {}:
+                reader = Reader.objects.get(rId = myDict['rId'][0])
+                borrow = BorrowBook()
+                borrow.reader = reader
+                if BorrowBook.objects.filter(reader = reader).exists():
+                    borrow_check = BorrowBook.objects.filter(reader = reader)
+                    for b in borrow_check:
+                        list = b.list_book
+                        for i in myDict.values():
+                            if i[0] in list.keys() :
+                                messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
+                            elif Book.objects.filter(bId = i[0]).exists() is True:
+                                borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
                         borrow.save()
+                        return render(request,'pages/librarian/request_offline.html',context)
+                else:
+                    for i in myDict.values():
+                        if Book.objects.filter(bId = i[0]).exists() is True:
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                            borrow.save()
+        except Exception as e:
+            messages.error(request, e)
+            return render(request,'pages/librarian/request_offline.html',context)
+
+
             
-            return redirect('borrowers')
+        return redirect('borrowers')
     return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
@@ -438,15 +467,19 @@ def list_book(request):
 def thanh_ly(request):
     today = date.today()
     if request.method == 'POST':
-        book_liquidation_form = BookLiquidationForm(request.POST)
-        print(request.POST)
-        action = request.POST.get('submit')
-        if action == 'reconfirm':
-            pass
-        elif action == 'confirm':
-            book_liquidation_form.save()
-            messages.success(request,'Thanh lý thành công')
-            return redirect('list_book')
+        try:
+            book_liquidation_form = BookLiquidationForm(request.POST)
+            print(request.POST)
+            action = request.POST.get('submit')
+            if action == 'reconfirm':
+                pass
+            elif action == 'confirm':
+                book_liquidation_form.save()
+                messages.success(request,'Thanh lý thành công')
+                return redirect('list_book')
+        except Exception as e:
+            messages.error(request, e)
+            return render(request,'pages/stockkeeper/thanh_ly.html', context)
 
     context = {
         'user': request.user,
@@ -485,15 +518,18 @@ def liquidation_history(request):
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':
-        form = BookForm(request.POST, request.FILES)
-        if form.is_valid():
-            book = form.save()
-            book.nguoinhan = request.user.customer.staff
-            book.number_of_book_remain = book.total
-            book.save()
-            messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
-            return redirect('list_book')
-        
+        try:
+            form = BookForm(request.POST, request.FILES)
+            if form.is_valid():
+                book = form.save()
+                book.nguoinhan = request.user.customer.staff
+                book.number_of_book_remain = book.total
+                book.save()
+                messages.success(request, "Sách được thêm thành công với ID là " + book.bId)
+                return redirect('list_book')
+        except Exception as e:
+            messages.error(request, e)
+            return render(request, 'pages/stockkeeper/add_book.html', context)
     context = {'form':form}
     return render(request, 'pages/stockkeeper/add_book.html', context)
 
@@ -571,7 +607,7 @@ def delete_staff(request, sId):
         user = staff.user
         user.delete()
 
-        messages.success(request, 'Xóa nhân viên {} thanh cong'.format(name))
+        messages.success(request, 'Xóa nhân viên {} thành công '.format(name))
         return redirect('manager_dashboard')
 
     context={
