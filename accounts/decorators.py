@@ -22,8 +22,8 @@ def redirect_staff_dashboard(view_func):
 			groups = request.user.groups.all()
 			if is_in_group('staff', groups):
 				return redirect('dashboard')
-		else:
-			return view_func(request, *args, **kwargs)
+			else:
+				return view_func(request, *args, **kwargs)
 
 	return wrapper_func
 

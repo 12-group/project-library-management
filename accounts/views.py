@@ -69,7 +69,7 @@ def loginPage(request):
                 #     return redirect('receipt_list')
                 # if user.groups.filter(name='manager').exists():
                 #     return redirect('manager_dashboard')
-            return redirect('home')
+            return redirect('dashboard')
 
         else: 
             messages.error(request, 'Tên đăng nhập hoặc mật khẩu chưa đúng.')
