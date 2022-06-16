@@ -350,6 +350,20 @@ def register_reader(request):
 
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 
+def remove_reader(request, reader_pk):
+    reader = Reader.objects.get(pk=reader_pk)
+
+    if request.method == 'POST':
+        rId = reader.rId
+        reader.delete()
+        messages.success(request,'Xóa độc giả {} thành công.'.format(rId))
+        return redirect('reader_list')
+
+    context = {
+        'reader':reader
+    }
+    return render(request,'pages/librarian/remove_reader.html',context)
+
 def request_onl_list(request):
     orders = BorrowOrder.objects.all()
     context={'orders':orders}
@@ -454,10 +468,7 @@ def borrow_detail(request,pk):
 
 def get_all_borrowing_book_of_reader(list_book):
     res = None
-
-
     return res
-
 
 def return_book(request,pk):
 
