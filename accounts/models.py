@@ -108,10 +108,7 @@ class Book(models.Model):
     author = models.CharField(max_length=200, null=True, blank=True)
     price = models.PositiveIntegerField(null=True, default=0)
     publisher = models.CharField(max_length=200, null=True, blank=True)
-    pubYear = models.PositiveIntegerField(
-        null=True,
-        validators=[MaxValueValidator(datetime.date.today().year+1), MinValueValidator(datetime.date.today().year-8)],
-        )
+    pubYear = models.PositiveIntegerField(null=True)
     addDate = models.DateTimeField(null=True, auto_now_add=True)
     total = models.PositiveIntegerField(null=True, default=1)
     number_of_book_remain = models.PositiveIntegerField(null=True, default=1)
@@ -126,7 +123,12 @@ class Book(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         if self.total < self.number_of_book_remain:
-            raise Exception('Số lượng sách còn lại không được lớn hơn tổng số lượng sách')
+            raise Exception('Số lượng sách còn lại không được lớn hơn tổng số lượng sách.')
+
+        ymin = datetime.date.today().year-8
+        ymax = datetime.date.today().year+2 # do range(ymin, ymax-1)
+        if self.pubYear not in range(ymin, ymax):
+            raise Exception('Chỉ nhận sách xuất bản trong vòng 8 năm.')
         return super().save(force_insert, force_update, using, update_fields)
 
     def get_all_ctg_to_string(self):

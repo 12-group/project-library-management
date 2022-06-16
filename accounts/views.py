@@ -656,7 +656,8 @@ def add_book(request):
                 return redirect('list_book')
         except Exception as e:
             messages.error(request, e)
-            return render(request, 'pages/stockkeeper/add_book.html', context)
+            redirect('add_book')
+
     context = {'form':form}
     return render(request, 'pages/stockkeeper/add_book.html', context)
 
