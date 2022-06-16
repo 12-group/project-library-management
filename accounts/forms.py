@@ -29,6 +29,10 @@ class StaffForm(ModelForm):
 		fields = '__all__'
 
 		exclude = ['sId','user','force_password_change']
+		widgets = {
+            'birth': DateInput()
+        }
+
 
 class CreateUserForm(UserCreationForm):
 	class Meta:
