@@ -221,7 +221,7 @@ class ReturnBook(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         # Kiểm tra tiền thu không vượt quá tiền mượn
-        if self.proceeds > self.debt:
+        if self.fine > self.reader.total_debt:
             raise Exception('Tiền thu không được vượt quá tiền nợ.')
             
         return super().save(force_insert, force_update, using, update_fields)
@@ -244,8 +244,8 @@ class FineReceipt(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         # Kiểm tra tiền thu không vượt quá tiền mượn
-        self.debt = self.reader.debt
-        if self.proceeds > self.debt or self.proceeds > self.reader.debt:
+        self.debt = self.reader.total_debt
+        if self.proceeds > self.debt or self.proceeds > self.reader.total_debt:
             raise Exception('Tiền thu không được vượt quá tiền nợ.')
             
         return super().save(force_insert, force_update, using, update_fields)
@@ -259,6 +259,8 @@ class PenaltyTicket(models.Model):
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     reason = models.CharField(max_length=200, null=True, blank=True)
     fine = models.PositiveIntegerField(null=True, default=0)
+    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+    date_created = models.DateTimeField(null=True, auto_now_add=True)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         self.reader.total_debt += self.fine

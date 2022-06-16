@@ -3,7 +3,7 @@
 
 
 {% block title_name %}
-	<p>Lịch sử trả sách</p>
+	<p>Danh sách phiếu phạt</p>
 
 {% endblock title_name %}
 {% comment %} {% block filter %}
@@ -25,19 +25,21 @@
 <tr>
 <th>Mã độc giả</th>
 <th>Mã sách</th>
-<th>Ngày mượn</th>
-<th>Ngày trả</th>
+<th>Mã nhân viên</th>
+<th>Lý do ghi nhận</th>
 <th>Tiền phạt</th>
+<th>Ngày ghi nhận</th>
 </tr>
 {% endblock table_head %}
 {% block table_body %}
-	{% for i in return_book_model %}
+	{% for i in ticket %}
 		<tr>
 			<th>{{i.reader.rId}}</th>
 			<th>{{i.book.bId}}</th>
-			<th>{{i.date_borrow|date:'d-m-y H:i'}}</th>
-			<th>{{i.date_return|date:'d-m-y H:i'}}</th>
+			<th>{{i.staff.sId}}</th>
+			<th>{{i.reason}}</th>
 			<th>{{i.fine}}</th>
+			<th>{{i.date_created|date:'d-m-y H:i'}}</th>
 		</tr>
 	{% endfor %}
 	{% if messages %}

@@ -531,6 +531,7 @@ def return_book(request,pk):
                             penalty_ticket_model = PenaltyTicket(
                                     reader=borrow_detail.reader,
                                     staff=request.user.customer.staff,
+                                    book=book,
                                     reason='Làm mất sách',
                                     fine=book.price
                                 )
@@ -558,17 +559,16 @@ def return_book(request,pk):
                             return redirect('borrowers')
                         else:
                             order.save()
-
+                    message.success('Cập nhật thành công')
                 except Exception as e:
                     messages.error(request, e)
-                    
                 return redirect('return_book', pk)
                 
 
     context = {
         'borrow_detail':borrow_detail.list_book.items(),
         'date_borrow':borrow_detail.date_borrow,
-        'today': today.strftime("%d/%m/%Y"),
+        'today': today,
         'num_days_borrow': num_days_borrow.days,
         'reader_id':borrow_detail.reader.rId,
         'fine':fine,
@@ -583,9 +583,9 @@ def return_book_history(request):
     }
     return render(request, 'pages/return_book_history.html', context)
 
-def penalty_ticket(request,pk):
-    ticket = PenaltyTicket.objects.get(id=pk)
-    return render(request,'pages/librarian/home.html',{'ticket':ticket})
+def penalty_ticket(request):
+    ticket = PenaltyTicket.objects.all()
+    return render(request,'pages/penalty_ticket.html',{'ticket':ticket})
 
 #---THỦ KHO
 def list_book(request):

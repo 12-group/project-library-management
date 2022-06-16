@@ -39,8 +39,8 @@
     <tr>
         <th>{{book}}</th>
         <th>{{name}}</th>
-        <th>{{date_borrow}}</th>
-        <th>{{today}}</th>
+        <th>{{date_borrow|date:'d-m-y H:i'}}</th>
+        <th>{{today|date:'d-m-y H:i'}}</th>
         <th>{{num_days_borrow}}</th>
         <th><label><input type="radio" id="choice" value="return" name="return{{book}}" /></label></th>
         <th><label><input type="radio" id="choice" value="lost" name="return{{book}}" /></label></th>
@@ -53,6 +53,7 @@
         <th>{{total_fine}}</th>
     </tr>
 
+    {% include "pages/messages.html" %}
 
     {% endblock table_body %}
 
