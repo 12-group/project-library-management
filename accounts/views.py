@@ -690,7 +690,7 @@ def receipt_list(request):
 def add_receipt(request):
     form = ReceiptForm()
     if request.method == 'POST':
-        # try:
+        try:
             form = ReceiptForm(request.POST)
             rId = request.session['rId']
             reader = Reader.objects.get(rId=rId)
@@ -709,9 +709,9 @@ def add_receipt(request):
                 messages.success(request, "Thu tiền phạt thành công.")
                 return redirect('receipt_list')
 
-        # except Exception as e:
-        #     messages.error(request, e)
-        #     return redirect('add_receipt')
+        except Exception as e:
+            messages.error(request, e)
+            return redirect('add_receipt')
             
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)

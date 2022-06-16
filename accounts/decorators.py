@@ -21,12 +21,16 @@ def allowed_users(allowed_roles=[]):
 		def wrapper_func(request, *args, **kwargs):
 
 			groups = None
+			groups_name = None
 			if request.user.groups.exists():
 				groups = request.user.groups.all()
-			if is_in_group('staff', groups):
-				pass
-			# if group in allowed_roles:
-			# 	return view_func(request, *args, **kwargs)
+				groups_name = [group.name for group in groups]
+			if 'staff' in groups_name:
+				groups_name.remove('staff')
+				if groups_name[0] in allowed_roles:
+					return view_func(request, *args, **kwargs)
+			elif 'reader' in allowed_roles:
+				return view_func(request, *args, **kwargs)				
 			else:
 				return HttpResponse('Bạn không có quyền để xem trang này')
 		return wrapper_func
