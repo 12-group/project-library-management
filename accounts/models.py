@@ -5,7 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 from .initial_func import pk_gen, staff_pk_gen, book_pk_gen
 from jsonfield import JSONField
-from django.utils.translation import gettext as _
+# from django.utils.translation import gettext as _
 from django.contrib import messages
 
 DEFAULT_PASSWORD = 'password'
@@ -94,10 +94,10 @@ class BookCategory(models.Model):
 
     def __str__(self):
         return self.name
-class MyMaxValueValidator(MaxValueValidator):
-    message = _('Năm xuất bản không hợp lệ %(limit_value)s.')
-class MyMinValueValidator(MinValueValidator):
-    message = _('Chỉ được nhận sách xuất bản trong vòng 8 năm (từ %(limit_value)s).')
+# class MyMaxValueValidator(MaxValueValidator):
+#     message = _('Năm xuất bản không hợp lệ %(limit_value)s.')
+# class MyMinValueValidator(MinValueValidator):
+#     message = _('Chỉ được nhận sách xuất bản trong vòng 8 năm (từ %(limit_value)s).')
 
 class Book(models.Model):
 
@@ -110,7 +110,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=200, null=True, blank=True)
     pubYear = models.PositiveIntegerField(
         null=True,
-        validators=[MyMaxValueValidator(datetime.date.today().year+1), MyMinValueValidator(datetime.date.today().year-8)],
+        validators=[MaxValueValidator(datetime.date.today().year+1), MinValueValidator(datetime.date.today().year-8)],
         )
     addDate = models.DateTimeField(null=True, auto_now_add=True)
     total = models.PositiveIntegerField(null=True, default=1)
@@ -181,9 +181,6 @@ class BorrowOrder(models.Model):
         # for borrow_order in borrow_orders:
         #     print(borrow_order.list_book)
         #     count_books += len(borrow_order.list_book)
-        count_books = 0
-        for borrow_order in borrow_orders:
-            count_books += len(borrow_order.list_book)
 
         # if count_books >= 5:
         #     print('raise exception')
@@ -205,11 +202,6 @@ class BorrowBook(models.Model):
 
         borrow_books = BorrowBook.objects.filter(reader=self.reader)
 
-        count_book = 0
-        for borrow_book in borrow_books:
-            count_book += len(borrow_book.list_book)
-        if count_book >= 5:
-            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
         return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
