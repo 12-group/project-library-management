@@ -177,10 +177,16 @@ class BorrowOrder(models.Model):
 
         # borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
         
+<<<<<<< HEAD
         # count_books = 0
         # for borrow_order in borrow_orders:
         #     print(borrow_order.list_book)
         #     count_books += len(borrow_order.list_book)
+=======
+        count_books = 0
+        for borrow_order in borrow_orders:
+            count_books += len(borrow_order.list_book)
+>>>>>>> 5cb28a059bf4dc391aed97b57d5a902650ca6666
 
         # if count_books >= 5:
         #     print('raise exception')
@@ -199,8 +205,16 @@ class BorrowBook(models.Model):
         
         if self.reader.is_out_of_date():
             raise Exception('Thẻ quá hạn')
+<<<<<<< HEAD
         
 
+=======
+        count_book = 0
+        for borrow_book in borrow_books:
+            count_book += len(borrow_book.list_book)
+        if count_book >= 5:
+            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+>>>>>>> 5cb28a059bf4dc391aed97b57d5a902650ca6666
         return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
@@ -223,10 +237,14 @@ class FineReceipt(models.Model):
     proceeds = models.PositiveIntegerField(null=True, default=0)
     debt_left = models.PositiveIntegerField(null=True, default=0)
     date_pay_fine = models.DateTimeField(null=True, auto_now_add=True)
+
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
-        return super().save(force_insert, force_update, using, update_fields)
+        # Kiểm tra tiền thu không vượt quá tiền mượn
+        if self.proceeds > self.debt:
+            raise Exception('Tiền thu không được vượt quá tiền nợ.')
 
+        return super().save(force_insert, force_update, using, update_fields)
 
 class PenaltyTicket(models.Model):
     # REASON = [
