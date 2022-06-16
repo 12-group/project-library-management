@@ -105,7 +105,7 @@ class Book(models.Model):
     name = models.CharField(max_length=200, null=True)
     cover_pic = models.ImageField(default="logo.png", null=True, blank=True)
     ctg = models.ManyToManyField(BookCategory, blank=True)							# Category
-    author = models.CharField(max_length=200, null=True, blank=True)					# Author
+    author = models.CharField(max_length=200, null=True, blank=True)
     price = models.PositiveIntegerField(null=True, default=0)
     publisher = models.CharField(max_length=200, null=True, blank=True)
     pubYear = models.PositiveIntegerField(
