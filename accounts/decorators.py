@@ -41,7 +41,7 @@ def redirect_user(view_func):
 			groups = request.user.groups.all()
 			group = [g.name for g in groups]
 		if 'reader' in group:
-			return redirect('home')
+			return view_func(request, *args, **kwargs)
 
 		elif 'librarian' in group:
 			return redirect('librarian') 
