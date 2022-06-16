@@ -62,11 +62,7 @@
                     <a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a>
                 </div>
             </li>
-<<<<<<< HEAD
-            {% if request.user.groups.all.0.name == "reader" %} 
-=======
             {% if request.user.groups.all.0.name == "reader" %}
->>>>>>> 0892cf73c754fd881ffae328ffa6ffe80f2407f3
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'cart' %}"><i class="bi bi-bag"></i><span class="sr-only">(current)</span></a>
             </li>
