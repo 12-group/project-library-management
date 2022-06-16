@@ -244,8 +244,7 @@ class FineReceipt(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         # Kiểm tra tiền thu không vượt quá tiền mượn
-        self.debt = self.reader.total_debt
-        if self.proceeds > self.debt or self.proceeds > self.reader.total_debt:
+        if self.proceeds > self.debt:
             raise Exception('Tiền thu không được vượt quá tiền nợ.')
             
         return super().save(force_insert, force_update, using, update_fields)
