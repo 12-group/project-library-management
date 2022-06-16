@@ -538,7 +538,9 @@ def return_book(request,pk):
                         
                         
                         book.total -= 1
+                        borrow_detail.reader.total_debt += penalty_ticket_model.fine
                         penalty_ticket_model.save()
+                        borrow_detail.reader.save()
                         book.save()
                     print(borrow_detail.list_book)  
                     borrow_detail.list_book.pop(book.bId)
@@ -560,9 +562,15 @@ def return_book(request,pk):
                         else:
                             order.save()
                     messages.success('Cập nhật thành công')
+<<<<<<< HEAD
                 #except Exception as e:
                 #    messages.error(request, e)
             return redirect('return_book', pk)
+=======
+                except Exception as e:
+                    messages.error(request, e)
+                return redirect('return_book', pk)
+>>>>>>> 414407843f04241bc57f4152ec513daf5668d429
                 
 
     context = {
