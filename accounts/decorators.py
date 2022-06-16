@@ -33,7 +33,7 @@ def allowed_users(allowed_roles=[]):
 		return wrapper_func
 	return decorator
 
-def redirect_user(view_func):
+def redirect_home_view(view_func):
 	def wrapper_func(request, *args, **kwargs):
 		group = None
 		if request.user.groups.exists():
