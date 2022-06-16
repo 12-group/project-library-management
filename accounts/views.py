@@ -147,8 +147,8 @@ def get_username(request):
         username = request.user.username
     return username
 
-# @login_required(login_url='login')
-# @admin_only
+@login_required(login_url='login')
+@admin_only
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
@@ -241,8 +241,7 @@ def cart(request):
                 order.save()
             except Exception as e:
                 messages.error(request, e)
-                return render(request,'pages/reader/cart.html',context)
-
+            redirect('request')
 
 
         cart.delete()
@@ -397,8 +396,7 @@ def update_request(request,pk):
                 return redirect('request_onl_list')
             except Exception as e:
                 messages.error(request, e)
-                return render(request, 'pages/librarian/update_status_request.html', context)
-            
+        return redirect('request_onl_list')
     context = {'form':form,'list':list}
     return render(request, 'pages/librarian/update_status_request.html', context)
 
@@ -444,39 +442,125 @@ def borrow_detail(request,pk):
     context = {'borrow':borrow,'list':list}
     return render(request,'pages/librarian/borrow_detail.html',context)
 
-def get_all_borrowing_book_of_reader(reader:Reader):
-    res = []
-    all_borrow_book = reader.borrowbook_set.all()
-    today = datetime.datetime.now()
-    num_days_borrow = 0
-    for borrow_book in all_borrow_book:
-            # res.update(borrow_book.list_book)
-            # print(borrow_book)
-            list_book = borrow_book.list_book
-            num_days_borrow = today - borrow_book.date_borrow.replace(tzinfo=None)
-            for key in list_book:
-                res.append((key, list_book[key], borrow_book.date_borrow, num_days_borrow.days))
+def get_all_borrowing_book_of_reader(list_book):
+    res = None
+
 
     return res
 
 
 def return_book(request,pk):
 
-    reader = Reader.objects.get(rId=pk)
-    list_book = get_all_borrowing_book_of_reader(reader)
-    today = date.today()
+    borrow_detail = BorrowBook.objects.get(pk=pk)
+    borrow_order = BorrowOrder.objects.filter(reader=borrow_detail.reader)
+    
+    today = datetime.datetime.now()
+    
+    list_book = [Book.objects.get(bId=bId) for bId, name in borrow_detail.list_book.items()]
+    
+    num_days_borrow = today - borrow_detail.date_borrow.replace(tzinfo=None)
+    fine = 0
+    if num_days_borrow.days > 4:
+        fine = (num_days_borrow.days - 4)*1000
+
+    # print(borrow_detail.list_book.pop('S000003'))
 
     if request.method == 'POST':
         
-        return_book_model = ReturnBook()
+        action = request.POST
 
-        for book in request.POST:
-            action = request.POST[book]
+        # bien tam de thay doi borrowbook
+        temp_borrow_detail = {}
+
+        # duyet sach trong list_book: Array[Book]
+        for book in list_book:
+
+            # Ma sach tam
+            temp_bId = 'return{}'.format(book.bId)
+
+            # Neu trong submit form co tra hoac bao mat
+            if temp_bId in action:
+                try:
+                # neu tra sach
+                    if action[temp_bId] == 'return':
+
+                        print('return')
+
+                        # lap phieu tra sach
+                        return_book_model = ReturnBook(
+                            reader=borrow_detail.reader,
+                            book=book,
+                            date_borrow=borrow_detail.date_borrow,
+                            date_return=today,
+                            fine=fine
+                        )
+
+                        # lap phieu phat
+                        if fine > 0:
+                            penalty_ticket_model = PenaltyTicket(
+                                reader=borrow_detail.reader,
+                                staff=request.user.customer.staff,
+                                reason='Trả sách trễ',
+                                fine=fine
+                            )
+                            penalty_ticket_model.save()
+                        book.number_of_book_remain += 1
+                        return_book_model.save()
+                        book.save()
+
+                    # mat sach
+                    else:
+                        if fine > 0:
+                            penalty_ticket_model = PenaltyTicket(
+                                    reader=borrow_detail.reader,
+                                    staff=request.user.customer.staff,
+                                    reason='Trả sách trễ + Làm mất sách',
+                                    fine=fine + book.price
+                                )
+                        else:
+                            penalty_ticket_model = PenaltyTicket(
+                                    reader=borrow_detail.reader,
+                                    staff=request.user.customer.staff,
+                                    reason='Làm mất sách',
+                                    fine=book.price
+                                )
+                        book.total -= 1
+                        penalty_ticket_model.save()
+                        book.save()
+                    print(borrow_detail.list_book)  
+                    borrow_detail.list_book.pop(book.bId)
+
+                    if len(borrow_detail.list_book) == 0:
+                        borrow_detail.delete()
+                        return redirect('borrowers')
+                    else:
+                        borrow_detail.save()
+
+                    for order in borrow_order:
+                        try:
+                            order.list_book.pop(book.bId)
+                        except KeyError:
+                            pass
+                        if len(order.list_book) == 0:
+                            order.delete()
+                            return redirect('borrowers')
+                        else:
+                            order.save()
+
+                except Exception as e:
+                    messages.error(request, e)
+                    
+                return redirect('return_book', pk)
+                
 
     context = {
-        'reader':reader,
-        'list_book':list_book,
-        'today': today.strftime("%d/%m/%Y")
+        'borrow_detail':borrow_detail.list_book.items(),
+        'date_borrow':borrow_detail.date_borrow,
+        'today': today.strftime("%d/%m/%Y"),
+        'num_days_borrow': num_days_borrow.days,
+        'reader_id':borrow_detail.reader.rId,
+        'fine':fine,
+        'total_fine':fine*len(list_book)
         }
     return render(request,'pages/librarian/return_book.html', context)
 
@@ -593,17 +677,36 @@ def add_receipt(request):
             if form.is_valid():
                 receipt = form.save()
                 receipt.reader = reader
-                receipt.debt = reader.total_debt
                 receipt.staff = request.user.customer.staff
                 receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.save()
+
+                # Cập nhật tiền nợ mới
+                reader.total_debt = receipt.debt_left
+                reader.save()
+
                 messages.success(request, "Thu tiền phạt thành công.")
                 return redirect('receipt_list')
+
         except Exception as e:
             messages.error(request, e)
-            return render(request,'pages/cashier/add_receipt.html', context)
+            return redirect('add_receipt')
+            
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)
+
+def remove_receipt(request, receipt_pk):
+    receipt = FineReceipt.objects.get(pk=receipt_pk)
+
+    if request.method == 'POST':
+        receipt.delete()
+        messages.success(request, 'Xóa phiếu thu thành công.')
+        return redirect('receipt_list')
+
+    context = {
+        'receipt':receipt
+    }
+    return render(request,'pages/cashier/remove_receipt.html',context)
 
 #--QUẢN LÝ
 def manager_dashboard(request):

@@ -33,7 +33,7 @@
     <th>{{i.date_borrow}}</th>
     <th></th>
     <th><a class="btn btn-primary" href="{% url 'borrow_detail' i.pk %}">Xem chi tiết</a></th>
-    <th><a class="btn btn-warning" href="{% url 'return_book' i.reader.rId %}">Trả sách</a></th>
+    <th><a class="btn btn-warning" href="{% url 'return_book' i.pk %}">Trả sách</a></th>
 </tr>	
 {% endfor %}
 

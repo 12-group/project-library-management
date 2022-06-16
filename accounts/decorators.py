@@ -35,15 +35,15 @@ def admin_only(view_func):
 			return view_func(request, *args, **kwargs)
 
 		if group == 'librarian':
-			return redirect('librarian') 
+			return redirect('borrowers') 
 
 		if group == 'stockkeeper':
 			return redirect('list_book')
 
 		if group == 'cashier':
-			return redirect('money_list')
+			return redirect('receipt_list')
 
-		if group == 'admin':
+		if group == 'manager':
 			return view_func(request, *args, **kwargs)
 
 	return wrapper_func
