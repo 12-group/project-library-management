@@ -14,6 +14,7 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Python version: 3.9.7
 - Django version: 4.0.1
 # Current status
-- Đã xong search
+- Đã xong phân quyền
 # Future works
-- Muốn style lại nhưng chưa biết làm
+- Test lại toàn bộ
+- Demo video
