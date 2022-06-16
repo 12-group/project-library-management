@@ -490,7 +490,7 @@ def return_book(request,pk):
 
             # Neu trong submit form co tra hoac bao mat
             if temp_bId in action:
-                try:
+                #try:
                 # neu tra sach
                     if action[temp_bId] == 'return':
 
@@ -559,10 +559,10 @@ def return_book(request,pk):
                             return redirect('borrowers')
                         else:
                             order.save()
-                    message.success('Cập nhật thành công')
-                except Exception as e:
-                    messages.error(request, e)
-                return redirect('return_book', pk)
+                    messages.success('Cập nhật thành công')
+                #except Exception as e:
+                #    messages.error(request, e)
+            return redirect('return_book', pk)
                 
 
     context = {
