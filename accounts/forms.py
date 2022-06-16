@@ -39,6 +39,12 @@ class CreateUserForm(UserCreationForm):
 		model = User
 		fields = ['username', 'email', 'password1', 'password2']
 
+class ChangePasswordForm(PasswordChangeForm):
+	class Meta:
+		model = User
+		fields = ['old_password', 'new_password1', 'new_password2']
+
+
 class BookForm(ModelForm):
 	class Meta:
 		model = Book
