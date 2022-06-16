@@ -324,19 +324,17 @@ def register_reader(request):
 
         user = User.objects.filter(username=username).exists()
 
-        if not user:
-            messages.error(request, 'Độc giả chưa có tài khoản.')
-            return redirect('register_reader')
-        else:
-            user = User.objects.get(username=username)
 
         if form.is_valid():
+               
             try:
                 reader = form.save()
             except Exception as e:
                 messages.error(request, e)
                 return redirect('register_reader')
-            reader.user = user
+            if user is True:
+                user = User.objects.get(username=username)
+                reader.user = user
             reader.card_maker = request.user.customer.staff
             try:
                 reader.save()
@@ -377,26 +375,29 @@ def update_request(request,pk):
         if form.is_valid():
             try:
                 form.save()
+                context = {'form':form,'list':list}
 
                 if order.status == 'Đã nhận sách':
+                    
                     borrow = BorrowBook()
                     borrow.reader = order.reader
                     borrow.list_book = order.list_book
                     list =  zip(borrow.list_book,borrow.list_book.values())
-
                     borrow.save()
+
                     for i in order.list_book.keys():
-                        print(i)
                         book = Book.objects.get(bId = i)
                         book.number_of_book_remain -= 1
                         book.save()
+                        
+                    BorrowOrder.objects.filter(id=pk).delete()
+                    messages.success(request,"Cập nhật phiếu đăng ký thành công.")
+
                     order.list_book.clear()
                 return redirect('request_onl_list')
             except Exception as e:
                 messages.error(request, e)
                 return render(request, 'pages/librarian/update_status_request.html', context)
-
-
             
     context = {'form':form,'list':list}
     return render(request, 'pages/librarian/update_status_request.html', context)
