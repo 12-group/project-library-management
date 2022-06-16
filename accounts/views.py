@@ -677,9 +677,8 @@ def add_receipt(request):
             if form.is_valid():
                 receipt = form.save()
                 receipt.reader = reader
-                receipt.debt = reader.total_debt
-                receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.staff = request.user.customer.staff
+                receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.save()
 
                 # Cập nhật tiền nợ mới
@@ -692,6 +691,7 @@ def add_receipt(request):
         except Exception as e:
             messages.error(request, e)
             return redirect('add_receipt')
+            
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)
 
