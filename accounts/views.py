@@ -15,12 +15,7 @@ from .initial_func import username_gen
 from datetime import date
 import json
 
-def is_in_group(check_group, groups):
-    if check_group in [group.name for group in groups]:
-        return True
-    return False
-
-# @unauthenticated_user
+@unauthenticated_user
 def register(request):
     form = CreateUserForm()
 
@@ -135,11 +130,8 @@ def password_change(request):
                     staff.force_password_change = False
                     staff.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Your password was successfully updated!')
+            messages.success(request, 'Đổi mật khẩu thành công!')
             return redirect('password_change_done')
-
-        else:
-            messages.error(request, 'Please correct the error below.')
 
     context = {'form':form}
     return render(request, 'pages/user_account/password_change.html', context)
@@ -156,7 +148,7 @@ def get_username(request):
     return username
 
 @login_required(login_url='login')
-# @admin_only
+@redirect_user
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
@@ -312,7 +304,11 @@ def librarian_home(request):
 
 def borrowers(request):
     borrows = BorrowBook.objects.all()
-    context = {'borrows':borrows}
+    today = datetime.datetime.now()
+    context = {
+        'borrows':borrows,
+        'today': today.strftime("%d/%m/%Y"),
+        }
     return render(request,'pages/librarian/borrower_list.html',context)
 
 def get_object(email):

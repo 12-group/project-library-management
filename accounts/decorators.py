@@ -2,6 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 
+def is_in_group(check_group, groups):
+    if check_group in [group.name for group in groups]:
+        return True
+    return False
+
 def unauthenticated_user(view_func):
 	def wrapper_func(request, *args, **kwargs):
 		if request.user.is_authenticated:
@@ -16,38 +21,39 @@ def allowed_users(allowed_roles=[]):
 		def wrapper_func(request, *args, **kwargs):
 
 			group = None
+			group_name = None
 			if request.user.groups.exists():
-				group = request.user.groups.all()[0].name
+				group = request.user.groups.all()
+				group_name = [g.name for g in group]
 
 			if group in allowed_roles:
 				return view_func(request, *args, **kwargs)
 			else:
-				return HttpResponse('You are not authorized to view this page')
+				return HttpResponse('Bạn không có quyền để xem trang này')
 		return wrapper_func
 	return decorator
 
-def admin_only(view_func):
+def redirect_user(view_func):
 	def wrapper_func(request, *args, **kwargs):
-		group = []
+		group = None
 		if request.user.groups.exists():
 			#group = request.user.groups.all()[0].name
-			for g in request.user.groups.all():
-				group.append(g.name)
-		print(len(group))
+			groups = request.user.groups.all()
+			group = [g.name for g in groups]
 		if 'reader' in group:
-			return view_func(request, *args, **kwargs)
+			return redirect('home')
 
-		if 'librarian' in group:
-			return redirect('borrowers') 
+		elif 'librarian' in group:
+			return redirect('librarian') 
 
-		if 'stockkeeper' in group:
+		elif 'stockkeeper' in group:
 			return redirect('list_book')
 
-		if 'cashier' in group:
+		elif 'cashier' in group:
 			return redirect('receipt_list')
 
-		if 'manager' in group:
-			return view_func(request, *args, **kwargs)
+		elif 'manager' in group:
+			return redirect('manager_dashboard')
 
 		if not group:
 			logout(request)
