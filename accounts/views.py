@@ -352,7 +352,6 @@ def register_reader(request):
 
 def remove_reader(request, reader_pk):
     reader = Reader.objects.get(pk=reader_pk)
-
     if request.method == 'POST':
         rId = reader.rId
         reader.delete()
@@ -363,6 +362,17 @@ def remove_reader(request, reader_pk):
         'reader':reader
     }
     return render(request,'pages/librarian/remove_reader.html',context)
+
+def update_reader(request, reader_pk):
+    reader = Reader.objects.get(pk=reader_pk)
+    form = ReaderForm(instance=reader)
+    if request.method == 'POST':
+        form = ReaderForm(request.POST,instance=reader)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cập nhật thông tin thành công.')
+    context = {'form':form, 'reader':reader}
+    return render(request,'pages/librarian/update_reader.html', context)
 
 def request_onl_list(request):
     orders = BorrowOrder.objects.all()

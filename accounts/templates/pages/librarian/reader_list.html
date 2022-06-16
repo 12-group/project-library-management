@@ -38,6 +38,7 @@
 <th>Địa chỉ</th>
 <th>Ngày lập thẻ</th>
 <th>Người lập thẻ</th>
+<th>Sửa</th>
 <th>Xóa</th>
 </tr>
 {% endblock table_head %}
@@ -52,7 +53,8 @@
 	<th>{{i.address}}</th>
 	<th>{{i.date_created}}</th>
 	<th>{{i.card_maker.name}}</th>
-	<th><a href ="{% url 'remove_reader' i.pk %}" style="font-size:24px; margin-left:7px" class="fa">&#xf014;</a></th>
+	<th><a href ="{% url 'update_reader' i.pk %}" class="material-icons" style="font-size:24px; margin-left:7px; text-decoration: none;">edit</a></th>
+	<th><a href ="{% url 'remove_reader' i.pk %}" class="fa fa-trash-o" style="font-size:24px; margin-left:7px; text-decoration: none;"></a></th>
 </tr>
 {% endfor %}
 
