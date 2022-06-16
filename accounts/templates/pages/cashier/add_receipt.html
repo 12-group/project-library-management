@@ -13,8 +13,18 @@
     }
 {% endblock style %}
 
-
 {% block content %}
+
+{% if messages %}
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
 
 <div class="a" >
     <form class="row g-3" method="POST" action="" enctype="multipart/form-data">

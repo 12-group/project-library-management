@@ -237,7 +237,7 @@ class FineReceipt(models.Model):
         # Kiểm tra tiền thu không vượt quá tiền mượn
         if self.proceeds > self.debt:
             raise Exception('Tiền thu không được vượt quá tiền nợ.')
-
+            
         return super().save(force_insert, force_update, using, update_fields)
 
 class PenaltyTicket(models.Model):
