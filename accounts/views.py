@@ -154,16 +154,13 @@ def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
         top_book = books[:4]
-        print(top_book)
         return render(request,'pages/home.html',{'books':books,'top_book':top_book})
     return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
     books = Book.objects.all()
-    print(request.GET)
     books_filter = BookFilter(request.GET, queryset=books)
     books = books_filter.qs
-    print(books)
     num_books = len(books)
 
     context = {
@@ -189,7 +186,6 @@ def detail_info_book(request,pk):
         else:
             reader = Reader.objects.get(user=user)
             if Cart.objects.filter(reader = reader,book =book).exists() is True:
-                print('y')
                 messages.error(request,'Sách đã có trong giỏ hàng')
                 return render(request,'pages/reader/book_detail.html',{'book':book})
             else:
@@ -238,6 +234,8 @@ def cart(request):
                         return render(request,'pages/reader/cart.html',context)
 
             order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
+            messages.success(request,'Đã đăng ký thành công')
+
             try:
                 order.save()
             except Exception as e:
@@ -424,7 +422,6 @@ def request_off(request):
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
             if myDict != {}:
-                print()
                 reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
                 if BorrowBook.objects.filter(reader=reader).exists() is True: 
                     borrow = BorrowBook.objects.get(reader = reader)  
@@ -433,7 +430,6 @@ def request_off(request):
                             messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                             return render(request,'pages/librarian/request_offline.html',context)
                         elif Book.objects.filter(bId = i[0]).exists() is True:
-                                print('t')
                                 borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))   
                                 borrow.save()
                     return redirect('borrowers')
@@ -471,13 +467,10 @@ def return_book(request,pk):
     today = datetime.datetime.now()
     
     list_book = [Book.objects.get(bId=bId) for bId, name in borrow_detail.list_book.items()]
-    print(list_book)
     num_days_borrow = today - borrow_detail.date_borrow.replace(tzinfo=None)
     fine = 0
     if num_days_borrow.days > 4:
         fine = (num_days_borrow.days - 4)*1000
-
-    # print(borrow_detail.list_book.pop('S000003'))
 
     if request.method == 'POST':
         
@@ -495,7 +488,6 @@ def return_book(request,pk):
                 # neu tra sach
                     if action[temp_bId] == 'return':
 
-                        print('return')
 
                         # lap phieu tra sach
                         return_book_model = ReturnBook(
@@ -543,7 +535,6 @@ def return_book(request,pk):
                         penalty_ticket_model.save()
                         borrow_detail.reader.save()
                         book.save()
-                    print(borrow_detail.list_book)  
                     borrow_detail.list_book.pop(book.bId)
 
                     if len(borrow_detail.list_book) == 0:
@@ -604,7 +595,6 @@ def thanh_ly(request):
     if request.method == 'POST':
         try:
             book_liquidation_form = BookLiquidationForm(request.POST)
-            print(request.POST)
             action = request.POST.get('submit')
             if action == 'reconfirm':
                 pass
@@ -696,8 +686,10 @@ def add_receipt(request):
             reader = Reader.objects.get(rId=rId)
 
             if form.is_valid():
+                a = request.POST.get("proceeds", "")
                 receipt = form.save()
                 receipt.reader = reader
+                print('y')
                 receipt.staff = request.user.customer.staff
                 receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.save()
@@ -751,7 +743,6 @@ def add_staff(request):
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
             
-            # print(username_gen())
             user = User.objects.create_user(
                 username_gen(),
                 '',
