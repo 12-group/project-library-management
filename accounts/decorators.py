@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 def unauthenticated_user(view_func):
 	def wrapper_func(request, *args, **kwargs):
@@ -27,23 +28,28 @@ def allowed_users(allowed_roles=[]):
 
 def admin_only(view_func):
 	def wrapper_func(request, *args, **kwargs):
-		group = None
+		group = []
 		if request.user.groups.exists():
-			group = request.user.groups.all()[0].name
-
-		if group == 'reader':
+			#group = request.user.groups.all()[0].name
+			for g in request.user.groups.all():
+				group.append(g.name)
+		print(len(group))
+		if 'reader' in group:
 			return view_func(request, *args, **kwargs)
 
-		if group == 'librarian':
-			return redirect('librarian') 
+		if 'librarian' in group:
+			return redirect('borrowers') 
 
-		if group == 'stockkeeper':
+		if 'stockkeeper' in group:
 			return redirect('list_book')
 
-		if group == 'cashier':
-			return redirect('money_list')
+		if 'cashier' in group:
+			return redirect('receipt_list')
 
-		if group == 'admin':
+		if 'manager' in group:
 			return view_func(request, *args, **kwargs)
 
+		if not group:
+			logout(request)
+			return redirect('login')
 	return wrapper_func

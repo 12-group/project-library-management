@@ -175,7 +175,7 @@ class BorrowOrder(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
 
-        # borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
+        borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
         
         # count_books = 0
         # for borrow_order in borrow_orders:
@@ -229,7 +229,7 @@ class FineReceipt(models.Model):
         # Kiểm tra tiền thu không vượt quá tiền mượn
         if self.proceeds > self.debt:
             raise Exception('Tiền thu không được vượt quá tiền nợ.')
-
+            
         return super().save(force_insert, force_update, using, update_fields)
 
 class PenaltyTicket(models.Model):

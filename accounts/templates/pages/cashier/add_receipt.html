@@ -1,6 +1,5 @@
 {% extends 'pages/main/main.html' %}
 {% load static %}
-{% load tags %}
 
 {% block style %}
     .a{
@@ -13,25 +12,34 @@
     }
 {% endblock style %}
 
-
 {% block content %}
+
+{% if messages %}
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
 
 <div class="a" >
     <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
 		<div class="form-outline">
             <label for="form2Example17" class="form-label" >Mã độc giả</label>
-            <input type="text" name="rId" value="{{ request.session.rId }}">
+            <input type="text" name="rId" value="{{ request.session.rId }}" readonly>
         </div>
 		<div class="form-outline">
             <label for="form2Example17" class="form-label ">Tiền nợ</label>
-            <input type="text" name="debt" value="{{ request.session.debt }}" readonly>
+            <input type="number" name="debt" value="{{ request.session.debt }}" readonly>
           </div>
 		<div class="form-outline">
             <label for="form2Example17" class="form-label ">Tiền thu</label>
-            <input type="text" name="proceeds">
+            <input type="number" name="proceeds">
         </div> 
-		
 		
         <div style="margin-top:30px;">
         	<input class="btn btn-primary btn-block" type="submit" name="update" value="Cập nhật">

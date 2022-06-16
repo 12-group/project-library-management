@@ -65,6 +65,14 @@ def loginPage(request):
             if user.groups.filter(name='staff').exists():
                 if user.customer.staff.force_password_change:
                     return redirect('password_change')
+                if user.groups.filter(name='librarian').exists():
+                    return redirect('borrowers')
+                if user.groups.filter(name='stockkeeper').exists():
+                    return redirect('list_book')
+                if user.groups.filter(name='cashier').exists():
+                    return redirect('receipt_list')
+                if user.groups.filter(name='manager').exists():
+                    return redirect('manager_dashboard')
             return redirect('home')
 
         else: 
@@ -147,7 +155,7 @@ def get_username(request):
         username = request.user.username
     return username
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 # @admin_only
 def home(request):
     books = Book.objects.all()
@@ -241,7 +249,7 @@ def cart(request):
                 order.save()
             except Exception as e:
                 messages.error(request, e)
-            redirect('request')
+            redirect('cart')
 
 
         cart.delete()
@@ -434,7 +442,6 @@ def request_off(request):
             return render(request,'pages/librarian/request_offline.html',context)
 
             
-        return redirect('borrowers')
     return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
@@ -677,17 +684,36 @@ def add_receipt(request):
             if form.is_valid():
                 receipt = form.save()
                 receipt.reader = reader
-                receipt.debt = reader.total_debt
                 receipt.staff = request.user.customer.staff
                 receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.save()
+
+                # Cập nhật tiền nợ mới
+                reader.total_debt = receipt.debt_left
+                reader.save()
+
                 messages.success(request, "Thu tiền phạt thành công.")
                 return redirect('receipt_list')
+
         except Exception as e:
             messages.error(request, e)
-            return render(request,'pages/cashier/add_receipt.html', context)
+            return redirect('add_receipt')
+            
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)
+
+def remove_receipt(request, receipt_pk):
+    receipt = FineReceipt.objects.get(pk=receipt_pk)
+
+    if request.method == 'POST':
+        receipt.delete()
+        messages.success(request, 'Xóa phiếu thu thành công.')
+        return redirect('receipt_list')
+
+    context = {
+        'receipt':receipt
+    }
+    return render(request,'pages/cashier/remove_receipt.html',context)
 
 #--QUẢN LÝ
 def manager_dashboard(request):
