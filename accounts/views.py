@@ -424,6 +424,7 @@ def request_off(request):
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
             if myDict != {}:
+                print()
                 reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
                 if BorrowBook.objects.filter(reader=reader).exists() is True: 
                     borrow = BorrowBook.objects.get(reader = reader)  
@@ -440,7 +441,8 @@ def request_off(request):
                     borrow = BorrowBook()
                     borrow.reader = reader
                     for i in myDict.values():
-                        borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                        if Book.objects.filter(bId = i[0]).exists() is True:
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
                     borrow.save()
                     return redirect('borrowers')
             return render(request,'pages/librarian/request_offline.html',context)
@@ -469,7 +471,7 @@ def return_book(request,pk):
     today = datetime.datetime.now()
     
     list_book = [Book.objects.get(bId=bId) for bId, name in borrow_detail.list_book.items()]
-    
+    print(list_book)
     num_days_borrow = today - borrow_detail.date_borrow.replace(tzinfo=None)
     fine = 0
     if num_days_borrow.days > 4:
@@ -490,7 +492,6 @@ def return_book(request,pk):
 
             # Neu trong submit form co tra hoac bao mat
             if temp_bId in action:
-                #try:
                 # neu tra sach
                     if action[temp_bId] == 'return':
 
@@ -562,15 +563,7 @@ def return_book(request,pk):
                         else:
                             order.save()
                     messages.success('Cập nhật thành công')
-<<<<<<< HEAD
-                #except Exception as e:
-                #    messages.error(request, e)
             return redirect('return_book', pk)
-=======
-                except Exception as e:
-                    messages.error(request, e)
-                return redirect('return_book', pk)
->>>>>>> 414407843f04241bc57f4152ec513daf5668d429
                 
 
     context = {
