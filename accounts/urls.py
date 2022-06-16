@@ -20,13 +20,14 @@ urlpatterns = [
    path('librarian/', views.librarian_home, name="librarian"), 
    path('borrowers/', views.borrowers, name="borrowers"),
    path('register_reader/', views.register_reader, name="register_reader"),
+   path('remove_reader/<str:reader_pk>/', views.remove_reader, name="remove_reader"),
    path('request_onl_list/', views.request_onl_list, name="request_onl_list"),
    path('request_onl/<str:pk>/', views.request_onl, name="request_onl"),
    path('update_request/<str:pk>/', views.update_request, name="update_request"),
    path('borrow_detail/<str:pk>/', views.borrow_detail, name="borrow_detail"),
    path('request_off/', views.request_off, name="request_off"),
    path('return_book/<str:pk>/', views.return_book, name="return_book"),
-   path('penalty_ticket/<str:pk>/', views.penalty_ticket, name="penalty_ticket"),
+   path('penalty_ticket/', views.penalty_ticket, name="penalty_ticket"),
    path('reader_borrow_detail/',views.reader_borrow_detail, name="reader_borrow_detail"),
 
    path('manager/manager_dashboard/', views.manager_dashboard, name="manager_dashboard"),
@@ -44,4 +45,6 @@ urlpatterns = [
    path('receipt_list/', views.receipt_list, name="receipt_list"),
    path('add_receipt/', views.add_receipt, name="add_receipt"),
    path('remove_receipt/<str:receipt_pk>/', views.remove_receipt, name="remove_receipt"),
+   path('return_book_history/', views.return_book_history, name="return_book_history"),
+
 ]  

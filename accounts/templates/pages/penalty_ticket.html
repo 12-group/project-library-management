@@ -1,0 +1,57 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+
+{% block title_name %}
+	<p>Danh sách phiếu phạt</p>
+
+{% endblock title_name %}
+{% comment %} {% block filter %}
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+				{{staff_filter.form}}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+</div>
+
+{% endblock filter %} {% endcomment %}
+
+
+{% block table_head %}
+<tr>
+<th>Mã độc giả</th>
+<th>Mã sách</th>
+<th>Mã nhân viên</th>
+<th>Lý do ghi nhận</th>
+<th>Tiền phạt</th>
+<th>Ngày ghi nhận</th>
+</tr>
+{% endblock table_head %}
+{% block table_body %}
+	{% for i in ticket %}
+		<tr>
+			<th>{{i.reader.rId}}</th>
+			<th>{{i.book.bId}}</th>
+			<th>{{i.staff.sId}}</th>
+			<th>{{i.reason}}</th>
+			<th>{{i.fine}}</th>
+			<th>{{i.date_created|date:'d-m-Y'}}</th>
+		</tr>
+	{% endfor %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+		</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+{% endif %}{% endblock table_body %}
+{% block confirm_button %} 
+	<button class='btn btn-primary' onclick="history.back()">Trở lại</button>
+{% endblock confirm_button %}

@@ -1,0 +1,52 @@
+{% extends 'pages/table_form.html' %}
+{% load static %}
+
+
+{% block title_name %}
+	<p>Lịch sử trả sách</p>
+
+{% endblock title_name %}
+{% comment %} {% block filter %}
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+				{{staff_filter.form}}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+</div>
+
+{% endblock filter %} {% endcomment %}
+
+
+{% block table_head %}
+<tr>
+<th>Mã độc giả</th>
+<th>Mã sách</th>
+<th>Ngày mượn</th>
+<th>Ngày trả</th>
+<th>Tiền phạt</th>
+</tr>
+{% endblock table_head %}
+{% block table_body %}
+	{% for i in return_book_model %}
+		<tr>
+			<th>{{i.reader.rId}}</th>
+			<th>{{i.book.bId}}</th>
+			<th>{{i.date_borrow|date:'d-m-y H:i'}}</th>
+			<th>{{i.date_return|date:'d-m-y H:i'}}</th>
+			<th>{{i.fine}}</th>
+		</tr>
+	{% endfor %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+		</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+{% endif %}{% endblock table_body %}

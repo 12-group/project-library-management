@@ -62,7 +62,7 @@ def loginPage(request):
                 if user.customer.staff.force_password_change:
                     return redirect('password_change')
                 if user.groups.filter(name='librarian').exists():
-                    return redirect('borrowers')
+                    return redirect('librarian')
                 if user.groups.filter(name='stockkeeper').exists():
                     return redirect('list_book')
                 if user.groups.filter(name='cashier').exists():
@@ -149,21 +149,18 @@ def get_username(request):
     return username
 
 @login_required(login_url='login')
-@redirect_user
+@redirect_home_view
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
         top_book = books[:4]
-        print(top_book)
         return render(request,'pages/home.html',{'books':books,'top_book':top_book})
     return render(request,'pages/home.html',{'books':books,'top_book':books})
 
 def search_book(request):
     books = Book.objects.all()
-    print(request.GET)
     books_filter = BookFilter(request.GET, queryset=books)
     books = books_filter.qs
-    print(books)
     num_books = len(books)
 
     context = {
@@ -189,7 +186,6 @@ def detail_info_book(request,pk):
         else:
             reader = Reader.objects.get(user=user)
             if Cart.objects.filter(reader = reader,book =book).exists() is True:
-                print('y')
                 messages.error(request,'Sách đã có trong giỏ hàng')
                 return render(request,'pages/reader/book_detail.html',{'book':book})
             else:
@@ -238,6 +234,8 @@ def cart(request):
                         return render(request,'pages/reader/cart.html',context)
 
             order.list_book['{}'.format(book.book.bId)] = '{}'.format(book.book.name)
+            messages.success(request,'Đã đăng ký thành công')
+
             try:
                 order.save()
             except Exception as e:
@@ -352,6 +350,20 @@ def register_reader(request):
 
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 
+def remove_reader(request, reader_pk):
+    reader = Reader.objects.get(pk=reader_pk)
+
+    if request.method == 'POST':
+        rId = reader.rId
+        reader.delete()
+        messages.success(request,'Xóa độc giả {} thành công.'.format(rId))
+        return redirect('librarian')
+
+    context = {
+        'reader':reader
+    }
+    return render(request,'pages/librarian/remove_reader.html',context)
+
 def request_onl_list(request):
     orders = BorrowOrder.objects.all()
     context={'orders':orders}
@@ -432,7 +444,6 @@ def request_off(request):
                             messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                             return render(request,'pages/librarian/request_offline.html',context)
                         elif Book.objects.filter(bId = i[0]).exists() is True:
-                                print('t')
                                 borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))   
                                 borrow.save()
                     return redirect('borrowers')
@@ -440,7 +451,8 @@ def request_off(request):
                     borrow = BorrowBook()
                     borrow.reader = reader
                     for i in myDict.values():
-                        borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                        if Book.objects.filter(bId = i[0]).exists() is True:
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
                     borrow.save()
                     return redirect('borrowers')
             return render(request,'pages/librarian/request_offline.html',context)
@@ -456,10 +468,7 @@ def borrow_detail(request,pk):
 
 def get_all_borrowing_book_of_reader(list_book):
     res = None
-
-
     return res
-
 
 def return_book(request,pk):
 
@@ -469,20 +478,15 @@ def return_book(request,pk):
     today = datetime.datetime.now()
     
     list_book = [Book.objects.get(bId=bId) for bId, name in borrow_detail.list_book.items()]
-    
     num_days_borrow = today - borrow_detail.date_borrow.replace(tzinfo=None)
     fine = 0
     if num_days_borrow.days > 4:
         fine = (num_days_borrow.days - 4)*1000
 
-    # print(borrow_detail.list_book.pop('S000003'))
-
     if request.method == 'POST':
         
         action = request.POST
 
-        # bien tam de thay doi borrowbook
-        temp_borrow_detail = {}
 
         # duyet sach trong list_book: Array[Book]
         for book in list_book:
@@ -492,11 +496,9 @@ def return_book(request,pk):
 
             # Neu trong submit form co tra hoac bao mat
             if temp_bId in action:
-                try:
                 # neu tra sach
                     if action[temp_bId] == 'return':
 
-                        print('return')
 
                         # lap phieu tra sach
                         return_book_model = ReturnBook(
@@ -533,13 +535,17 @@ def return_book(request,pk):
                             penalty_ticket_model = PenaltyTicket(
                                     reader=borrow_detail.reader,
                                     staff=request.user.customer.staff,
+                                    book=book,
                                     reason='Làm mất sách',
                                     fine=book.price
                                 )
+                        
+                        
                         book.total -= 1
+                        borrow_detail.reader.total_debt += penalty_ticket_model.fine
                         penalty_ticket_model.save()
+                        borrow_detail.reader.save()
                         book.save()
-                    print(borrow_detail.list_book)  
                     borrow_detail.list_book.pop(book.bId)
 
                     if len(borrow_detail.list_book) == 0:
@@ -558,17 +564,14 @@ def return_book(request,pk):
                             return redirect('borrowers')
                         else:
                             order.save()
-
-                except Exception as e:
-                    messages.error(request, e)
-                    
-                return redirect('return_book', pk)
+                    messages.success('Cập nhật thành công')
+            return redirect('return_book', pk)
                 
 
     context = {
         'borrow_detail':borrow_detail.list_book.items(),
         'date_borrow':borrow_detail.date_borrow,
-        'today': today.strftime("%d/%m/%Y"),
+        'today': today,
         'num_days_borrow': num_days_borrow.days,
         'reader_id':borrow_detail.reader.rId,
         'fine':fine,
@@ -576,9 +579,16 @@ def return_book(request,pk):
         }
     return render(request,'pages/librarian/return_book.html', context)
 
-def penalty_ticket(request,pk):
-    ticket = PenaltyTicket.objects.get(id=pk)
-    return render(request,'pages/librarian/home.html',{'ticket':ticket})
+def return_book_history(request):
+    return_book_model = ReturnBook.objects.all()
+    context = {
+        'return_book_model':return_book_model
+    }
+    return render(request, 'pages/return_book_history.html', context)
+
+def penalty_ticket(request):
+    ticket = PenaltyTicket.objects.all()
+    return render(request,'pages/penalty_ticket.html',{'ticket':ticket})
 
 #---THỦ KHO
 def list_book(request):
@@ -596,7 +606,6 @@ def thanh_ly(request):
     if request.method == 'POST':
         try:
             book_liquidation_form = BookLiquidationForm(request.POST)
-            print(request.POST)
             action = request.POST.get('submit')
             if action == 'reconfirm':
                 pass
@@ -656,7 +665,8 @@ def add_book(request):
                 return redirect('list_book')
         except Exception as e:
             messages.error(request, e)
-            return render(request, 'pages/stockkeeper/add_book.html', context)
+            redirect('add_book')
+
     context = {'form':form}
     return render(request, 'pages/stockkeeper/add_book.html', context)
 
@@ -687,8 +697,10 @@ def add_receipt(request):
             reader = Reader.objects.get(rId=rId)
 
             if form.is_valid():
+                a = request.POST.get("proceeds", "")
                 receipt = form.save()
                 receipt.reader = reader
+                print('y')
                 receipt.staff = request.user.customer.staff
                 receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.save()
@@ -742,7 +754,6 @@ def add_staff(request):
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
             
-            # print(username_gen())
             user = User.objects.create_user(
                 username_gen(),
                 '',

@@ -20,28 +20,33 @@ def allowed_users(allowed_roles=[]):
 	def decorator(view_func):
 		def wrapper_func(request, *args, **kwargs):
 
-			group = None
-			group_name = None
+			groups = None
+			groups_name = None
 			if request.user.groups.exists():
-				group = request.user.groups.all()
-				group_name = [g.name for g in group]
-
-			if group in allowed_roles:
-				return view_func(request, *args, **kwargs)
+				groups = request.user.groups.all()
+				groups_name = [group.name for group in groups]
+			if 'staff' in groups_name:
+				groups_name.remove('staff')
+				if groups_name[0] in allowed_roles:
+					return view_func(request, *args, **kwargs)
+			elif 'reader' in allowed_roles:
+				return view_func(request, *args, **kwargs)				
 			else:
 				return HttpResponse('Bạn không có quyền để xem trang này')
 		return wrapper_func
 	return decorator
 
-def redirect_user(view_func):
+def redirect_home_view(view_func):
 	def wrapper_func(request, *args, **kwargs):
 		group = None
 		if request.user.groups.exists():
 			#group = request.user.groups.all()[0].name
 			groups = request.user.groups.all()
 			group = [g.name for g in groups]
-		if 'reader' in group:
-			return view_func(request, *args, **kwargs)
+
+		if not group:
+			logout(request)
+			return redirect('login')
 
 		elif 'librarian' in group:
 			return redirect('librarian') 
@@ -55,7 +60,6 @@ def redirect_user(view_func):
 		elif 'manager' in group:
 			return redirect('manager_dashboard')
 
-		if not group:
-			logout(request)
-			return redirect('login')
+		elif 'reader' in group:
+			return view_func(request, *args, **kwargs)
 	return wrapper_func

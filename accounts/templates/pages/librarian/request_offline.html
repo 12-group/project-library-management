@@ -112,8 +112,6 @@
 			<thead class="thead-dark">				
                 <tr >
                     <th style="width:200px;">Mã sách</th>
-                    <th>Tên sách</th>
-                    <th>Số lượng còn</th>
                 </tr>
 			</thead>
 
@@ -122,8 +120,6 @@
                 {% for i in id %}
                 <tr>
                     <th><input type="text" name="id{{i}}"></th>
-                    <th></th>
-                    <th></th>
                 </tr>	
                 {% endfor %}
 			</tbody>            
@@ -137,61 +133,6 @@
 
 {% endblock content %}
 
-
-
-<script>
-count = 1;
-
-function addrow() {
-
-    if (document.getElementsByClassName)
-    {
-        var table = document.getElementsByClassName("table")[0];
-    }
-
-    var row = table.insertRow(-1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-
-
-    cell1.innerHTML = '<input id="myInput'+count+'">';
-    cell2.innerHTML = '<th> </th>';
-    cell3.innerHTML = '<th></th>';
-
-    var input = document.getElementById("myInput"+count);
-    count +=1;
-    // Execute a function when the user presses a key on the keyboard
-    input.addEventListener("keypress", function(event) {
-    // If the user presses the "Enter" key on the keyboard
-    if (event.key === "Enter") {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        document.getElementById("myBtn").click();
-    }
-    });
-}
-
-</script>
-<div class="text-center">
-	<a href="#myModal" class=" btn btn-primary trigger-btn" data-toggle="modal">Xác nhận</a>
-</div>
-<div id="myModal" class="modal fade">
-	<div class="modal-dialog modal-confirm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="icon-box">
-					<i class="material-icons">&#xE876;</i>
-				</div>				
-				<h4 class="modal-title w-100">Lưu thành công!</h4>	
-			</div>
-			<div class="modal-footer">
-				<a class="btn btn-success btn-block" style="background: #82ce34;" href="{% url 'borrowers' %}" >Ok</a>
-			</div>
-		</div>
-	</div>
-</div>     
 
 
 
