@@ -39,7 +39,7 @@
 			<th>{{i.staff.sId}}</th>
 			<th>{{i.reason}}</th>
 			<th>{{i.fine}}</th>
-			<th>{{i.date_created|date:'d-m-y H:i'}}</th>
+			<th>{{i.date_created|date:'d-m-Y'}}</th>
 		</tr>
 	{% endfor %}
 	{% if messages %}
@@ -52,3 +52,6 @@
 	</div>
 	{% endfor %}
 {% endif %}{% endblock table_body %}
+{% block confirm_button %} 
+	<button class='btn btn-primary' onclick="history.back()">Trở lại</button>
+{% endblock confirm_button %}
