@@ -62,7 +62,7 @@ def loginPage(request):
                 if user.customer.staff.force_password_change:
                     return redirect('password_change')
                 if user.groups.filter(name='librarian').exists():
-                    return redirect('borrowers')
+                    return redirect('librarian')
                 if user.groups.filter(name='stockkeeper').exists():
                     return redirect('list_book')
                 if user.groups.filter(name='cashier').exists():
@@ -149,7 +149,7 @@ def get_username(request):
     return username
 
 @login_required(login_url='login')
-@redirect_user
+@redirect_home_view
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
