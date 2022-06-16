@@ -8,7 +8,7 @@
 {% block line_info %}
     <div class="infor_title">
         <p class="infor_title_name">Mã độc giả:</p>
-        <input class="form-control form-control-sm" type="text" value = "{{reader.rId}}" readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" value = "{{reader_id}}" readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock line_info %}
 
@@ -35,22 +35,22 @@
 {% block table_body %}
 <form method="post">
     {% csrf_token %}
-    {% for book,staff,date_borrow,num_days_borrow in list_book %}
+    {% for book,name in borrow_detail %}
     <tr>
         <th>{{book}}</th>
-        <th>{{staff}}</th>
+        <th>{{name}}</th>
         <th>{{date_borrow}}</th>
         <th>{{today}}</th>
         <th>{{num_days_borrow}}</th>
         <th><label><input type="radio" id="choice" value="return" name="return{{book}}" /></label></th>
         <th><label><input type="radio" id="choice" value="lost" name="return{{book}}" /></label></th>
-        <th>{{return_book.fine}}</th>
+        <th>{{fine}}</th>
     </tr>	
     {% endfor %}
 
     <tr>
         <th colspan="7" >Tổng tiền phạt: </th>
-        <th>200</th>
+        <th>{{total_fine}}</th>
     </tr>
 
 

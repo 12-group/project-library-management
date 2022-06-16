@@ -142,6 +142,21 @@ class Cart(models.Model):
 
         if carts.count() >= 5:
             raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+        
+        borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
+        
+        count_books = 0
+        for borrow_order in borrow_orders:
+            print(borrow_order.list_book)
+            if borrow_order.status == 'Chờ xác nhận':
+                count_books += len(borrow_order.list_book)
+        borrow_book = BorrowBook.objects.filter(reader=self.reader)
+        for book in borrow_book:
+            count_books += len(book.list_book)
+        if count_books >= 5:
+            print('raise exception')
+            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+
 
         return super().save(force_insert, force_update, using, update_fields)
 
@@ -160,14 +175,22 @@ class BorrowOrder(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
 
-        borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
+        # borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
         
+<<<<<<< HEAD
+        # count_books = 0
+        # for borrow_order in borrow_orders:
+        #     print(borrow_order.list_book)
+        #     count_books += len(borrow_order.list_book)
+=======
         count_books = 0
         for borrow_order in borrow_orders:
             count_books += len(borrow_order.list_book)
+>>>>>>> 5cb28a059bf4dc391aed97b57d5a902650ca6666
 
-        if count_books >= 5:
-            raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+        # if count_books >= 5:
+        #     print('raise exception')
+        #     raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
 
         return super().save(force_insert, force_update, using, update_fields)
 
@@ -180,14 +203,18 @@ class BorrowBook(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         
-        borrow_books = BorrowBook.objects.filter(reader=self.reader)
         if self.reader.is_out_of_date():
             raise Exception('Thẻ quá hạn')
+<<<<<<< HEAD
+        
+
+=======
         count_book = 0
         for borrow_book in borrow_books:
             count_book += len(borrow_book.list_book)
         if count_book >= 5:
             raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
+>>>>>>> 5cb28a059bf4dc391aed97b57d5a902650ca6666
         return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
@@ -201,7 +228,6 @@ class ReturnBook(models.Model):
     fine = models.PositiveIntegerField(null=True, default=0)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
-        
         return super().save(force_insert, force_update, using, update_fields)
 
 class FineReceipt(models.Model):
@@ -220,13 +246,19 @@ class FineReceipt(models.Model):
 
         return super().save(force_insert, force_update, using, update_fields)
 
-class PenaltyTicket(models.Model):   
+class PenaltyTicket(models.Model):
+    # REASON = [
+    #     ('return_late', 'Trả sách trễ'),
+    #     ('lost', 'Mất sách'),
+    # ]
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     reason = models.CharField(max_length=200, null=True, blank=True)
     fine = models.PositiveIntegerField(null=True, default=0)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
+        self.reader.total_debt += self.fine
+        self.reader.save()
         return super().save(force_insert, force_update, using, update_fields)
 
 class BookLiquidation(models.Model):
