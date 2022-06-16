@@ -61,14 +61,14 @@ def loginPage(request):
             if user.groups.filter(name='staff').exists():
                 if user.customer.staff.force_password_change:
                     return redirect('password_change')
-                if user.groups.filter(name='librarian').exists():
-                    return redirect('librarian')
-                if user.groups.filter(name='stockkeeper').exists():
-                    return redirect('list_book')
-                if user.groups.filter(name='cashier').exists():
-                    return redirect('receipt_list')
-                if user.groups.filter(name='manager').exists():
-                    return redirect('manager_dashboard')
+                # if user.groups.filter(name='librarian').exists():
+                #     return redirect('librarian')
+                # if user.groups.filter(name='storekeeper').exists():
+                #     return redirect('list_book')
+                # if user.groups.filter(name='cashier').exists():
+                #     return redirect('receipt_list')
+                # if user.groups.filter(name='manager').exists():
+                #     return redirect('manager_dashboard')
             return redirect('home')
 
         else: 
@@ -148,14 +148,37 @@ def get_username(request):
         username = request.user.username
     return username
 
-@login_required(login_url='login')
-@redirect_home_view
 def home(request):
+
     books = Book.objects.all()
     if len(books) >= 4:
         top_book = books[:4]
         return render(request,'pages/home.html',{'books':books,'top_book':top_book})
     return render(request,'pages/home.html',{'books':books,'top_book':books})
+
+@login_required(login_url='login')
+def dashboard(request):
+    group = None
+    if request.user.groups.exists():
+        groups = request.user.groups.all()
+        group = [g.name for g in groups]
+    else:
+        return redirect('home')
+
+    if 'librarian' in group:
+        return redirect('librarian')
+
+    elif 'storekeeper' in group:
+        return redirect('list_book')
+
+    elif 'cashier' in group:
+        return redirect('receipt_list')
+
+    elif 'manager' in group:
+        return redirect('manager_dashboard')
+
+    else:
+        return redirect('home')
 
 def search_book(request):
     books = Book.objects.all()
@@ -172,10 +195,15 @@ def search_book(request):
 
 def detail_info_book(request,pk):
     book = Book.objects.get(bId=pk)
-    user = User.objects.get(username =get_username(request) )
-    
-    is_reader = Reader.objects.filter(user=user).exists()
     if request.method == 'POST':
+
+        if not User.objects.filter(username =get_username(request)).exists():
+            messages.error(request,'Độc giả mới có quyền đăng ký mượn sách')
+            return render(request,'pages/reader/book_detail.html',{'book':book})
+
+        user = User.objects.get(username =get_username(request))
+        is_reader = Reader.objects.filter(user=user).exists()
+
         if is_reader is False:
             messages.error(request,'Độc giả mới có quyền đăng ký mượn sách')
             return render(request,'pages/reader/book_detail.html',{'book':book})
@@ -199,7 +227,9 @@ def detail_info_book(request,pk):
                     return render(request,'pages/reader/book_detail.html',{'book':book})
                 messages.success(request,'Thêm {} vào giỏ hàng thành công'.format(book.name))
     return render(request,'pages/reader/book_detail.html',{'book':book})
-   
+
+@login_required(login_url='login')
+@redirect_staff_dashboard
 def cart(request):
     user = User.objects.get(username =get_username(request) )
     reader = Reader.objects.get(user=user)
@@ -252,6 +282,8 @@ def cart(request):
         }
     return render(request,'pages/reader/cart.html',context)
 
+@login_required(login_url='login')
+@redirect_staff_dashboard
 def remove_from_cart(request, cart_pk):
     cart = Cart.objects.get(pk=cart_pk)
 
@@ -266,6 +298,8 @@ def remove_from_cart(request, cart_pk):
     }
     return render(request,'pages/reader/remove_from_cart.html',context)
 
+@login_required(login_url='login')
+@redirect_staff_dashboard
 def reader_borrow_detail(request):
     user = User.objects.get(username =get_username(request))
     reader = Reader.objects.get(user=user)
@@ -296,11 +330,15 @@ def reader_borrow_detail(request):
     return render(request,'pages/reader/reader_borrow_detail.html',context)
 
 #--THỦ THƯ
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def librarian_home(request):
     readers = Reader.objects.all()
     context = {'readers':readers}
     return render(request,'pages/librarian/reader_list.html',context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def borrowers(request):
     borrows = BorrowBook.objects.all()
     today = datetime.datetime.now()
@@ -317,6 +355,7 @@ def get_object(email):
         return None
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def register_reader(request):
     form = ReaderForm()
     if request.method == 'POST':
@@ -350,11 +389,15 @@ def register_reader(request):
 
     return render(request,'pages/librarian/register_reader.html',{'form':form})
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def request_onl_list(request):
     orders = BorrowOrder.objects.all()
     context={'orders':orders}
     return render(request,'pages/librarian/request_onl_list.html',context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def request_onl(request,pk):
     order = BorrowOrder.objects.get(id=pk)
     list =  zip(order.list_book,order.list_book.values())
@@ -368,6 +411,8 @@ def request_onl(request,pk):
         return redirect('request_onl_list')
     return render(request,'pages/librarian/request_online.html',{'order':order,'list':list})
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def update_request(request,pk):
     order = BorrowOrder.objects.get(id=pk)
     form = OrderForm(instance=order)    
@@ -413,6 +458,8 @@ def update_request(request,pk):
     context = {'form':form,'list':list}
     return render(request, 'pages/librarian/update_status_request.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
@@ -446,6 +493,9 @@ def request_off(request):
             messages.error(request, e)
             return render(request,'pages/librarian/request_offline.html',context)
     return render(request,'pages/librarian/request_offline.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
     list =  zip(borrow.list_book,borrow.list_book.values())
@@ -458,7 +508,8 @@ def get_all_borrowing_book_of_reader(list_book):
 
     return res
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def return_book(request,pk):
 
     borrow_detail = BorrowBook.objects.get(pk=pk)
@@ -568,6 +619,8 @@ def return_book(request,pk):
         }
     return render(request,'pages/librarian/return_book.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian','cashier'])
 def return_book_history(request):
     return_book_model = ReturnBook.objects.all()
     context = {
@@ -575,11 +628,15 @@ def return_book_history(request):
     }
     return render(request, 'pages/return_book_history.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian','cashier'])
 def penalty_ticket(request):
     ticket = PenaltyTicket.objects.all()
     return render(request,'pages/penalty_ticket.html',{'ticket':ticket})
 
 #---THỦ KHO
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['storekeeper'])
 def list_book(request):
     books = Book.objects.all()
     count_books = books.count()
@@ -587,9 +644,11 @@ def list_book(request):
         'books':books,
         'count_books':count_books
     }
-    return render(request,'pages/stockkeeper/list_book.html',context)
+    return render(request,'pages/storekeeper/list_book.html',context)
 
 # re-confirm liquidation screen
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['storekeeper'])
 def thanh_ly(request):
     today = date.today()
     if request.method == 'POST':
@@ -604,16 +663,18 @@ def thanh_ly(request):
                 return redirect('list_book')
         except Exception as e:
             messages.error(request, e)
-            return render(request,'pages/stockkeeper/thanh_ly.html', context)
+            return render(request,'pages/storekeeper/thanh_ly.html', context)
 
     context = {
         'user': request.user,
         'date': today.strftime("%d/%m/%Y"),
         'form': book_liquidation_form
     }
-    return render(request,'pages/stockkeeper/thanh_ly.html', context)
+    return render(request,'pages/storekeeper/thanh_ly.html', context)
 
 # fill in liquidation info screen
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['storekeeper'])
 def liquidation_info(request, bId):
 
     book = Book.objects.get(bId=bId)
@@ -631,15 +692,19 @@ def liquidation_info(request, bId):
         'book':book
     }
 
-    return render(request,'pages/stockkeeper/liquidation_info.html', context)
+    return render(request,'pages/storekeeper/liquidation_info.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['storekeeper'])
 def liquidation_history(request):
     liquidation = BookLiquidation.objects.all()
     context = {
         'liquidation':liquidation,
     }
-    return render(request,'pages/stockkeeper/liquidation_history.html',context)
+    return render(request,'pages/storekeeper/liquidation_history.html',context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['storekeeper'])
 def add_book(request):
     form = BookForm()
     if request.method == 'POST':
@@ -657,9 +722,11 @@ def add_book(request):
             redirect('add_book')
 
     context = {'form':form}
-    return render(request, 'pages/stockkeeper/add_book.html', context)
+    return render(request, 'pages/storekeeper/add_book.html', context)
 
 #--THỦ QUỸ
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['cashier'])
 def receipt_list(request):
     receipts = FineReceipt.objects.all()
     if 'rId' in request.POST:
@@ -677,6 +744,8 @@ def receipt_list(request):
     context={'receipts':receipts}
     return render(request,'pages/cashier/receipt_list.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['cashier'])
 def add_receipt(request):
     form = ReceiptForm()
     if request.method == 'POST':
@@ -708,6 +777,8 @@ def add_receipt(request):
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['cashier'])
 def remove_receipt(request, receipt_pk):
     receipt = FineReceipt.objects.get(pk=receipt_pk)
 
@@ -721,7 +792,10 @@ def remove_receipt(request, receipt_pk):
     }
     return render(request,'pages/cashier/remove_receipt.html',context)
 
+
 #--QUẢN LÝ
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def manager_dashboard(request):
     staffs = Staff.objects.all()
     staff_filter = StaffFilter(request.GET, queryset=Staff.objects.all())
@@ -734,6 +808,8 @@ def manager_dashboard(request):
 
     return render(request, 'pages/manager/manager_dashboard.html',context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def add_staff(request):
     staff_form = StaffForm()
     user_form = CreateUserForm()
@@ -778,6 +854,8 @@ def add_staff(request):
         }
     return render(request, 'pages/manager/register_staff.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['manager'])
 def delete_staff(request, sId):
     staff = Staff.objects.get(sId=sId)
 

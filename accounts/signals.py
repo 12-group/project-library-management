@@ -38,7 +38,7 @@ def populate_models(sender, **kwargs):
     staff_group, staff_group_created = Group.objects.get_or_create(name='staff')
     Group.objects.get_or_create(name='reader')
     Group.objects.get_or_create(name='librarian')
-    Group.objects.get_or_create(name='stockkeeper')
+    Group.objects.get_or_create(name='storekeeper')
     Group.objects.get_or_create(name='cashier')
     manager_group, manager_group_created = Group.objects.get_or_create(name='manager')
 

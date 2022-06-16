@@ -15,6 +15,7 @@ urlpatterns = [
    path('password_change/', views.password_change,name='password_change'),
    path('password_change_done/', views.password_change_done,name='password_change_done'),
    path('account/', views.accountSettings, name='account'),
+   path('dashboard/', views.dashboard, name='dashboard'),
 
    
    path('librarian/', views.librarian_home, name="librarian"), 
@@ -34,11 +35,11 @@ urlpatterns = [
    path('manager/delete_staff/<str:sId>', views.delete_staff, name="delete_staff"),
 
 
-   path('stockkeeper/list_book/', views.list_book, name="list_book"),
-   path('stockkeeper/thanh_ly/', views.thanh_ly, name="thanh_ly"),
-   path('stockkeeper/liquidation_info/<str:bId>/', views.liquidation_info, name="liquidation_info"),
-   path('stockkeeper/add_book/', views.add_book, name="add_book"),
-   path('stockkeeper/liquidation_history/', views.liquidation_history, name="liquidation_history"),
+   path('storekeeper/list_book/', views.list_book, name="list_book"),
+   path('storekeeper/thanh_ly/', views.thanh_ly, name="thanh_ly"),
+   path('storekeeper/liquidation_info/<str:bId>/', views.liquidation_info, name="liquidation_info"),
+   path('storekeeper/add_book/', views.add_book, name="add_book"),
+   path('storekeeper/liquidation_history/', views.liquidation_history, name="liquidation_history"),
 
 
    path('receipt_list/', views.receipt_list, name="receipt_list"),
