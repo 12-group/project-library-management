@@ -261,11 +261,11 @@ class PenaltyTicket(models.Model):
     fine = models.PositiveIntegerField(null=True, default=0)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
     date_created = models.DateTimeField(null=True, auto_now_add=True)
-    def save(self, force_insert=False, force_update=False, using=None, 
-             update_fields=None) -> None:
-        self.reader.total_debt += self.fine
-        self.reader.save()
-        return super().save(force_insert, force_update, using, update_fields)
+    # def save(self, force_insert=False, force_update=False, using=None, 
+    #          update_fields=None) -> None:
+    #     self.reader.total_debt += self.fine
+    #     self.reader.save()
+    #     return super().save(force_insert, force_update, using, update_fields)
 
 class BookLiquidation(models.Model):
     REASON = [
