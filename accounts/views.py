@@ -147,8 +147,8 @@ def get_username(request):
         username = request.user.username
     return username
 
-# @login_required(login_url='login')
-# @admin_only
+@login_required(login_url='login')
+@admin_only
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
