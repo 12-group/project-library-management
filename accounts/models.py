@@ -202,7 +202,8 @@ class BorrowBook(models.Model):
         
         if self.reader.is_out_of_date():
             raise Exception('Thẻ quá hạn')
-        
+
+        borrow_books = BorrowBook.objects.filter(reader=self.reader)
 
         count_book = 0
         for borrow_book in borrow_books:

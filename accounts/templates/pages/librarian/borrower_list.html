@@ -3,6 +3,16 @@
 
 
 {% block title_name %}
+{% if messages %}
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
 <p>Danh sách độc giả mượn sách</p>
 
 {% endblock title_name %}
@@ -18,8 +28,6 @@
 {% block table_head %}
 <tr>
     <th>Mã độc giả</th>
-    <th>Ngày mượn</th>
-    <th>Số ngày mượn</th>
     <th>Xem chi tiết </th>
     <th>Trả sách</th>
 </tr>
@@ -30,8 +38,6 @@
 {% for i in borrows %}
 <tr>
     <th>{{i.reader.rId}}</th>
-    <th>{{i.date_borrow}}</th>
-    <th></th>
     <th><a class="btn btn-primary" href="{% url 'borrow_detail' i.pk %}">Xem chi tiết</a></th>
     <th><a class="btn btn-warning" href="{% url 'return_book' i.pk %}">Trả sách</a></th>
 </tr>	

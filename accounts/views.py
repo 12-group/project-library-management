@@ -1,3 +1,4 @@
+from re import S
 from django.shortcuts import render, redirect 
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
@@ -377,13 +378,22 @@ def update_request(request,pk):
                 context = {'form':form,'list':list}
 
                 if order.status == 'Đã nhận sách':
-                    
-                    borrow = BorrowBook()
-                    borrow.reader = order.reader
-                    borrow.list_book = order.list_book
-                    list =  zip(borrow.list_book,borrow.list_book.values())
-                    borrow.save()
-
+                    #thêm vào ds mượn
+                    if BorrowBook.objects.filter(reader = order.reader).exists():
+                        borrow = BorrowBook.objects.get(reader = order.reader)
+                        borrow.list_book.update(order.list_book)
+                        borrow.save()
+                        list_date = []
+                        for i in order.list_book :
+                            list_date.append(borrow.date_borrow)
+                        list =  zip(borrow.list_book,borrow.list_book.values(),list_date)
+                        borrow.save()
+                    else :
+                        borrow = BorrowBook()
+                        borrow.reader = order.reader
+                        borrow.list_book = order.list_book
+                        borrow.save()
+                    #Giam số lượng sách 
                     for i in order.list_book.keys():
                         book = Book.objects.get(bId = i)
                         book.number_of_book_remain -= 1
@@ -396,6 +406,7 @@ def update_request(request,pk):
                 return redirect('request_onl_list')
             except Exception as e:
                 messages.error(request, e)
+                return render(request, 'pages/librarian/update_status_request.html', context)
         return redirect('request_onl_list')
     context = {'form':form,'list':list}
     return render(request, 'pages/librarian/update_status_request.html', context)
@@ -409,32 +420,29 @@ def request_off(request):
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
             if myDict != {}:
-                reader = Reader.objects.get(rId = myDict['rId'][0])
-                borrow = BorrowBook()
-                borrow.reader = reader
-                if BorrowBook.objects.filter(reader = reader).exists():
-                    borrow_check = BorrowBook.objects.filter(reader = reader)
-                    for b in borrow_check:
-                        list = b.list_book
-                        for i in myDict.values():
-                            if i[0] in list.keys() :
-                                messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
-                            elif Book.objects.filter(bId = i[0]).exists() is True:
-                                borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
-                    # borrow.date_trunc_field()
-                        borrow.save()
-                        return render(request,'pages/librarian/request_offline.html',context)
-                else:
+                reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
+                if BorrowBook.objects.filter(reader=reader).exists() is True: 
+                    borrow = BorrowBook.objects.get(reader = reader)  
                     for i in myDict.values():
-                        if Book.objects.filter(bId = i[0]).exists() is True:
-                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
-                        #    borrow.date_trunc_field()
+                        if i[0] in borrow.list_book.keys(): 
+                            messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
+                            return render(request,'pages/librarian/request_offline.html',context)
+                        elif Book.objects.filter(bId = i[0]).exists() is True:
+                                print('t')
+                                borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))   
+                                borrow.save()
+                    return redirect('borrowers')
+                else:                         
+                    borrow = BorrowBook()
+                    borrow.reader = reader
+                    for i in myDict.values():
+                        borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                    borrow.save()
+                    return redirect('borrowers')
+            return render(request,'pages/librarian/request_offline.html',context)
         except Exception as e:
             messages.error(request, e)
             return render(request,'pages/librarian/request_offline.html',context)
-
-            
-        return redirect('borrowers')
     return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
