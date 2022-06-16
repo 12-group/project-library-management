@@ -65,6 +65,14 @@ def loginPage(request):
             if user.groups.filter(name='staff').exists():
                 if user.customer.staff.force_password_change:
                     return redirect('password_change')
+                if user.groups.filter(name='librarian').exists():
+                    return redirect('borrowers')
+                if user.groups.filter(name='stockkeeper').exists():
+                    return redirect('list_book')
+                if user.groups.filter(name='cashier').exists():
+                    return redirect('receipt_list')
+                if user.groups.filter(name='manager').exists():
+                    return redirect('manager_dashboard')
             return redirect('home')
 
         else: 
@@ -148,7 +156,7 @@ def get_username(request):
     return username
 
 @login_required(login_url='login')
-@admin_only
+# @admin_only
 def home(request):
     books = Book.objects.all()
     if len(books) >= 4:
@@ -434,7 +442,6 @@ def request_off(request):
             return render(request,'pages/librarian/request_offline.html',context)
 
             
-        return redirect('borrowers')
     return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
     borrow = BorrowBook.objects.get(id=pk)
