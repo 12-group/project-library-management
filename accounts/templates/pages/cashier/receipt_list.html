@@ -1,6 +1,11 @@
 {% extends 'pages/table_form.html' %}
 {% load static %}
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
 {% block style_extra %}
 	.table{
         margin: auto;
@@ -31,7 +36,7 @@
 {% endblock title_name %}
 
 {% block table_head %}
-<tr >
+<tr>
     <th>STT</th>
     <th>Mã độc giả</th>
     <th>Tiền nợ</th>
@@ -39,6 +44,7 @@
     <th>Còn lại</th>
     <th>Ngày thu</th>
     <th>Người thu tiền</th>
+    <th></th>
 </tr>
 
 {% endblock table_head %}
@@ -53,6 +59,7 @@
     <th>{{i.debt_left}}</th>
     <th>{{i.date_pay_fine}}</th>
     <th>{{i.staff.name}}</th>
+    <th><a href ="{% url 'remove_receipt' i.pk %}" style="font-size:24px" class="fa">&#xf014;</a></th>
 </tr>
 {% endfor %}
 {% endblock table_body %}

@@ -605,6 +605,19 @@ def add_receipt(request):
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)
 
+def remove_receipt(request, receipt_pk):
+    receipt = FineReceipt.objects.get(pk=receipt_pk)
+
+    if request.method == 'POST':
+        receipt.delete()
+        messages.success(request, 'Xóa phiếu thu thành công.')
+        return redirect('receipt_list')
+
+    context = {
+        'receipt':receipt
+    }
+    return render(request,'pages/cashier/remove_receipt.html',context)
+
 #--QUẢN LÝ
 def manager_dashboard(request):
     staffs = Staff.objects.all()
