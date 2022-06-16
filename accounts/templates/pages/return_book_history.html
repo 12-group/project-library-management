@@ -49,4 +49,8 @@
 		{{ message }}
 	</div>
 	{% endfor %}
-{% endif %}{% endblock table_body %}
+{% endif %}
+{% endblock table_body %}
+{% block confirm_button %}
+<a href="{% url 'receipt_list' %}" class="btn btn-primary trigger-btn" style="margin-right:50px">Trở lại</a>
+{% endblock confirm_button %}

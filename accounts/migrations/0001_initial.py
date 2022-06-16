@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('customer_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, to='accounts.customer')),
                 ('certificate', models.CharField(blank=True, choices=[('Baccalaureate', 'Tú tài'), ('Intermediate', 'Trung cấp'), ('College1', 'Cao đẳng'), ('College2', 'Đại học'), ('Master', 'Thạc sĩ'), ('Doctor', 'Tiến sĩ')], max_length=200, null=True)),
                 ('position', models.CharField(choices=[('President', 'Giám đốc'), ('Vice President', 'Phó giám đốc'), ('Manager', 'Trưởng phòng'), ('Deputy', 'Phó phòng'), ('Staff', 'Nhân viên')], max_length=200, null=True)),
-                ('service', models.CharField(choices=[('Librarian', 'Thủ thư'), ('Cashier', 'Thủ quỹ'), ('Stockkeeper', 'Thủ kho'), ('Manager department', 'Ban giám đốc')], max_length=200, null=True)),
+                ('service', models.CharField(choices=[('Librarian', 'Thủ thư'), ('Cashier', 'Thủ quỹ'), ('storekeeper', 'Thủ kho'), ('Manager department', 'Ban giám đốc')], max_length=200, null=True)),
                 ('sId', models.CharField(default=accounts.initial_func.staff_pk_gen, editable=False, max_length=255, primary_key=True, serialize=False, unique=True)),
                 ('force_password_change', models.BooleanField(default=True)),
             ],
