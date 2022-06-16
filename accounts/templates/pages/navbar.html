@@ -42,13 +42,13 @@
     </nav>
     {% if request.user.is_authenticated %}
     <div class="navbars">
-        {% comment %} {% if request.user.groups.all.0.name == "reader" %} {% endcomment %}
+        {% if request.user.groups.all.0.name == "reader" %}
         <ul class="navbar-nav" style="margin-right:50px;">
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'search' %}">Tìm kiếm sách<span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        {% comment %} {% endif %} {% endcomment %}
+        {% endif %}
         <ul class="navbar-nav">
             <li class="nav-item dropdown dropleft">
                 <i class="nav-link bi bi-person " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -57,16 +57,16 @@
                     {% if request.user.groups.all.0.name == "reader" %}
                         <a class="dropdown-item" href="{% url 'reader_borrow_detail' %}">Thông tin mượn</a> 
                     {% endif %} 
-                    {% if request.user.groups.all.0.name == "librarian" %}
-                        <a class="dropdown-item" href="{% url 'librarian' %}">Danh sách độc giả</a>
-                        <a class="dropdown-item" href="{% url 'borrowers' %}">Danh sách mượn</a> 
-                        {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'password_change' %}">Đổi mật khẩu</a>
                     <a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a>
                 </div>
             </li>
+<<<<<<< HEAD
             {% if request.user.groups.all.0.name == "reader" %} 
+=======
+            {% if request.user.groups.all.0.name == "reader" %}
+>>>>>>> 0892cf73c754fd881ffae328ffa6ffe80f2407f3
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'cart' %}"><i class="bi bi-bag"></i><span class="sr-only">(current)</span></a>
             </li>

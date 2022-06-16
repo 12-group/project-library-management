@@ -20,14 +20,13 @@ def allowed_users(allowed_roles=[]):
 	def decorator(view_func):
 		def wrapper_func(request, *args, **kwargs):
 
-			group = None
-			group_name = None
+			groups = None
 			if request.user.groups.exists():
-				group = request.user.groups.all()
-				group_name = [g.name for g in group]
-
-			if group in allowed_roles:
-				return view_func(request, *args, **kwargs)
+				groups = request.user.groups.all()
+			if is_in_group('staff', groups):
+				pass
+			# if group in allowed_roles:
+			# 	return view_func(request, *args, **kwargs)
 			else:
 				return HttpResponse('Bạn không có quyền để xem trang này')
 		return wrapper_func
