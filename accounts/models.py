@@ -175,7 +175,7 @@ class BorrowOrder(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
 
-        # borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
+        borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
         
         # count_books = 0
         # for borrow_order in borrow_orders:
