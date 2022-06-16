@@ -19,7 +19,8 @@
 
 {% block button %}
 	<div class="add_button">
-        <a class="btn btn-danger" href="{% url 'request_onl_list' %}">Yêu cầu mượn sách</a>
+    <a class="btn btn-primary" href="{% url 'return_book_history' %}">Lịch sử trả sách</a>
+    <a class="btn btn-danger" href="{% url 'request_onl_list' %}">Yêu cầu mượn sách</a>
 		<a class="btn btn-primary" href="{% url 'request_off' %}">Lập phiếu mượn mới</a>
 	</div>
 {% endblock button %}

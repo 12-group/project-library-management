@@ -216,6 +216,20 @@ class ReturnBook(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         return super().save(force_insert, force_update, using, update_fields)
+    def save(self, force_insert=False, force_update=False, using=None, 
+             update_fields=None) -> None:
+        # Kiểm tra tiền thu không vượt quá tiền mượn
+        if self.proceeds > self.debt:
+            raise Exception('Tiền thu không được vượt quá tiền nợ.')
+            
+        return super().save(force_insert, force_update, using, update_fields)
+
+# class LostBook(models.Model):
+#     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
+#     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
+#     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
+#     fine = models.PositiveIntegerField(null=True, default=0)
+#     date_created = models.DateTimeField(null=True, auto_now_add=True)
 
 class FineReceipt(models.Model):
     reader = models.ForeignKey(Reader, null=True, on_delete=models.SET_NULL, blank=True)
@@ -228,7 +242,8 @@ class FineReceipt(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
         # Kiểm tra tiền thu không vượt quá tiền mượn
-        if self.proceeds > self.debt:
+        self.debt = self.reader.debt
+        if self.proceeds > self.debt or self.proceeds > self.reader.debt:
             raise Exception('Tiền thu không được vượt quá tiền nợ.')
             
         return super().save(force_insert, force_update, using, update_fields)

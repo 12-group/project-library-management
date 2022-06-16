@@ -481,8 +481,6 @@ def return_book(request,pk):
         
         action = request.POST
 
-        # bien tam de thay doi borrowbook
-        temp_borrow_detail = {}
 
         # duyet sach trong list_book: Array[Book]
         for book in list_book:
@@ -536,6 +534,8 @@ def return_book(request,pk):
                                     reason='Làm mất sách',
                                     fine=book.price
                                 )
+                        
+                        
                         book.total -= 1
                         penalty_ticket_model.save()
                         book.save()
@@ -575,6 +575,13 @@ def return_book(request,pk):
         'total_fine':fine*len(list_book)
         }
     return render(request,'pages/librarian/return_book.html', context)
+
+def return_book_history(request):
+    return_book_model = ReturnBook.objects.all()
+    context = {
+        'return_book_model':return_book_model
+    }
+    return render(request, 'pages/return_book_history.html', context)
 
 def penalty_ticket(request,pk):
     ticket = PenaltyTicket.objects.get(id=pk)

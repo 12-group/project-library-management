@@ -44,4 +44,6 @@ urlpatterns = [
    path('receipt_list/', views.receipt_list, name="receipt_list"),
    path('add_receipt/', views.add_receipt, name="add_receipt"),
    path('remove_receipt/<str:receipt_pk>/', views.remove_receipt, name="remove_receipt"),
+   path('return_book_history/', views.return_book_history, name="return_book_history"),
+
 ]  
