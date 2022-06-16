@@ -357,7 +357,7 @@ def remove_reader(request, reader_pk):
         rId = reader.rId
         reader.delete()
         messages.success(request,'Xóa độc giả {} thành công.'.format(rId))
-        return redirect('reader_list')
+        return redirect('librarian')
 
     context = {
         'reader':reader
