@@ -241,7 +241,7 @@ def cart(request):
                 order.save()
             except Exception as e:
                 messages.error(request, e)
-            redirect('request')
+            redirect('cart')
 
 
         cart.delete()

@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 def unauthenticated_user(view_func):
 	def wrapper_func(request, *args, **kwargs):
@@ -46,4 +47,7 @@ def admin_only(view_func):
 		if group == 'manager':
 			return view_func(request, *args, **kwargs)
 
+		if group == None:
+			logout(request)
+			return redirect('login')
 	return wrapper_func
