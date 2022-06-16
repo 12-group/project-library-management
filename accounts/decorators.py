@@ -61,8 +61,10 @@ def redirect_home_view(view_func):
 			#group = request.user.groups.all()[0].name
 			groups = request.user.groups.all()
 			group = [g.name for g in groups]
-		if 'reader' in group:
-			return view_func(request, *args, **kwargs)
+
+		if not group:
+			logout(request)
+			return redirect('login')
 
 		elif 'librarian' in group:
 			return redirect('librarian') 
@@ -76,7 +78,6 @@ def redirect_home_view(view_func):
 		elif 'manager' in group:
 			return redirect('manager_dashboard')
 
-		if not group:
-			logout(request)
-			return redirect('login')
+		elif 'reader' in group:
+			return view_func(request, *args, **kwargs)
 	return wrapper_func

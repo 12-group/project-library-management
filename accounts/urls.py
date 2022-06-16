@@ -21,6 +21,7 @@ urlpatterns = [
    path('librarian/', views.librarian_home, name="librarian"), 
    path('borrowers/', views.borrowers, name="borrowers"),
    path('register_reader/', views.register_reader, name="register_reader"),
+   path('remove_reader/<str:reader_pk>/', views.remove_reader, name="remove_reader"),
    path('request_onl_list/', views.request_onl_list, name="request_onl_list"),
    path('request_onl/<str:pk>/', views.request_onl, name="request_onl"),
    path('update_request/<str:pk>/', views.update_request, name="update_request"),

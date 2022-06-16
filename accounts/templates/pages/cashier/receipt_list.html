@@ -57,7 +57,7 @@
     <th>Còn lại</th>
     <th>Ngày thu</th>
     <th>Người thu tiền</th>
-    <th></th>
+    <th>Xóa</th>
 </tr>
 
 {% endblock table_head %}
@@ -72,7 +72,7 @@
     <th>{{i.debt_left}}</th>
     <th>{{i.date_pay_fine|date:'d-m-Y'}}</th>
     <th>{{i.staff.name}}</th>
-    <th><a href ="{% url 'remove_receipt' i.pk %}" style="font-size:24px" class="fa">&#xf014;</a></th>
+    <th><a href ="{% url 'remove_receipt' i.pk %}" style="font-size:24px; margin-left:7px;" class="fa">&#xf014;</a></th>
 </tr>
 {% endfor %}
 {% endblock table_body %}

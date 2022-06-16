@@ -118,10 +118,10 @@ def accountSettings(request):
 
 @login_required(login_url='login')
 def password_change(request):
-    form = PasswordChangeForm(request.user)
+    form = ChangePasswordForm(request.user)
 
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = ChangePasswordForm(request.user, request.POST)
 
         if form.is_valid():
             user = form.save()
@@ -391,6 +391,22 @@ def register_reader(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['librarian'])
+def remove_reader(request, reader_pk):
+    reader = Reader.objects.get(pk=reader_pk)
+
+    if request.method == 'POST':
+        rId = reader.rId
+        reader.delete()
+        messages.success(request,'Xóa độc giả {} thành công.'.format(rId))
+        return redirect('librarian')
+
+    context = {
+        'reader':reader
+    }
+    return render(request,'pages/librarian/remove_reader.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['librarian'])
 def request_onl_list(request):
     orders = BorrowOrder.objects.all()
     context={'orders':orders}
@@ -504,8 +520,6 @@ def borrow_detail(request,pk):
 
 def get_all_borrowing_book_of_reader(list_book):
     res = None
-
-
     return res
 
 @login_required(login_url='login')
