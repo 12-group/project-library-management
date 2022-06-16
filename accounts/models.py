@@ -199,7 +199,8 @@ class BorrowBook(models.Model):
         
         if self.reader.is_out_of_date():
             raise Exception('Thẻ quá hạn')
-        
+
+        borrow_books = BorrowBook.objects.filter(reader=self.reader)
 
         return super().save(force_insert, force_update, using, update_fields)
     
