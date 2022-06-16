@@ -177,16 +177,13 @@ class BorrowOrder(models.Model):
 
         # borrow_orders = BorrowOrder.objects.filter(reader=self.reader)
         
-<<<<<<< HEAD
         # count_books = 0
         # for borrow_order in borrow_orders:
         #     print(borrow_order.list_book)
         #     count_books += len(borrow_order.list_book)
-=======
         count_books = 0
         for borrow_order in borrow_orders:
             count_books += len(borrow_order.list_book)
->>>>>>> 5cb28a059bf4dc391aed97b57d5a902650ca6666
 
         # if count_books >= 5:
         #     print('raise exception')
@@ -205,16 +202,13 @@ class BorrowBook(models.Model):
         
         if self.reader.is_out_of_date():
             raise Exception('Thẻ quá hạn')
-<<<<<<< HEAD
         
 
-=======
         count_book = 0
         for borrow_book in borrow_books:
             count_book += len(borrow_book.list_book)
         if count_book >= 5:
             raise Exception('Độc giả chỉ được mượn tối đa 5 quyển sách một lúc')
->>>>>>> 5cb28a059bf4dc391aed97b57d5a902650ca6666
         return super().save(force_insert, force_update, using, update_fields)
     
     def __str__(self):  
