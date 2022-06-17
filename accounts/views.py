@@ -877,6 +877,9 @@ def add_staff(request):
                 manager_group = Group.objects.get(name='manager')
                 user.groups.add(manager_group)
             else:
+                if staff.service.lower() == 'manager department':
+                    messages.error(request, 'Nhân viên không thể nằm trong ban giám đốc')
+                    return redirect('add_staff')
                 not_manager_group = Group.objects.get(name=staff.service.lower())
                 user.groups.add(not_manager_group)
 

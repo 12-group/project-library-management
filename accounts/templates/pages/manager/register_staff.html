@@ -15,7 +15,7 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="card card-body">
-			<a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Trở về</a>
+			<button class='btn btn-warning' onclick="history.back()">Trở về</button>
 			<hr>
 			<h3 style="text-align: center">Thông tin tài khoản</h3>
 			<hr>
@@ -35,7 +35,7 @@
 		</div>
 	</div>
 </div>
-
+{% include 'pages/messages.html' %}
 
 
 {% endblock %}
