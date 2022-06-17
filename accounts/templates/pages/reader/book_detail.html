@@ -55,7 +55,7 @@
                 <p>Tác giả: {{book.author}}</p>
                 <p>Năm xuất bản: {{book.publisher}} </p>
                 <p>Thể loại: {{book.get_all_ctg_to_string}}</p>
-                <p>Trạng thái: {% if book.number_of_book_remain > 0 %} <span style= " background:green; padding:2px 10px; border-radius:5px; ">Có sẵn</span> {% else %} <span style= " background:red; padding:2px 10px; border-radius:5px; ">Đã được mượn</span>{% endif %}  </p>
+                <p>Trạng thái: {% if book.number_of_book_remain > 0 %} <span style= " background:green; padding:2px 10px; border-radius:5px; ">Có sẵn</span> {% else %} <span style= " background:red; padding:2px 10px; border-radius:5px; ">Đã hết sách</span>{% endif %}  </p>
                 <p>Số lượng còn lại: {{book.number_of_book_remain}}</p>
             </div>     
             <form action="" method="post">

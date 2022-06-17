@@ -644,7 +644,7 @@ def return_book(request,pk):
                             return redirect('borrowers')
                         else:
                             order.save()
-                    messages.success('Cập nhật thành công')
+                    messages.success(request, 'Cập nhật thành công')
             return redirect('return_book', pk)            
         return redirect('borrowers')            
 
@@ -691,6 +691,7 @@ def list_book(request):
 @allowed_users(allowed_roles=['storekeeper'])
 def thanh_ly(request):
     today = date.today()
+    book_liquidation_form = BookLiquidationForm()
     if request.method == 'POST':
         try:
             book_liquidation_form = BookLiquidationForm(request.POST)
@@ -703,7 +704,7 @@ def thanh_ly(request):
                 return redirect('list_book')
         except Exception as e:
             messages.error(request, e)
-            return render(request,'pages/storekeeper/thanh_ly.html', context)
+            return redirect('list_book')
 
     context = {
         'user': request.user,
