@@ -63,6 +63,14 @@ class ChangePasswordForm(PasswordChangeForm):
 		model = User
 		fields = ['old_password', 'new_password1', 'new_password2']
 
+	def __init__(self,*args, **kwargs) -> None:
+		super().__init__(*args, **kwargs)
+		for field in self.fields:
+			self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
+
+
+
+
 
 class BookForm(ModelForm):
 	class Meta:
