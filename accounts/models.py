@@ -41,7 +41,7 @@ class Staff(Customer):
     SERVICE = [
         ('Librarian', 'Thủ thư'), 
         ('Cashier', 'Thủ quỹ'), 
-        ('Stockkeeper', 'Thủ kho'), 
+        ('storekeeper', 'Thủ kho'), 
         ('Manager department', 'Ban giám đốc'), 
     ]
     certificate = models.CharField(max_length=200, null=True, choices=CETIFICATE, blank=True)

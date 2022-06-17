@@ -1,7 +1,6 @@
 {% extends 'pages/main/main.html' %}
 {% load static %}
 
-
 {% block style %}
 .form{
     margin: auto;
@@ -37,7 +36,7 @@
 <div class="form">
     <div class="title_name">
 		<div class="d-flex justify-content-center">
-			<h3>Đăng ký độc giả</h3>
+			<h3 style="text-align:center">Cập nhật<br>thông tin độc giả</h3>
 		</div>
 	</div>
     <form method="POST" action="" class="row g-3">
@@ -66,13 +65,8 @@
 				{{form.email}}
 			</div>
 
-            <div class="form-outline">
-				<label class="form-label" for="form2Example27">Tên tài khoản</label>
-                <input type="text" name="username">
-            </div>
-            
             <div style="margin-top:30px;">
-                <input class="btn btn-block" type="submit" style="background-color: #4C3876; color: white;" value="Thêm">
+                <input class="btn btn-block" type="submit" style="background-color: #4C3876; color: white;" value="Cập nhật">
                 <a href="{% url 'librarian' %}" class="btn btn-block" style="margin-top:20px; background-color:#4C3876; color: white;">Trở lại</a>
             </div>           
     </form>

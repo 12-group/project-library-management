@@ -14,6 +14,9 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Python version: 3.9.7
 - Django version: 4.0.1
 # Current status
-- Đã xong search
+- Đã xong phân quyền (trang chủ, trang thông tin chi tiết của sách nhân viên có thể xem được nhưng không thể mượn)
 # Future works
-- Muốn style lại nhưng chưa biết làm
+- Migrate lại database để test
+- Test lại toàn bộ
+- Demo video
+- Sửa toàn bộ template thành tiếng việt
