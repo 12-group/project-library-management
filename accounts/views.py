@@ -493,7 +493,7 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
-#        try:
+        try:
             form = request.GET
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
@@ -531,8 +531,8 @@ def request_off(request):
                     messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
             return render(request,'pages/librarian/request_offline.html',context)
-#        except Exception as e:
-#            messages.error(request, e)
+        except Exception as e:
+            messages.error(request, e)
             return render(request,'pages/librarian/request_offline.html',context)
     return render(request,'pages/librarian/request_offline.html',context)
 
