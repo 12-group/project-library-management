@@ -26,10 +26,8 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 	``Tên đăng nhập mặc định: manager``  
 	``Mật khẩu mặc định: password``
 6. Dùng **tài khoản quản lý** này để thêm các nhân viên khác. Từ đó, tiếp cận các chức năng của hệ thống.
-# Hướng dẫn deploy project lên Heroku
-
 # Link video demo
-
+https://drive.google.com/file/d/1nhlHoERzSbbmEq7dy23fjt_kq4WrnFYF/view?usp=sharing
 # Current status
 - Mô hình ERD cho hệ thống.
 - Hoàn thành màn hình đăng ký, đăng nhập.
@@ -37,7 +35,4 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Hoàn thành các màn hình cho thủ thư, thủ quỹ, thủ kho, quản lý, độc giả, khách.
 - Thêm các ràng buộc, quy định.
 - Đã xong phân quyền (trang chủ, trang thông tin chi tiết của sách nhân viên có thể xem được nhưng không thể mượn)
-- Chưa có chức năng lập báo cáo.
 # Future works
-- Demo video
-- Sửa toàn bộ template thành tiếng việt
