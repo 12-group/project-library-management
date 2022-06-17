@@ -101,6 +101,10 @@ def accountSettings(request):
     elif is_in_group('staff', groups):
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
+        form.fields['certificate'].widget.attrs.update({'disabled': 'disabled'})
+        form.fields['position'].widget.attrs.update({'disabled': 'disabled'})
+        form.fields['service'].widget.attrs.update({'disabled': 'disabled'})
+
 
     if request.method == 'POST':
         # if 'reader' in [group.name for group in groups]:

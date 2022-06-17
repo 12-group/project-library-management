@@ -37,6 +37,20 @@ class StaffForm(ModelForm):
 		widgets = {
             'birth': DateInput()
         }
+	def __init__(self,*args, **kwargs) -> None:
+		super().__init__(*args, **kwargs)
+		for field in self.fields:
+			self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
+		self.fields['name'].label = 'Tên'
+		self.fields['birth'].label = 'Ngày sinh'
+		self.fields['address'].label = 'Địa chỉ'
+		self.fields['profile_pic'].label = 'Ảnh đại diện'
+		self.fields['profile_pic'].widget.clear_checkbox_label = 'Xóa'
+		self.fields['profile_pic'].widget.initial_text  = 'Hiện tại'
+		self.fields['profile_pic'].widget.input_text  = 'Chọn hình đại diện khác'
+		self.fields['certificate'].label = 'Bằng cấp'
+		self.fields['position'].label = 'Chức vụ'
+		self.fields['service'].label = 'Bộ phận'
 
 
 class CreateUserForm(UserCreationForm):
