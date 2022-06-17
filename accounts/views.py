@@ -493,7 +493,7 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
-        try:
+        # try:
             form = request.GET
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
@@ -508,7 +508,9 @@ def request_off(request):
                     reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
                 if BorrowBook.objects.filter(reader=reader).exists() is True: 
                     borrow = BorrowBook.objects.get(reader = reader)  
-                    
+
+                    borrow.list_book = json.loads('{}')
+
                     for i,j in zip(myDict.values(),myDict.keys()):
                         if j in ['id1','id2','id3','id4','id5'] and i[0] != '' and Book.objects.filter(bId = i[0]).exists() is False:
                             messages.error(request,'Mã sách {} không hợp lệ'.format(i[0]))
@@ -524,6 +526,7 @@ def request_off(request):
                 else:                         
                     borrow = BorrowBook()
                     borrow.reader = reader
+                    borrow.list_book = json.loads('{}')
                     for i in myDict.values():
                         if Book.objects.filter(bId = i[0]).exists() is True:
                             borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]).name)
@@ -531,9 +534,9 @@ def request_off(request):
                     messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
             return render(request,'pages/librarian/request_offline.html',context)
-        except Exception as e:
-            messages.error(request, e)
-            return render(request,'pages/librarian/request_offline.html',context)
+        # except Exception as e:
+        #     messages.error(request, e)
+        #     return render(request,'pages/librarian/request_offline.html',context)
     return render(request,'pages/librarian/request_offline.html',context)
 
 @login_required(login_url='login')
