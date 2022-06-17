@@ -21,7 +21,15 @@ class ReaderForm(ModelForm):
 		widgets = {
             'birth': DateInput()
         }
-		
+	def __init__(self,*args, **kwargs) -> None:
+		super().__init__(*args, **kwargs)
+		for field in self.fields:
+			self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
+		self.fields['name'].label = 'Tên'
+		self.fields['reader_type'].label = 'Giới tính'
+		self.fields['birth'].label = 'Ngày sinh'
+		self.fields['address'].label = 'Địa chỉ'
+
 
 class StaffForm(ModelForm):
 	position = forms.ChoiceField(choices=[
