@@ -101,10 +101,10 @@ def accountSettings(request):
     elif is_in_group('staff', groups):
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
+        
         form.fields['certificate'].widget.attrs.update({'disabled': 'disabled'})
         form.fields['position'].widget.attrs.update({'disabled': 'disabled'})
         form.fields['service'].widget.attrs.update({'disabled': 'disabled'})
-
 
     if request.method == 'POST':
         # if 'reader' in [group.name for group in groups]:
@@ -113,10 +113,16 @@ def accountSettings(request):
 
         # elif 'staff' in [group.name for group in groups]:
         if is_in_group('staff', groups):
-            form = StaffForm(request.POST, request.FILES,instance=staff)
+            updated_request = request.POST.copy()
+            updated_request.update({'certificate': request.user.customer.staff.certificate})
+            updated_request.update({'position': request.user.customer.staff.position})
+            updated_request.update({'service': request.user.customer.staff.service})
 
+            form = StaffForm(updated_request, request.FILES,instance=staff)
         if form.is_valid():
             form.save()
+            messages.success(request,"Cập nhật tài khoản thành công")
+            return redirect('dashboard')
 
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
@@ -137,7 +143,6 @@ def password_change(request):
                     staff.force_password_change = False
                     staff.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Đổi mật khẩu thành công!')
             return redirect('password_change_done')
 
     context = {'form':form}
