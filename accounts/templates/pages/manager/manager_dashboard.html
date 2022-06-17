@@ -46,9 +46,9 @@
 		<tr>
 			<th>{{i.pk}}</th>
 			<th>{{i.name}}</th>
-			<th>{{i.birth}}</th>
+			<th>{{i.birth|date:'d-m-Y'}}</th>
 			<th>{{i.address}}</th>
-			<th>{{i.date_created}}</th>
+			<th>{{i.date_created|date:'d-m-Y'}}</th>
 			<th>{{i.get_certificate_display}}</th>
 			<th>{{i.get_position_display}}</th>
 			<th>{{i.get_service_display}}</th>

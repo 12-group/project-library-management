@@ -31,7 +31,7 @@
 {% for i in borrows %}
 <tr>
     <th>{{i.reader.rId}}</th>
-    <th>{{i.date_borrow}}</th>
+    <th>{{i.date_borrow|date:'d-m-Y'}}</th>
     <th><a class="btn btn-primary" href="{% url 'borrow_detail' i.pk %}">Xem chi tiết</a></th>
     <th><a class="btn btn-warning" href="{% url 'return_book' i.pk %}">Trả sách</a></th>
 </tr>	
