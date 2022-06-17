@@ -355,6 +355,7 @@ def librarian_home(request):
 def borrowers(request):
     borrows = BorrowBook.objects.all()
     today = datetime.datetime.now()
+    print(today)
     context = {
         'borrows':borrows,
         'today': today.strftime("%d/%m/%Y"),
