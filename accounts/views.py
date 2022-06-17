@@ -517,7 +517,7 @@ def request_off(request):
                             messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                             return render(request,'pages/librarian/request_offline.html',context)
                         elif Book.objects.filter(bId = i[0]).exists() is True:
-                                borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))   
+                                borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]).name)
                                 borrow.save()
                                 messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
@@ -526,7 +526,7 @@ def request_off(request):
                     borrow.reader = reader
                     for i in myDict.values():
                         if Book.objects.filter(bId = i[0]).exists() is True:
-                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]).name)
                     borrow.save()
                     messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')

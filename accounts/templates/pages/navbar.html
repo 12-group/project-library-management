@@ -42,7 +42,7 @@
     </nav>
             {% comment %} <ul class="navbar-nav" style="margin-right:50px;"> {% endcomment %}
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'search' %}">Tìm kiếm sách<span class="sr-only">(current)</span></a>
+                <a class="btn btn-primary" style="color:white;" href="{% url 'search' %}">Tìm kiếm sách<span class="sr-only">(current)</span></a>
             </li>
         {% comment %} </ul> {% endcomment %}
     {% if request.user.is_authenticated %}
