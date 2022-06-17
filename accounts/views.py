@@ -101,10 +101,10 @@ def accountSettings(request):
     elif is_in_group('staff', groups):
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
-        
         form.fields['certificate'].widget.attrs.update({'disabled': 'disabled'})
         form.fields['position'].widget.attrs.update({'disabled': 'disabled'})
         form.fields['service'].widget.attrs.update({'disabled': 'disabled'})
+
 
     if request.method == 'POST':
         # if 'reader' in [group.name for group in groups]:
@@ -119,9 +119,10 @@ def accountSettings(request):
             updated_request.update({'service': request.user.customer.staff.service})
 
             form = StaffForm(updated_request, request.FILES,instance=staff)
+
         if form.is_valid():
             form.save()
-            messages.success(request,"Cập nhật tài khoản thành công")
+            messages.success(request,'Thay đổi thông tin thành công')
             return redirect('dashboard')
 
     context = {'form':form}
@@ -143,6 +144,7 @@ def password_change(request):
                     staff.force_password_change = False
                     staff.save()
             update_session_auth_hash(request, user)
+            messages.success(request, 'Đổi mật khẩu thành công!')
             return redirect('password_change_done')
 
     context = {'form':form}
