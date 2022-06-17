@@ -68,11 +68,7 @@ class ChangePasswordForm(PasswordChangeForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
-        instance = getattr(self, 'instance', None)
-        if instance and instance.sId:
-            self.fields['certificate'].widget.attrs.update({'disabled': 'disabled'})
-            self.fields['position'].widget.attrs.update({'disabled': 'disabled'})
-            self.fields['service'].widget.attrs.update({'disabled': 'disabled'})
+
 
 
 
@@ -91,6 +87,8 @@ class BookForm(ModelForm):
             if str(field) != 'ctg':
                 self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
 
+        # self.fields['ctg'].widget.attrs.update({'id':"ms",'multiple':"multiple"})
+        # self.fields['ctg'].widget.attrs['multiple'] = True
         self.fields['ctg'].widget.attrs.update({'multiple': 'multiple'})
 
 class OrderForm(ModelForm):
