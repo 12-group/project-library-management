@@ -12,7 +12,7 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 - Cơ sở dữ liệu: SQLite
 - Python Package cần thiết: trong file "requirements.txt"
 # Hướng dẫn cấu hình project chạy local PC
-1. Mở Command Prompt, tìm đường dẫn tới project.
+1. Mở **Command Prompt**, tìm đường dẫn tới project.
 2. Nếu là lần đầu chạy project, hãy sử dụng lệnh dưới đây để xây dựng cơ sở dữ liệu (những lần sau thì không cần nữa):
 	```
 	python manage.py migrate --run-syncdb
@@ -21,7 +21,11 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 	```
 	python manage.py runserver
 	```
-4. Mở trình duyệt và truy cập http://localhost:8000 (hoặc http://127.0.0.1:8000) để sử dụng hệ thống.
+4. Mở trình duyệt và truy cập http://localhost:8000 (hoặc http://127.0.0.1:8000) để truy cập hệ thống.
+5. Đăng nhập vào **tài khoản quản lý** được hệ thống cung cấp và đổi mật khẩu mới:
+	``Tên đăng nhập mặc định: manager``
+	``Mật khẩu mặc định: password``
+6. Dùng **tài khoản quản lý** này để thêm các nhân viên khác. Từ đó, tiếp cận các chức năng của hệ thống.
 # Hướng dẫn deploy project lên Heroku
 
 # Link video demo
