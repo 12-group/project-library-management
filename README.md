@@ -29,7 +29,7 @@ Chúng tôi cung cấp các tính năng đăng nhập cho độc giả cũng nh�
 # Hướng dẫn deploy project lên Heroku
 
 # Link video demo
-
+https://drive.google.com/file/d/1nhlHoERzSbbmEq7dy23fjt_kq4WrnFYF/view?usp=sharing
 # Current status
 - Mô hình ERD cho hệ thống.
 - Hoàn thành màn hình đăng ký, đăng nhập.
