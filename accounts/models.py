@@ -112,7 +112,7 @@ class Book(models.Model):
     addDate = models.DateTimeField(null=True, auto_now_add=True)
     total = models.PositiveIntegerField(null=True, default=1)
     number_of_book_remain = models.PositiveIntegerField(null=True, default=1)
-    description = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=200000, null=True, blank=True)
     nguoinhan = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
 
     def __str__(self):
@@ -122,9 +122,10 @@ class Book(models.Model):
     #     super().__init__(*args, **kwargs)
     def save(self, force_insert=False, force_update=False, using=None, 
              update_fields=None) -> None:
+            
         if self.total < self.number_of_book_remain:
             raise Exception('Số lượng sách còn lại không được lớn hơn tổng số lượng sách.')
-
+            
         ymin = datetime.date.today().year-8
         ymax = datetime.date.today().year+2 # do range(ymin, ymax-1)
         if self.pubYear not in range(ymin, ymax):
