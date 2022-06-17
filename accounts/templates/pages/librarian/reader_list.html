@@ -45,7 +45,7 @@
 {% block table_body %}
 {% for i in readers %}
 <tr>
-	<th>{{ forloop.counter }}</th>
+	<th>{{i.rId}}</th>
 	<th>{{i.name}}</th>
 	<th>{{i.email}}</th>
 	<th>{{i.get_reader_type_display}}</th>

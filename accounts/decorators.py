@@ -43,7 +43,7 @@ def allowed_users(allowed_roles=[]):
 				groups_name.remove('staff')
 
 				if groups_name[0] in allowed_roles:
-					print(groups_name[0])
+					#print(groups_name[0])
 					return view_func(request, *args, **kwargs)
 
 			elif 'reader' in allowed_roles:
