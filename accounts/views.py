@@ -417,21 +417,33 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
-        try:
+#        try:
             form = request.GET
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
             if myDict != {}:
-                reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
+                if myDict['rId'][0] == '':
+                    messages.error(request,'Mã độc giả không được bỏ trống')
+                    return render(request,'pages/librarian/request_offline.html',context)
+                elif Reader.objects.filter(rId = myDict['rId'][0]).exists() is False:
+                    messages.error(request,'Mã độc giả không hợp lệ')
+                    return render(request,'pages/librarian/request_offline.html',context)
+                else:
+                    reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
                 if BorrowBook.objects.filter(reader=reader).exists() is True: 
                     borrow = BorrowBook.objects.get(reader = reader)  
-                    for i in myDict.values():
+                    
+                    for i,j in zip(myDict.values(),myDict.keys()):
+                        if j in ['id1','id2','id3','id4','id5'] and i[0] != '' and Book.objects.filter(bId = i[0]).exists() is False:
+                            messages.error(request,'Mã sách {} không hợp lệ'.format(i[0]))
+                            return render(request,'pages/librarian/request_offline.html',context)
                         if i[0] in borrow.list_book.keys(): 
                             messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
                             return render(request,'pages/librarian/request_offline.html',context)
                         elif Book.objects.filter(bId = i[0]).exists() is True:
                                 borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))   
                                 borrow.save()
+                                messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
                 else:                         
                     borrow = BorrowBook()
@@ -440,10 +452,11 @@ def request_off(request):
                         if Book.objects.filter(bId = i[0]).exists() is True:
                             borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
                     borrow.save()
+                    messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
             return render(request,'pages/librarian/request_offline.html',context)
-        except Exception as e:
-            messages.error(request, e)
+#        except Exception as e:
+#            messages.error(request, e)
             return render(request,'pages/librarian/request_offline.html',context)
     return render(request,'pages/librarian/request_offline.html',context)
 def borrow_detail(request,pk):
@@ -554,8 +567,8 @@ def return_book(request,pk):
                         else:
                             order.save()
                     messages.success('Cập nhật thành công')
-            return redirect('return_book', pk)
-                
+            return redirect('return_book', pk)            
+        return redirect('borrowers')            
 
     context = {
         'borrow_detail':borrow_detail.list_book.items(),
@@ -680,7 +693,7 @@ def receipt_list(request):
 def add_receipt(request):
     form = ReceiptForm()
     if request.method == 'POST':
-        # try:
+        try:
             form = ReceiptForm(request.POST)
             rId = request.session['rId']
             reader = Reader.objects.get(rId=rId)
@@ -689,7 +702,6 @@ def add_receipt(request):
                 a = request.POST.get("proceeds", "")
                 receipt = form.save()
                 receipt.reader = reader
-                print('y')
                 receipt.staff = request.user.customer.staff
                 receipt.debt_left = receipt.debt - receipt.proceeds
                 receipt.save()
@@ -701,9 +713,9 @@ def add_receipt(request):
                 messages.success(request, "Thu tiền phạt thành công.")
                 return redirect('receipt_list')
 
-        # except Exception as e:
-        #     messages.error(request, e)
-        #     return redirect('add_receipt')
+        except Exception as e:
+            messages.error(request, e)
+            return redirect('add_receipt')
             
     context = {'form':form}
     return render(request,'pages/cashier/add_receipt.html', context)

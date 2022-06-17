@@ -61,27 +61,7 @@
     {% block confirm_button %}
     <div class="text-center">
         <!-- Button HTML (to Trigger Modal) -->
-        <button type='submit' class=" btn btn-primary trigger-btn" data-toggle="modal">Lưu</button>
+        <button type='submit' class=" btn btn-primary trigger-btn">Lưu</button>
     </div>
-    <div id="myModal_lapphieuphat" class="modal fade">
-        <div class="modal-dialog modal-confirm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="icon-box">
-                        <i class="material-icons">&#xE876;</i>
-                    </div>				
-                    <h4 class="modal-title w-100">Cập nhật thành công!</h4>	
-                </div>
-                <div class="modal-body">
-                    <p class="text-center">Số sách mượn còn lại :</p>
-                    <p class="text-center">Tiền phạt :</p>
-                </div>
-                <div class="modal-footer">
-                    {#<a class="btn btn-danger btn-block" href="{% url 'penalty_ticket' %}" >Lập phiếu phạt</a>#}
-                </div>
-            </div>
-        </div>
-    </div>     
-
     {% endblock confirm_button%}
 </form>
