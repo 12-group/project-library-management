@@ -700,7 +700,6 @@ def list_book(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['storekeeper'])
 def thanh_ly(request):
-    today = date.today()
     book_liquidation_form = BookLiquidationForm()
     if request.method == 'POST':
         try:
@@ -718,7 +717,6 @@ def thanh_ly(request):
 
     context = {
         'user': request.user,
-        'date': today.strftime("%d/%m/%Y"),
         'form': book_liquidation_form
     }
     return render(request,'pages/storekeeper/thanh_ly.html', context)

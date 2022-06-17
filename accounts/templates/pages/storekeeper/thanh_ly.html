@@ -22,7 +22,7 @@
     </div>
     <div class="infor_title">
         <p class="infor_title_name">Ngày thanh lý:</p>
-        <input class="form-control form-control-sm" type="text" placeholder={{date|date:'d-m-Y'}} readonly style="margin-left: 10px;width:150px;">
+        <input class="form-control form-control-sm" type="text" placeholder={% now 'd-m-Y' %} readonly style="margin-left: 10px;width:150px;">
     </div>
 {% endblock %}
 
