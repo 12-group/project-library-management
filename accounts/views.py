@@ -644,8 +644,7 @@ def return_book(request,pk):
                             return redirect('borrowers')
                         else:
                             order.save()
-                    messages.success(request, 'Cập nhật thành công')
-            return redirect('return_book', pk)            
+                    messages.success(request, 'Trả sách {} thành công'.format(book.name))
         return redirect('borrowers')            
 
     context = {
