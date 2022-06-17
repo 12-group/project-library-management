@@ -1,6 +1,31 @@
 {% extends 'pages/main/main.html' %}
 {% load static %}
+
+{% block style %}
+.form{
+    margin: auto;
+    margin-top:10px;
+    padding: 40px 50px;
+    width: 30%;
+    background: #dbb7fd ;
+    border-radius:10px;
+}
+.title_name{
+    color:#4C3876 ;
+    margin-bottom: 10px;
+    font-weight: 800;
+    font-size: 35px;
+}
+.col-12{
+    margin-top: 30px;
+}
+{% endblock style %}
+
+
 {% block content %}
+
+
+
 
 <style>
 	.profile-pic{
@@ -11,31 +36,66 @@
 	}
 </style>
 
-<br>
-<div class="row">
-	<div class="col-md-3">
-		<div class="card card-body">
-			<a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Trở về</a>
-			<hr>
-			<h3 style="text-align: center">Thông tin tài khoản</h3>
-			<hr>
-			<img class="profile-pic" src="{{request.user.customer.profile_pic.url}}" >
-		
+{% include 'pages/messages.html' %}
+
+<div class="form">
+    <div class="title_name">
+		<div class="d-flex justify-content-center">
+			<h3>Đăng ký nhân viên</h3>
 		</div>
 	</div>
-	<div class="col-md-9">
-		<div class="card card-body">
-			
-			<form method="POST" action="" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{form.as_p}}
-		
+    <form method="POST" action="" class="row g-3">
+			{% csrf_token %}
+			<div class="form-outline">
+				<label class="form-label" for="form2Example17">Tên nhân viên</label>
+				{{form.name}}
+			</div>
+
+			<div class="form-outline">
+				<label class="form-label" for="form2Example27">Ngày sinh</label>
+				{{form.birth}}
+			</div>
+            <div class="form-outline">
+				<label class="form-label" for="form2Example17">Địa chỉ</label>
+				{{form.address}}
+			</div>
+
+			<div class="form-outline">
+				<label class="form-label" for="form2Example27">Ảnh đại diện</label>
+				{{form.profile_pic}}
+			</div>
+
+			<div class="form-outline">
+				<label class="form-label" for="form2Example27">Bằng cấp</label>
+				{{form.certificate}}
+			</div>
+
+            <div class="form-outline">
+				<label class="form-label" for="form2Example27">Vị trí</label>
+				{{form.position}}
+            </div>
+
+			<div class="form-outline">
+				<label class="form-label" for="form2Example27">Bộ phận</label>
+				{{form.service}}
+			</div>
+
 			<input class="btn btn-primary" type="submit" name="update" value="Thêm nhân viên">
-			</form>
-		</div>
-	</div>
+
+    </form>
 </div>
+<script>
+						
+    var form_fields = document.getElementsByTagName('input')
+	var choice_fields = document.getElementsByTagName('select')
 
+    for (var field in form_fields){	
+        form_fields[field].className += ' form-control'
+    }
+	for (var field in form_fields){	
+		choice_fields[field].className += ' form-select'
+	}
 
+</script>
 
 {% endblock %}

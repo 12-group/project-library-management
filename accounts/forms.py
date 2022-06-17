@@ -24,6 +24,11 @@ class ReaderForm(ModelForm):
 		
 
 class StaffForm(ModelForm):
+	position = forms.ChoiceField(choices=[
+        	('Manager', 'Trưởng phòng'),
+        	('Staff', 'Nhân viên'), 
+        ], 
+		required=True)
 	class Meta:
 		model = Staff
 		fields = '__all__'

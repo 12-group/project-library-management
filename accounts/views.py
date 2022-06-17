@@ -495,7 +495,7 @@ def request_off(request):
     id = [1,2,3,4,5]
     context = {'id':id}
     if request.method == 'GET':
-#        try:
+        try:
             form = request.GET
             myDict = dict(form.lists())
             context = {'id':id,'myDict':myDict}
@@ -541,8 +541,8 @@ def request_off(request):
                     messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
             return render(request,'pages/librarian/request_offline.html',context)
-#        except Exception as e:
-#            messages.error(request, e)
+        except Exception as e:
+            messages.error(request, e)
             return render(request,'pages/librarian/request_offline.html',context)
     return render(request,'pages/librarian/request_offline.html',context)
 
@@ -654,8 +654,7 @@ def return_book(request,pk):
                             return redirect('borrowers')
                         else:
                             order.save()
-                    messages.success(request, 'Cập nhật thành công')
-            return redirect('return_book', pk)            
+                    messages.success(request, 'Trả sách {} thành công'.format(book.name))
         return redirect('borrowers')            
 
     context = {
@@ -887,14 +886,17 @@ def add_staff(request):
                 manager_group = Group.objects.get(name='manager')
                 user.groups.add(manager_group)
             else:
+                if staff.service.lower() == 'manager department':
+                    messages.error(request, 'Nhân viên không thể nằm trong ban giám đốc')
+                    return redirect('add_staff')
                 not_manager_group = Group.objects.get(name=staff.service.lower())
                 user.groups.add(not_manager_group)
 
             messages.success(
                 request,
                 'Thêm nhân viên thành công.\n'
-                'Tên tài khoản = {} \n'
-                'Mật khẩu mặc định = {} '.format(user.username, DEFAULT_PASSWORD)
+                'Tên tài khoản = "{}" \n'
+                'Mật khẩu mặc định = "{}"'.format(user.username, DEFAULT_PASSWORD)
                 )
             return redirect('manager_dashboard')
 
