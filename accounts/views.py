@@ -866,7 +866,7 @@ def add_staff(request):
     if request.method == 'POST':
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
-            
+            print(username_gen())
             user = User.objects.create_user(
                 username_gen(),
                 '',
