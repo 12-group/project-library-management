@@ -10,7 +10,7 @@
             <p>Bạn có chắc muốn xóa nhân viên "{{staff.name}}"?</p>
             <form action="{% url 'delete_staff' staff.sId %}" method="POST">
                 {% csrf_token %}
-                <a class='btn btn-warning' href={% url 'manager_dashboard' %}>Cancel</a>
+                <a class='btn btn-warning' href={% url 'manager_dashboard' %}>Trở lại</a>
 
                 <input class='btn btn-danger' type="submit" value="Confirm">
             </form>

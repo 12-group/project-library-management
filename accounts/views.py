@@ -886,8 +886,8 @@ def add_staff(request):
             messages.success(
                 request,
                 'Thêm nhân viên thành công.\n'
-                'Tên tài khoản = {} \n'
-                'Mật khẩu mặc định = {} '.format(user.username, DEFAULT_PASSWORD)
+                'Tên tài khoản = "{}" \n'
+                'Mật khẩu mặc định = "{}"'.format(user.username, DEFAULT_PASSWORD)
                 )
             return redirect('manager_dashboard')
 
