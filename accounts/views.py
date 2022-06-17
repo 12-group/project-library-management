@@ -87,6 +87,7 @@ def accountSettings(request):
     groups = None
     form = None
     
+
     if request.user.groups.exists():
         groups = request.user.groups.all()
 
@@ -94,6 +95,7 @@ def accountSettings(request):
     if is_in_group('reader', groups):
         reader = request.user.customer.reader
         form = ReaderForm(instance=reader)
+
 
     # elif 'staff' in [group.name for group in groups]:
     elif is_in_group('staff', groups):
@@ -514,10 +516,14 @@ def request_off(request):
                             messages.error(request,'Mã sách {} không hợp lệ'.format(i[0]))
                             return render(request,'pages/librarian/request_offline.html',context)
                         if i[0] in borrow.list_book.keys(): 
-                            messages.error(request,'Bạn đã mượn sách có mã {} trước đó'.format(i[0]))
+                            messages.error(request,'Độc giả đã mượn sách có mã {} trước đó'.format(i[0]))
                             return render(request,'pages/librarian/request_offline.html',context)
                         elif Book.objects.filter(bId = i[0]).exists() is True:
-                                borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))   
+                                book = Book.objects.get(bId = i[0])
+                                print(i[0],book.name)
+                                borrow.list_book['{}'.format(i[0])] = '{}'.format(book.name)
+                                book.number_of_book_remain -= 1
+                                book.save()
                                 borrow.save()
                                 messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
@@ -526,7 +532,11 @@ def request_off(request):
                     borrow.reader = reader
                     for i in myDict.values():
                         if Book.objects.filter(bId = i[0]).exists() is True:
-                            borrow.list_book['{}'.format(i[0])] = '{}'.format(Book.objects.get(bId = i[0]))
+                            book = Book.objects.get(bId = i[0])
+                            borrow.list_book['{}'.format(i[0])] = '{}'.format(book.name)
+                            book.number_of_book_remain -= 1
+                            book.save()
+
                     borrow.save()
                     messages.success(request,'Xác nhận thành công')
                     return redirect('borrowers')
