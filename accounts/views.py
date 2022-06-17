@@ -113,10 +113,17 @@ def accountSettings(request):
 
         # elif 'staff' in [group.name for group in groups]:
         if is_in_group('staff', groups):
-            form = StaffForm(request.POST, request.FILES,instance=staff)
+            updated_request = request.POST.copy()
+            updated_request.update({'certificate': request.user.customer.staff.certificate})
+            updated_request.update({'position': request.user.customer.staff.position})
+            updated_request.update({'service': request.user.customer.staff.service})
+
+            form = StaffForm(updated_request, request.FILES,instance=staff)
 
         if form.is_valid():
             form.save()
+            messages.success(request,'Thay đổi thông tin thành công')
+            return redirect('dashboard')
 
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
