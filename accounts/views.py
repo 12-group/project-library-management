@@ -292,7 +292,7 @@ def remove_from_cart(request, cart_pk):
     if request.method == 'POST':
         book_name = cart.book.name
         cart.delete()
-        messages.success(request,'Lấy {} khỏi giỏ hàng thành công'.format(book_name))
+        messages.success(request,'Lấy {} ra khỏi giỏ hàng thành công'.format(book_name))
         return redirect('cart')
 
     context = {
