@@ -35,8 +35,8 @@
 		<tr>
 			<th>{{i.reader.rId}}</th>
 			<th>{{i.book.bId}}</th>
-			<th>{{i.date_borrow|date:'d-m-y H:i'}}</th>
-			<th>{{i.date_return|date:'d-m-y H:i'}}</th>
+			<th>{{i.date_borrow|date:'d-m-Y'}}</th>
+			<th>{{i.date_return|date:'d-m-Y'}}</th>
 			<th>{{i.fine}}</th>
 		</tr>
 	{% endfor %}

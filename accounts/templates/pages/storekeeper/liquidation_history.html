@@ -29,7 +29,7 @@
         <th>{{i.book}}</th>
         <th>{{i.quantity}}</th>
         <th>{{i.get_reason_display}}</th>
-        <th>{{i.date_liquidation}}</th>
+        <th>{{i.date_liquidation|date:'d-m-Y'}}</th>
     </tr>
     {% endfor %}
     {% if messages %}

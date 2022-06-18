@@ -101,6 +101,10 @@ def accountSettings(request):
     elif is_in_group('staff', groups):
         staff = request.user.customer.staff
         form = StaffForm(instance=staff)
+        form.fields['certificate'].widget.attrs.update({'disabled': 'disabled'})
+        form.fields['position'].widget.attrs.update({'disabled': 'disabled'})
+        form.fields['service'].widget.attrs.update({'disabled': 'disabled'})
+
 
     if request.method == 'POST':
         # if 'reader' in [group.name for group in groups]:
@@ -109,10 +113,17 @@ def accountSettings(request):
 
         # elif 'staff' in [group.name for group in groups]:
         if is_in_group('staff', groups):
-            form = StaffForm(request.POST, request.FILES,instance=staff)
+            updated_request = request.POST.copy()
+            updated_request.update({'certificate': request.user.customer.staff.certificate})
+            updated_request.update({'position': request.user.customer.staff.position})
+            updated_request.update({'service': request.user.customer.staff.service})
+
+            form = StaffForm(updated_request, request.FILES,instance=staff)
 
         if form.is_valid():
             form.save()
+            messages.success(request,'Thay đổi thông tin thành công')
+            return redirect('dashboard')
 
     context = {'form':form}
     return render(request, 'pages/user_account/account_setting.html', context)
@@ -344,6 +355,7 @@ def librarian_home(request):
 def borrowers(request):
     borrows = BorrowBook.objects.all()
     today = datetime.datetime.now()
+    print(today)
     context = {
         'borrows':borrows,
         'today': today.strftime("%d/%m/%Y"),
@@ -510,7 +522,9 @@ def request_off(request):
                     reader = Reader.objects.get(rId = myDict['rId'][0]) #mã reader
                 if BorrowBook.objects.filter(reader=reader).exists() is True: 
                     borrow = BorrowBook.objects.get(reader = reader)  
-                    
+
+                    borrow.list_book = json.loads('{}')
+
                     for i,j in zip(myDict.values(),myDict.keys()):
                         if j in ['id1','id2','id3','id4','id5'] and i[0] != '' and Book.objects.filter(bId = i[0]).exists() is False:
                             messages.error(request,'Mã sách {} không hợp lệ'.format(i[0]))
@@ -530,6 +544,7 @@ def request_off(request):
                 else:                         
                     borrow = BorrowBook()
                     borrow.reader = reader
+                    borrow.list_book = json.loads('{}')
                     for i in myDict.values():
                         if Book.objects.filter(bId = i[0]).exists() is True:
                             book = Book.objects.get(bId = i[0])
@@ -640,7 +655,6 @@ def return_book(request,pk):
 
                     if len(borrow_detail.list_book) == 0:
                         borrow_detail.delete()
-                        return redirect('borrowers')
                     else:
                         borrow_detail.save()
 
@@ -651,7 +665,6 @@ def return_book(request,pk):
                             pass
                         if len(order.list_book) == 0:
                             order.delete()
-                            return redirect('borrowers')
                         else:
                             order.save()
                     messages.success(request, 'Trả sách {} thành công'.format(book.name))
@@ -699,7 +712,6 @@ def list_book(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['storekeeper'])
 def thanh_ly(request):
-    today = date.today()
     book_liquidation_form = BookLiquidationForm()
     if request.method == 'POST':
         try:
@@ -717,7 +729,6 @@ def thanh_ly(request):
 
     context = {
         'user': request.user,
-        'date': today.strftime("%d/%m/%Y"),
         'form': book_liquidation_form
     }
     return render(request,'pages/storekeeper/thanh_ly.html', context)
@@ -867,7 +878,7 @@ def add_staff(request):
     if request.method == 'POST':
         staff_form = StaffForm(request.POST)
         if staff_form.is_valid():
-            
+            print(username_gen())
             user = User.objects.create_user(
                 username_gen(),
                 '',

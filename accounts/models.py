@@ -269,9 +269,9 @@ class PenaltyTicket(models.Model):
 
 class BookLiquidation(models.Model):
     REASON = [
-        ('lost','Mất'),
-        ('damaged', 'Hư hỏng'), 
-        ('user_lost', 'Người dùng làm mất'),
+        ('Mất','Mất'),
+        ('Hư hỏng', 'Hư hỏng'), 
+        ('Người dùng làm mất', 'Người dùng làm mất'),
     ]
     staff = models.ForeignKey(Staff, null=True, on_delete=models.SET_NULL, blank=True)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, blank=True)
