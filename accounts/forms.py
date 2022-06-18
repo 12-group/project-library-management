@@ -21,15 +21,7 @@ class ReaderForm(ModelForm):
         widgets = {
             'birth': DateInput()
         }
-    def __init__(self,*args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
-        self.fields['name'].label = 'Tên'
-        self.fields['reader_type'].label = 'Giới tính'
-        self.fields['birth'].label = 'Ngày sinh'
-        self.fields['address'].label = 'Địa chỉ'
-
+        
 
 class StaffForm(ModelForm):
     position = forms.ChoiceField(choices=[
@@ -67,17 +59,9 @@ class CreateUserForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class ChangePasswordForm(PasswordChangeForm):
-
     class Meta:
         model = User
         fields = ['old_password', 'new_password1', 'new_password2']
-
-    def __init__(self,*args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
-
-
 
 
 class BookForm(ModelForm):
@@ -90,14 +74,9 @@ class BookForm(ModelForm):
         }
     def __init__(self,*args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-
         for field in self.fields:
             if str(field) != 'ctg':
                 self.fields[str(field)].widget.attrs.update({'class': 'form-control'})
-
-        # self.fields['ctg'].widget.attrs.update({'id':"ms",'multiple':"multiple"})
-        # self.fields['ctg'].widget.attrs['multiple'] = True
-        self.fields['ctg'].widget.attrs.update({'multiple': 'multiple'})
 
 class OrderForm(ModelForm):
     class Meta:
